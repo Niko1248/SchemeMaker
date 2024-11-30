@@ -1,7 +1,7 @@
 <template>
   <div>
-    <form>
-      <input type="file" accept=".xlsx, .xls" />
+    <form @submit.prevent="uploadFile">
+      <input type="file" @change="onFileChange" accept=".xlsx, .xls" />
       <button type="submit" :disabled="!file">Загрузить</button>
     </form>
     <p v-if="loading">Загрузка файла...</p>
