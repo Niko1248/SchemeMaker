@@ -1,0 +1,221 @@
+<template>
+  <div class="scheme__container" ref="scalableArea" @wheel.prevent="onWheelHandler">
+    <div
+      class="page"
+      ref="page"
+      :style="{
+        transform: `translate(${positionX}px, ${positionY}px) scale(${scale})`,
+      }"
+    >
+      <div class="top-frame">
+        <div class="left-table-outside-the-frame">
+          <div class="left-table-outside-the-frame__one">
+            <div class="left-table-outside-the-frame__one--row-1">
+              <div>Инв.№ подл.</div>
+              <div>Подпись и дата</div>
+              <div>Взам.инв.№</div>
+            </div>
+            <div class="left-table-outside-the-frame__one--row-2">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+          <div class="left-table-outside-the-frame__two">
+            <div class="left-table-outside-the-frame__two--row-1">СОГЛАСОВАНО</div>
+            <div class="left-table-outside-the-frame__two--row-2">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <div class="left-table-outside-the-frame__two--row-3">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <div class="left-table-outside-the-frame__two--row-4">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script lang="ts">
+import { defineComponent, ref } from "vue"
+
+export default defineComponent({
+  name: "SchemeContainer",
+  setup() {
+    const scale = ref(1) // Начальный масштаб для элемента
+    const positionX = ref(0) // Позиция по оси X
+    const positionY = ref(0) // Позиция по оси Y
+
+    const scalableArea = ref<HTMLDivElement | null>(null) // Ссылка на область
+    const page = ref<HTMLDivElement | null>(null) // Ссылка на содержимое
+
+    // Обработчик событий колесика
+    const onWheelHandler = (event: WheelEvent) => {
+      event.preventDefault() // Предотвращаем стандартное поведение (масштаб страницы)
+
+      // Управление положением по оси X при зажатом Shift
+      if (event.shiftKey) {
+        if (event.deltaY < 0) {
+          positionX.value += 20 // Двигаем вправо
+        } else {
+          positionX.value -= 20 // Двигаем влево
+        }
+      }
+      // Управление положением по оси Y при зажатом Ctrl
+      else if (event.ctrlKey) {
+        if (event.deltaY < 0) {
+          positionY.value -= 20 // Двигаем вверх
+        } else {
+          positionY.value += 20 // Двигаем вниз
+        }
+      }
+      // Масштабирование без нажатия клавиш
+      else {
+        if (event.deltaY < 0) {
+          scale.value += 0.1 // Увеличиваем масштаб
+        } else {
+          scale.value -= 0.1 // Уменьшаем масштаб
+        }
+        // Ограничиваем масштаб от 0.5 до 2
+        scale.value = Math.max(0.5, Math.min(scale.value, 2))
+      }
+    }
+
+    return {
+      scale,
+      positionX,
+      positionY,
+      scalableArea,
+      page,
+      onWheelHandler,
+    }
+  },
+})
+</script>
+<style lang="scss">
+@use "./../scss/size.scss" as size;
+.scheme__container {
+  background: #d9d9d9;
+  width: 80vw;
+  height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: type-A;
+}
+.page {
+  height: size.$height;
+  width: size.$width;
+  min-height: size.$height;
+  min-width: size.$width;
+  background: #fff;
+  filter: drop-shadow(5px 5px 10px #00000018);
+  transform-origin: center; /* Центр для изменения масштаба */
+  transition: transform 0.1s ease; /* Гладкая анимация */
+  padding: 5mm 5mm 5mm 20mm;
+}
+.top-frame {
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  border: 0.5mm solid #000;
+  box-sizing: border-box;
+  position: relative;
+}
+.left-table-outside-the-frame {
+  position: absolute;
+  bottom: 0;
+  transform: rotate(-90deg) translate(-0.3mm, -0.5mm);
+  transform-origin: bottom left; /* Центр для изменения масштаба */
+  display: flex;
+  height: 20mm;
+  width: 150mm;
+  align-items: end;
+}
+.left-table-outside-the-frame__one {
+  width: 60%;
+  height: 12mm;
+  border: 0.5mm solid #000;
+  border-right: none;
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.left-table-outside-the-frame__one--row-1,
+.left-table-outside-the-frame__one--row-2 {
+  display: flex;
+  width: 100%;
+  height: 5mm;
+  box-sizing: border-box;
+
+  border-bottom: 0.5mm solid #000;
+  div {
+    text-align: center;
+    width: 33.3%;
+    &:nth-child(2) {
+      border-left: 0.5mm solid #000;
+      border-right: 0.5mm solid #000;
+    }
+  }
+}
+.left-table-outside-the-frame__one--row-2 {
+  height: 7mm;
+  border-bottom: none;
+}
+
+.left-table-outside-the-frame__two {
+  width: 40%;
+  height: 20mm;
+  border: 0.5mm solid #000;
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+  letter-spacing: 1.2mm;
+
+  div {
+    height: 5mm;
+    border-bottom: 0.5mm solid #000;
+    text-align: center;
+    &:nth-child(4) {
+      border-bottom: none;
+    }
+  }
+}
+
+.left-table-outside-the-frame__two--row-2,
+.left-table-outside-the-frame__two--row-3,
+.left-table-outside-the-frame__two--row-4 {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  div {
+    &:nth-child(1) {
+      width: 12mm;
+      border-right: 0.5mm solid #000;
+      border-bottom: none;
+    }
+    &:nth-child(2) {
+      width: 20mm;
+      border-right: 0.5mm solid #000;
+      border-bottom: none;
+    }
+    &:nth-child(3) {
+      width: 15mm;
+      border-right: 0.5mm solid #000;
+      border-bottom: none;
+    }
+  }
+}
+</style>

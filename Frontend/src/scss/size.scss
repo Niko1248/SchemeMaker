@@ -1,0 +1,10 @@
+$height: 210mm;
+$width: 297mm;
+
+@mixin height($--height) {
+    height: calc(#{$--height} * 100% / #{$height});
+}
+
+@mixin width($--width) {
+    height: calc(#{$--width} * 100% / #{$width});
+}
