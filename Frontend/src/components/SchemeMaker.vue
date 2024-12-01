@@ -39,7 +39,7 @@ export default defineComponent({
       success.value = false
 
       try {
-        const response = await axios.post("/upload", formData, {
+        const response = await axios.post("http://localhost:3000/upload", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         success.value = true
