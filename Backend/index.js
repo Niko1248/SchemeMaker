@@ -64,13 +64,37 @@ app.post("/upload", upload.single("file"), async (req, res) => {
         data.push(rowData)
       } else {
         row.eachCell((cell, colNumber) => {
-          rowData[columnHeaderScheme[colNumber - 1]] = cell.value.result
+          if (cell.value.result) {
+            rowData[columnHeaderScheme[colNumber - 1]] = cell.value.result
+          } else {
+            rowData[columnHeaderScheme[colNumber - 1]] = null
+          }
         })
         if (rowData.Номер && rowData.Номер !== null) {
           data.push(rowData)
         }
       }
     })
+    // Преобразую спорные типы, если в экселе будет забито неправильно
+    for (const element of data) {
+      if (element.Номер && element.Номер !== null) {
+        element.Номер = Number(element.Номер)
+      }
+      if (element.Фаза && element.Фаза !== null) {
+        element.Фаза = String(element.Фаза)
+        // Прнинудительно меняю . на , в "Фаза", т.к. при считывании экселя он воспринимает его как десятичное число и никак не правится
+        element.Фаза = element.Фаза.replace(".", ",")
+      }
+      if (element.Номинал && element.Номинал !== null) {
+        element.Номинал = Number(element.Номинал)
+      }
+      if (element.PE && element.PE !== null) {
+        element.PE = Number(element.PE)
+      }
+      if (element["Ток утечки УЗО"] && element["Ток утечки УЗО"] !== null) {
+        element["Ток утечки УЗО"] = Number(element["Ток утечки УЗО"])
+      }
+    }
     res.status(200).json({ message: "Файл обработан", data })
   } catch (error) {
     console.log(error)
