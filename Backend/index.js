@@ -36,22 +36,44 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     const workbook = new ExcelJS.Workbook()
     await workbook.xlsx.readFile(filePath)
 
-    const sheet = workbook.worksheets[0]
+    const sheet = workbook.getWorksheet("Схема")
     const data = []
-
-    sheet.eachRow((row, rowNumber) => {
-      if (rowNumber > 1) {
-        data.push({
-          column1: row.getCell(1).value,
-          column2: row.getCell(2).value,
-          column3: row.getCell(3).value,
+    const columnHeaderTable = []
+    const columnHeaderScheme = []
+    sheet.eachRow((row, rowIndex) => {
+      // Убираем название заголовков из экселя
+      if (rowIndex === 1 || rowIndex === 4) return
+      // Добавляем названия колонок в массивы
+      if (rowIndex === 2) {
+        row.eachCell((cell, colNumber) => {
+          columnHeaderTable.push(cell.value)
         })
+        return
+      } else if (rowIndex === 5) {
+        row.eachCell((cell, colNumber) => {
+          columnHeaderScheme.push(cell.value)
+        })
+        return
+      }
+      // Парсим значения ячеек в JSON который уйдет на фронт
+      const rowData = {}
+      if (rowIndex === 3) {
+        row.eachCell((cell, colNumber) => {
+          rowData[columnHeaderTable[colNumber - 1]] = cell.value
+        })
+        data.push(rowData)
+      } else {
+        row.eachCell((cell, colNumber) => {
+          rowData[columnHeaderScheme[colNumber - 1]] = cell.value.result
+        })
+        if (rowData.Номер && rowData.Номер !== null) {
+          data.push(rowData)
+        }
       }
     })
-
     res.status(200).json({ message: "Файл обработан", data })
   } catch (error) {
-    next(error)
+    console.log(error)
   }
 })
 
