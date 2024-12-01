@@ -46,9 +46,13 @@
       </div>
     </div>
   </div>
+  <!-- Кнопка для экспорта в PDF -->
+  <button @click="exportToPDF">Экспорт в PDF</button>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue"
+import html2canvas from "html2canvas"
+import jsPDF from "jspdf"
 
 export default defineComponent({
   name: "SchemeContainer",
@@ -91,7 +95,41 @@ export default defineComponent({
         scale.value = Math.max(0.5, Math.min(scale.value, 2))
       }
     }
+    // Метод для экспорта в PDF
+    const exportToPDF = async () => {
+      console.log("asas")
+      if (page.value) {
+        try {
+          // Рендерим элемент в canvas
+          const canvas = await html2canvas(page.value, {
+            scale: 3, // Увеличиваем масштаб для более высокого разрешения
+            useCORS: true, // Разрешаем кросс-домен
+          })
+          const imgData = canvas.toDataURL("image/png")
 
+          // Создаем новый PDF
+          const pdf = new jsPDF({
+            orientation: "landscape", // Ориентация страницы
+            unit: "mm", // Используем миллиметры
+            format: "a4", // Размер страницы
+          })
+
+          // Вычисляем размеры изображения
+          const pageWidth = 297 // A4 ширина в мм
+          const pageHeight = 210 // A4 высота в мм
+          const imgWidth = pageWidth
+          const imgHeight = (canvas.height * imgWidth) / canvas.width
+
+          // Добавляем изображение в PDF
+          pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight)
+
+          // Сохраняем PDF
+          pdf.save("export.pdf")
+        } catch (err) {
+          console.error("Ошибка при экспорте PDF:", err)
+        }
+      }
+    }
     return {
       scale,
       positionX,
@@ -99,6 +137,7 @@ export default defineComponent({
       scalableArea,
       page,
       onWheelHandler,
+      exportToPDF,
     }
   },
 })
