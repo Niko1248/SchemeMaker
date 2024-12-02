@@ -70,15 +70,15 @@ app.post("/upload", upload.single("file"), async (req, res) => {
             rowData[columnHeaderScheme[colNumber - 1]] = null
           }
         })
-        if (rowData.Номер && rowData.Номер !== null) {
+        if (rowData.Группа && rowData.Группа !== null) {
           data.push(rowData)
         }
       }
     })
     // Преобразую спорные типы, если в экселе будет забито неправильно
     for (const element of data) {
-      if (element.Номер && element.Номер !== null) {
-        element.Номер = Number(element.Номер)
+      if (element.Группа && element.Группа !== null) {
+        element.Группа = Number(element.Группа)
       }
       if (element.Фаза && element.Фаза !== null) {
         element.Фаза = String(element.Фаза)
@@ -96,10 +96,10 @@ app.post("/upload", upload.single("file"), async (req, res) => {
       }
     }
     const groupedItems = data.reduce((acc, item) => {
-      const key = item.Номер
-
-      // Если Номер = null, заменяем его на строку "Таблица"
-
+      let key = item.Группа
+      if (key === undefined || key === null) {
+        key = "Таблица"
+      }
       if (!acc[key]) {
         acc[key] = [] // Инициализируем массив для нового ключа
       }
@@ -110,7 +110,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     }, {})
 
     const result = Object.keys(groupedItems).map((key) => ({
-      Номер: !key ? "Таблица" : parseInt(key), // Преобразуем ключ к числу, если требуется
+      Группа: isNaN(parseInt(key)) ? key : parseInt(key), // Преобразуем ключ к числу, если требуется
       Данные: groupedItems[key], // Массив объектов для текущего ключа
     }))
 
