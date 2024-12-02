@@ -27,7 +27,6 @@ export default defineComponent({
     const success = ref(false)
     const error = ref("")
 
-    let excelData = ref([])
     const tableData = reactive({})
     const schemeData = reactive([])
 
