@@ -48,11 +48,15 @@ export default defineComponent({
   position: absolute;
   bottom: 0;
   right: 0;
+  border: 0.5mm solid #000;
+  border-bottom: none;
+  border-right: none;
 }
 .item {
+  border: 0.5mm solid #000;
   width: 100%;
   height: 100%;
-  box-shadow: 0 0 0 0.5px black;
+  text-align: center;
 }
 /* prettier-ignore */
 .item8,.item9,.item10,.item17,.item18,.item19,.item20,.item28,.item29,.item30,
