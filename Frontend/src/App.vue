@@ -2,7 +2,7 @@
   <SchemeMaker />
 </template>
 
-<script setup lang="ts">
+<script setup>
 import SchemeMaker from "./components/SchemeMaker.vue"
 </script>
 

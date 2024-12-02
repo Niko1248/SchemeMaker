@@ -95,6 +95,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
         element["Ток утечки УЗО"] = Number(element["Ток утечки УЗО"])
       }
     }
+    // Объединяю одинаковые группы
     const groupedItems = data.reduce((acc, item) => {
       let key = item.Группа
       if (key === undefined || key === null) {

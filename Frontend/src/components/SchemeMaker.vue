@@ -1,6 +1,6 @@
 <template>
   <div class="grid">
-    <SchemeContainer />
+    <SchemeContainer :tableData="tableData" :schemeData="schemeData" />
     <div class="service__container">
       <div class="handler-file__wrapper">
         <form @submit.prevent="uploadFile">
@@ -14,21 +14,25 @@
     </div>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent, ref } from "vue"
+<script>
+import { defineComponent, reactive, ref } from "vue"
 import axios from "axios"
 import SchemeContainer from "./SchemeContainer.vue"
 export default defineComponent({
   name: "SchemeMaker",
   components: { SchemeContainer },
   setup() {
-    const file = ref<File | null>(null)
+    const file = ref(null)
     const loading = ref(false)
     const success = ref(false)
-    const error = ref<string | null>(null)
+    const error = ref("")
 
-    const onFileChange = (event: Event) => {
-      const target = event.target as HTMLInputElement
+    let excelData = ref([])
+    const tableData = reactive({})
+    const schemeData = reactive([])
+
+    const onFileChange = (event) => {
+      const target = event.target
       if (target.files && target.files.length > 0) {
         file.value = target.files[0]
       }
@@ -49,16 +53,26 @@ export default defineComponent({
           headers: { "Content-Type": "multipart/form-data" },
         })
         success.value = true
-        console.log(response.data)
+
+        // Работаем с таблицами
+        let indexTable
+        const excelData = response.data.result
+
+        indexTable = excelData.findIndex((el) => el.Группа === "Таблица")
+        Object.assign(tableData, excelData[indexTable]) // Корректное обновление reactive объекта
+        schemeData.splice(0, schemeData.length, ...excelData.filter((_, index) => index !== indexTable)) // Обновление массива
+
+        console.log("tableData:", tableData)
+        console.log("schemeData:", schemeData)
       } catch (err) {
         error.value = "Ошибка загрузки файла"
-        console.log(err)
+        console.error(err)
       } finally {
         loading.value = false
       }
     }
 
-    return { file, loading, success, error, onFileChange, uploadFile }
+    return { file, loading, success, error, onFileChange, uploadFile, tableData, schemeData }
   },
 })
 </script>

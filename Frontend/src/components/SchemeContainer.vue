@@ -9,14 +9,14 @@
     >
       <div class="top-frame">
         <SchemeOutsideLeftTables />
-        <SchemeInsideRightTable />
+        <SchemeInsideRightTable :tableData="tableData" />
       </div>
     </div>
   </div>
   <!-- Кнопка для экспорта в PDF -->
   <button @click="exportToPDF">Экспорт в PDF</button>
 </template>
-<script lang="ts">
+<script>
 import { defineComponent, ref } from "vue"
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
@@ -26,16 +26,20 @@ import SchemeInsideRightTable from "./SchemeInsideRightTable.vue"
 export default defineComponent({
   name: "SchemeContainer",
   components: { SchemeOutsideLeftTables, SchemeInsideRightTable },
+  props: {
+    tableData: { type: Object },
+    schemeData: { type: Array },
+  },
   setup() {
     const scale = ref(1) // Начальный масштаб для элемента
     const positionX = ref(0) // Позиция по оси X
     const positionY = ref(0) // Позиция по оси Y
 
-    const scalableArea = ref<HTMLDivElement | null>(null) // Ссылка на область
-    const page = ref<HTMLDivElement | null>(null) // Ссылка на содержимое
+    const scalableArea = ref(null) // Ссылка на область
+    const page = ref(null) // Ссылка на содержимое
 
     // Обработчик событий колесика
-    const onWheelHandler = (event: WheelEvent) => {
+    const onWheelHandler = (event) => {
       event.preventDefault() // Предотвращаем стандартное поведение (масштаб страницы)
 
       // Управление положением по оси X при зажатом Shift

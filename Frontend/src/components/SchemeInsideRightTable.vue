@@ -1,24 +1,40 @@
 <template>
   <div class="right-inside-table">
-    <div class="item" :class="`item${n}`" v-for="n in 100">
+    <div class="item" :class="`item${n}`" v-for="n in 100" :key="n">
+      <span v-if="n === 7">{{ tableData["?"] }}</span>
+      <span v-if="n === 27">{{ tableData["Объект"] }}</span>
       <span v-if="n === 31">Изм</span>
       <span v-if="n === 32">Кол</span>
       <span v-if="n === 33">Лист</span>
       <span v-if="n === 34">№док</span>
       <span v-if="n === 35">Подп</span>
       <span v-if="n === 36">Дата</span>
+      <span v-if="n === 41">{{ tableData[Данные]["Должность 1"] }}</span>
+      <span v-if="n === 43">{{ tableData["ФИО 1"] }}</span>
+      <span v-if="n === 46">{{ tableData["Дата"] }}</span>
+      <span v-if="n === 51">{{ tableData["Должность 2"] }}</span>
+      <span v-if="n === 53">{{ tableData["ФИО 2"] }}</span>
+      <span v-if="n === 56">{{ tableData["Дата"] }}</span>
+      <span v-if="n === 57">{{ tableData["Адрес"] }}</span>
       <span v-if="n === 58">Стадия</span>
       <span v-if="n === 59">Лист</span>
       <span v-if="n === 60">Листов</span>
+      <span v-if="n === 68">{{ tableData["Стадия"] }}</span>
+      <span v-if="n === 88">{{ tableData["Фирма"] }}</span>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue"
+<script>
+import { defineComponent, watch } from "vue"
 export default defineComponent({
   name: "SchemeInsideRightTable",
-  setup() {},
+  props: {
+    tableData: { type: Object },
+  },
+  setup(props) {
+    return { tableData: props.tableData }
+  },
 })
 </script>
 <style lang="scss" scoped>
