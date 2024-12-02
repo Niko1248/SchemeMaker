@@ -50,7 +50,7 @@ export default defineComponent({
 .left-table-outside-the-frame {
   position: absolute;
   bottom: 0;
-  transform: rotate(-90deg) translate(-0.3mm, -0.5mm);
+  transform: rotate(-90deg) translate(-0.3mm, -0.3mm);
   transform-origin: bottom left; /* Центр для изменения масштаба */
   display: flex;
   height: 20mm;
@@ -121,12 +121,12 @@ export default defineComponent({
       border-bottom: none;
     }
     &:nth-child(2) {
-      width: 20mm;
+      width: 23mm;
       border-right: 0.5mm solid #000;
       border-bottom: none;
     }
     &:nth-child(3) {
-      width: 15mm;
+      width: 14mm;
       border-right: 0.5mm solid #000;
       border-bottom: none;
     }

@@ -53,9 +53,9 @@ export default defineComponent({
       // Управление положением по оси Y при зажатом Ctrl
       else if (event.ctrlKey) {
         if (event.deltaY < 0) {
-          positionY.value -= 20 // Двигаем вверх
+          positionY.value += 20 // Двигаем вверх
         } else {
-          positionY.value += 20 // Двигаем вниз
+          positionY.value -= 20 // Двигаем вниз
         }
       }
       // Масштабирование без нажатия клавиш
@@ -137,6 +137,7 @@ export default defineComponent({
   transform-origin: center; /* Центр для изменения масштаба */
   transition: transform 0.1s ease; /* Гладкая анимация */
   padding: 5mm 5mm 5mm 20mm;
+  box-sizing: border-box;
 }
 .top-frame {
   width: 100%;
