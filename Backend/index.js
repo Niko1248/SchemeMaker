@@ -95,7 +95,26 @@ app.post("/upload", upload.single("file"), async (req, res) => {
         element["Ток утечки УЗО"] = Number(element["Ток утечки УЗО"])
       }
     }
-    res.status(200).json({ message: "Файл обработан", data })
+    const groupedItems = data.reduce((acc, item) => {
+      const key = item.Номер
+
+      // Если Номер = null, заменяем его на строку "Таблица"
+
+      if (!acc[key]) {
+        acc[key] = [] // Инициализируем массив для нового ключа
+      }
+
+      acc[key].push(item) // Добавляем элемент в соответствующую группу
+
+      return acc
+    }, {})
+
+    const result = Object.keys(groupedItems).map((key) => ({
+      Номер: !key ? "Таблица" : parseInt(key), // Преобразуем ключ к числу, если требуется
+      Данные: groupedItems[key], // Массив объектов для текущего ключа
+    }))
+
+    res.status(200).json({ message: "Файл обработан", result })
   } catch (error) {
     console.log(error)
   }
