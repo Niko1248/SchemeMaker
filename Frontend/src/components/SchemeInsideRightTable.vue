@@ -1,34 +1,17 @@
 <template>
   <div class="right-inside-table">
     <div class="item" :class="`item${n}`" v-for="n in 100" :key="n">
-      <span v-if="n === 7">{{ tableData["Данные"]?.[0]?.["?"] || "" }}</span>
-      <span v-if="n === 27">{{ tableData["Данные"]?.[0]?.["Объект"] || "" }}</span>
-      <span v-if="n === 31">Изм</span>
-      <span v-if="n === 32">Кол</span>
-      <span v-if="n === 33">Лист</span>
-      <span v-if="n === 34">№док</span>
-      <span v-if="n === 35">Подп</span>
-      <span v-if="n === 36">Дата</span>
-      <span v-if="n === 41">{{ tableData["Данные"]?.[0]?.["Должность 1"] || "" }}</span>
-      <span v-if="n === 43">{{ tableData["Данные"]?.[0]?.["ФИО 1"] || "" }}</span>
-      <span v-if="n === 46">{{ tableData["Данные"]?.[0]?.["Дата"] || "" }}</span>
-      <span v-if="n === 51">{{ tableData["Данные"]?.[0]?.["Должность 2"] || "" }}</span>
-      <span v-if="n === 53">{{ tableData["Данные"]?.[0]?.["ФИО 2"] || "" }}</span>
-      <span v-if="n === 56">{{ tableData["Данные"]?.[0]?.["Дата"] || "" }}</span>
-      <span v-if="n === 57">{{ tableData["Данные"]?.[0]?.["Адрес"] || "" }}</span>
-      <span v-if="n === 58">Стадия</span>
-      <span v-if="n === 59">Лист</span>
-      <span v-if="n === 60">Листов</span>
-      <span v-if="n === 68">{{ tableData["Данные"]?.[0]?.["Стадия"] || "" }}</span>
-      <span v-if="n === 88">{{ tableData["Данные"]?.[0]?.["Фирма"] || "" }}</span>
+      <span v-if="contentMap[n]">
+        {{ resolveContent(n) }}
+      </span>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from "vue"
+import { computed } from "vue"
 
-export default defineComponent({
+export default {
   name: "SchemeInsideRightTable",
   props: {
     tableData: {
@@ -36,8 +19,48 @@ export default defineComponent({
       default: () => ({}),
     },
   },
-})
+  setup(props) {
+    const contentMap = computed(() => ({
+      7: (data) => data["Данные"]?.[0]?.["?"] || "",
+      27: (data) => data["Данные"]?.[0]?.["Объект"] || "",
+      31: () => "Изм",
+      32: () => "Кол",
+      33: () => "Лист",
+      34: () => "№док",
+      35: () => "Подп",
+      36: () => "Дата",
+      41: (data) => data["Данные"]?.[0]?.["Должность 1"] || "",
+      43: (data) => data["Данные"]?.[0]?.["ФИО 1"] || "",
+      46: (data) => data["Данные"]?.[0]?.["Дата"] || "",
+      51: (data) => data["Данные"]?.[0]?.["Должность 2"] || "",
+      53: (data) => data["Данные"]?.[0]?.["ФИО 2"] || "",
+      56: (data) => data["Данные"]?.[0]?.["Дата"] || "",
+      57: (data) => data["Данные"]?.[0]?.["Адрес"] || "",
+      58: () => "Стадия",
+      59: () => "Лист",
+      60: () => "Листов",
+      68: (data) => data["Данные"]?.[0]?.["Стадия"] || "",
+      87: (data) => data["Данные"]?.[0]?.["Название"] || "",
+      88: (data) => data["Данные"]?.[0]?.["Фирма"] || "",
+    }))
+
+    const resolveContent = (key) => {
+      const resolver = contentMap.value[key]
+      return typeof resolver === "function" ? resolver(props.tableData) : ""
+    }
+
+    return {
+      contentMap,
+      resolveContent,
+    }
+  },
+}
 </script>
+
+<style scoped>
+/* Ваши стили */
+</style>
+
 <style lang="scss" scoped>
 .right-inside-table {
   display: grid;

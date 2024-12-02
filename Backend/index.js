@@ -59,7 +59,15 @@ app.post("/upload", upload.single("file"), async (req, res) => {
       const rowData = {}
       if (rowIndex === 3) {
         row.eachCell((cell, colNumber) => {
-          rowData[columnHeaderTable[colNumber - 1]] = cell.value
+          if (columnHeaderTable[colNumber - 1] === "Дата") {
+            const date = new Date(cell.value)
+            const month = String(date.getMonth() + 1).padStart(2, "0")
+            const year = String(date.getFullYear()).slice(-2)
+            const convertDate = `${month}.${year}`
+            rowData[columnHeaderTable[colNumber - 1]] = convertDate
+          } else {
+            rowData[columnHeaderTable[colNumber - 1]] = cell.value
+          }
         })
         data.push(rowData)
       } else {
