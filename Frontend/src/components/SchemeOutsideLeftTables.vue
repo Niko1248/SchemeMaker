@@ -73,12 +73,12 @@ export default defineComponent({
   width: 100%;
   height: 5mm;
   box-sizing: border-box;
-
   border-bottom: 0.5mm solid #000;
   div {
     text-align: center;
-    width: 33.3%;
+    width: 25mm;
     &:nth-child(2) {
+      width: 35mm;
       border-left: 0.5mm solid #000;
       border-right: 0.5mm solid #000;
     }
@@ -90,7 +90,6 @@ export default defineComponent({
 }
 
 .left-table-outside-the-frame__two {
-  width: 40%;
   height: 20mm;
   border: 0.5mm solid #000;
   border-bottom: none;
@@ -116,18 +115,23 @@ export default defineComponent({
   width: 100%;
   div {
     &:nth-child(1) {
-      width: 12mm;
+      width: 12.4mm;
       border-right: 0.5mm solid #000;
       border-bottom: none;
     }
     &:nth-child(2) {
-      width: 23mm;
+      width: 27.6mm;
       border-right: 0.5mm solid #000;
       border-bottom: none;
     }
     &:nth-child(3) {
-      width: 14mm;
+      width: 15mm;
       border-right: 0.5mm solid #000;
+      border-bottom: none;
+    }
+    &:nth-child(4) {
+      width: 10mm;
+      border-right: none;
       border-bottom: none;
     }
   }

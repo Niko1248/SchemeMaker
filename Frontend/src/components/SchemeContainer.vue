@@ -99,11 +99,10 @@ export default defineComponent({
     }
     // Метод для экспорта в PDF
     const exportToPDF = async () => {
-      console.log("asas")
-      if (page.value) {
+      if (pages__wrapper.value) {
         try {
           // Рендерим элемент в canvas
-          const canvas = await html2canvas(page.value, {
+          const canvas = await html2canvas(pages__wrapper.value, {
             scale: 3, // Увеличиваем масштаб для более высокого разрешения
             useCORS: true, // Разрешаем кросс-домен
           })
