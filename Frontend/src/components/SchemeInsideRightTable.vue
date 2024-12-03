@@ -83,6 +83,29 @@ export default {
   height: 100%;
   text-align: center;
 }
+.item {
+  border: 0.5mm solid #000;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 4mm;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.item43,
+.item53 {
+  justify-content: flex-start;
+}
+.item7,
+.item27,
+.item57,
+.item87 {
+  font-size: 7mm;
+  white-space: wrap;
+}
 /* prettier-ignore */
 .item8,.item9,.item10,.item17,.item18,.item19,.item20,.item28,.item29,.item30,
 .item37,.item38,.item39,.item40,.item42,.item44,.item47,.item48,.item49,.item50,

@@ -1,17 +1,18 @@
 <template>
   <div class="scheme__container" ref="scalableArea" @wheel.prevent="onWheelHandler">
     <div
-      v-for="(item, index) in groupedItems"
-      class="page"
-      ref="page"
+      class="pages__wrapper"
       :style="{
         transform: `translate(${positionX}px, ${positionY}px) scale(${scale})`,
       }"
+      ref="pages__wrapper"
     >
-      <div class="top-frame">
-        <CircuitScheme :pageData="item" :listIndex="index + 1" />
-        <SchemeOutsideLeftTables />
-        <SchemeInsideRightTable :tableData="tableData" :listIndex="index + 1" />
+      <div v-for="(item, index) in groupedItems" class="page" ref="page">
+        <div class="top-frame">
+          <CircuitScheme :pageData="item" :listIndex="index + 1" />
+          <SchemeOutsideLeftTables />
+          <SchemeInsideRightTable :tableData="tableData" :listIndex="index + 1" />
+        </div>
       </div>
     </div>
   </div>
@@ -39,7 +40,7 @@ export default defineComponent({
     const positionY = ref(0) // Позиция по оси Y
 
     const scalableArea = ref(null) // Ссылка на область
-    const page = ref(null) // Ссылка на содержимое
+    const pages__wrapper = ref(null) // Ссылка на содержимое
 
     const itemsPerComponent = 14
     const groupedItems = computed(() => {
@@ -66,16 +67,9 @@ export default defineComponent({
           positionX.value -= 20 // Двигаем влево
         }
       }
-      // Управление положением по оси Y при зажатом Ctrl
+
+      // Масштабирование
       else if (event.ctrlKey) {
-        if (event.deltaY < 0) {
-          positionY.value += 20 // Двигаем вверх
-        } else {
-          positionY.value -= 20 // Двигаем вниз
-        }
-      }
-      // Масштабирование без нажатия клавиш
-      else {
         if (event.deltaY < 0) {
           scale.value += 0.1 // Увеличиваем масштаб
         } else {
@@ -83,6 +77,14 @@ export default defineComponent({
         }
         // Ограничиваем масштаб от 0.5 до 2
         scale.value = Math.max(0.5, Math.min(scale.value, 2))
+      }
+      // Управление положением по оси Y
+      else {
+        if (event.deltaY < 0) {
+          positionY.value += 50 // Двигаем вверх
+        } else {
+          positionY.value -= 50 // Двигаем вниз
+        }
       }
     }
     // Метод для экспорта в PDF
@@ -126,7 +128,7 @@ export default defineComponent({
       positionX,
       positionY,
       scalableArea,
-      page,
+      pages__wrapper,
       onWheelHandler,
       exportToPDF,
       groupedItems,
@@ -145,6 +147,9 @@ export default defineComponent({
   align-items: center;
   font-family: type-A;
 }
+.pages__wrapper {
+  transition: 0.2s ease;
+}
 .page {
   height: size.$height;
   width: size.$width;
@@ -156,6 +161,7 @@ export default defineComponent({
   transition: transform 0.1s ease; /* Гладкая анимация */
   padding: 5mm 5mm 5mm 20mm;
   box-sizing: border-box;
+  margin-bottom: 1vw;
 }
 .top-frame {
   width: 100%;
