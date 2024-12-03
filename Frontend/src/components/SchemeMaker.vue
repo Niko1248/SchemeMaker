@@ -1,6 +1,6 @@
 <template>
   <div class="grid">
-    <SchemeContainer :tableData="tableData" :schemeData="schemeData" />
+    <SchemeContainer :tableData="tableData" :inputDeviceData="inputDeviceData" :outputDevicesData="outputDevicesData" />
     <div class="service__container">
       <div class="handler-file__wrapper">
         <form @submit.prevent="uploadFile">
@@ -29,6 +29,8 @@ export default defineComponent({
 
     const tableData = reactive({})
     const schemeData = reactive([])
+    const inputDeviceData = reactive({})
+    const outputDevicesData = reactive([])
 
     const onFileChange = (event) => {
       const target = event.target
@@ -61,6 +63,9 @@ export default defineComponent({
         Object.assign(tableData, excelData[indexTable]) // Корректное обновление reactive объекта
         schemeData.splice(0, schemeData.length, ...excelData.filter((_, index) => index !== indexTable)) // Обновление массива
 
+        Object.assign(inputDeviceData, schemeData[0])
+        outputDevicesData.splice(0, outputDevicesData.length, ...schemeData.slice(1))
+
         console.log("tableData:", tableData)
         console.log("schemeData:", schemeData)
       } catch (err) {
@@ -71,7 +76,7 @@ export default defineComponent({
       }
     }
 
-    return { file, loading, success, error, onFileChange, uploadFile, tableData, schemeData }
+    return { file, loading, success, error, onFileChange, uploadFile, tableData, inputDeviceData, outputDevicesData }
   },
 })
 </script>

@@ -12,6 +12,7 @@
           <CircuitScheme :pageData="item" :listIndex="index + 1" />
           <SchemeOutsideLeftTables />
           <SchemeInsideRightTable :tableData="tableData" :listIndex="index + 1" :totalPages="totalPages" />
+          <ConsumerTable :pageData="item" />
         </div>
       </div>
     </div>
@@ -20,19 +21,21 @@
   <button @click="exportToPDF">Экспорт в PDF</button>
 </template>
 <script>
-import { defineComponent, ref, computed } from "vue"
+import { defineComponent, ref, computed, watch } from "vue"
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
 import SchemeOutsideLeftTables from "./SchemeOutsideLeftTables.vue"
 import SchemeInsideRightTable from "./SchemeInsideRightTable.vue"
 import CircuitScheme from "./CircuitScheme.vue"
+import ConsumerTable from "./ConsumerTable.vue"
 
 export default defineComponent({
   name: "SchemeContainer",
-  components: { SchemeOutsideLeftTables, SchemeInsideRightTable, CircuitScheme },
+  components: { SchemeOutsideLeftTables, SchemeInsideRightTable, CircuitScheme, ConsumerTable },
   props: {
     tableData: { type: Object },
-    schemeData: { type: Array },
+    inputDeviceData: { type: Object },
+    outputDevicesData: { type: Array },
   },
   setup(props) {
     const scale = ref(1) // Начальный масштаб для элемента
@@ -46,17 +49,21 @@ export default defineComponent({
     const itemsPerComponent = 14
     const groupedItems = computed(() => {
       const groups = []
-      totalPages.value = 0
-      if (props.schemeData.length !== 0) {
-        for (let i = 0; i < props.schemeData.length; i += itemsPerComponent) {
-          groups.push(props.schemeData.slice(i, i + itemsPerComponent))
-          totalPages.value++
+      if (props.outputDevicesData.length !== 0) {
+        for (let i = 0; i < props.outputDevicesData.length; i += itemsPerComponent) {
+          groups.push(props.outputDevicesData.slice(i, i + itemsPerComponent))
         }
-      } else {
-        groups.push({})
       }
       return groups
     })
+
+    watch(
+      groupedItems,
+      (newGroups) => {
+        totalPages.value = newGroups.length
+      },
+      { immediate: true }
+    ) // 'immediate: true' сразу вызовет watch при инициализации
 
     // Обработчик событий колесика
     const onWheelHandler = (event) => {

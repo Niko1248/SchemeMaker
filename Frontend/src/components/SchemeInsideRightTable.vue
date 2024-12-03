@@ -84,12 +84,6 @@ export default {
   width: 100%;
   height: 100%;
   text-align: center;
-}
-.item {
-  border: 0.5mm solid #000;
-  width: 100%;
-  height: 100%;
-  text-align: center;
   font-size: 4mm;
   overflow: hidden;
   white-space: nowrap;
