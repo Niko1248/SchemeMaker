@@ -1,6 +1,7 @@
 <template>
   <div class="scheme__container" ref="scalableArea" @wheel.prevent="onWheelHandler">
     <div
+      v-for="(item, index) in groupedItems"
       class="page"
       ref="page"
       :style="{
@@ -8,8 +9,9 @@
       }"
     >
       <div class="top-frame">
+        <CircuitScheme :pageData="item" :listIndex="index + 1" />
         <SchemeOutsideLeftTables />
-        <SchemeInsideRightTable :tableData="tableData" />
+        <SchemeInsideRightTable :tableData="tableData" :listIndex="index + 1" />
       </div>
     </div>
   </div>
@@ -17,26 +19,40 @@
   <button @click="exportToPDF">Экспорт в PDF</button>
 </template>
 <script>
-import { defineComponent, ref } from "vue"
+import { defineComponent, ref, computed } from "vue"
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
 import SchemeOutsideLeftTables from "./SchemeOutsideLeftTables.vue"
 import SchemeInsideRightTable from "./SchemeInsideRightTable.vue"
+import CircuitScheme from "./CircuitScheme.vue"
 
 export default defineComponent({
   name: "SchemeContainer",
-  components: { SchemeOutsideLeftTables, SchemeInsideRightTable },
+  components: { SchemeOutsideLeftTables, SchemeInsideRightTable, CircuitScheme },
   props: {
     tableData: { type: Object },
     schemeData: { type: Array },
   },
-  setup() {
+  setup(props) {
     const scale = ref(1) // Начальный масштаб для элемента
     const positionX = ref(0) // Позиция по оси X
     const positionY = ref(0) // Позиция по оси Y
 
     const scalableArea = ref(null) // Ссылка на область
     const page = ref(null) // Ссылка на содержимое
+
+    const itemsPerComponent = 14
+    const groupedItems = computed(() => {
+      const groups = []
+      if (props.schemeData.length !== 0) {
+        for (let i = 0; i < props.schemeData.length; i += itemsPerComponent) {
+          groups.push(props.schemeData.slice(i, i + itemsPerComponent))
+        }
+      } else {
+        groups.push({})
+      }
+      return groups
+    })
 
     // Обработчик событий колесика
     const onWheelHandler = (event) => {
@@ -104,6 +120,7 @@ export default defineComponent({
         }
       }
     }
+
     return {
       scale,
       positionX,
@@ -112,6 +129,7 @@ export default defineComponent({
       page,
       onWheelHandler,
       exportToPDF,
+      groupedItems,
     }
   },
 })

@@ -18,6 +18,8 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    listIndex: { type: Number },
+    totalPages: { type: Number },
   },
   setup(props) {
     const contentMap = computed(() => ({
