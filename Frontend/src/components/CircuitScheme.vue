@@ -35,19 +35,23 @@
       Марка и сечение провода (кабеля), <span>мм.</span> Длина участка сети, м.<br />
       Способ прокладки
     </div>
+    <SchemeName />
   </div>
 </template>
 <script>
 import { defineComponent } from "vue"
+import SchemeName from "./SchemeName.vue"
 
 export default defineComponent({
-  name: "SchemeContainer",
+  name: "CircuitScheme",
+  components: { SchemeName },
   props: {
     pageData: { type: Array },
     listIndex: { type: Number },
   },
   setup(props) {
     console.log(props.pageData)
+    return {}
   },
 })
 </script>
@@ -58,10 +62,9 @@ export default defineComponent({
   justify-items: center;
   grid-template-columns: repeat(2, 5.7mm) 31.5mm;
   grid-template-rows: 4.3mm 27.23mm 49.2mm 15mm;
-  border: 0.5mm solid #000;
+  border-right: 0.5mm solid #000;
   width: fit-content;
-  border-left: none;
-  border-top: none;
+  position: relative;
 }
 .circuit-scheme-item1 {
   grid-column: span 3;
@@ -79,35 +82,30 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   p {
-    display: block;
-    position: absolute;
     transform: rotate(-90deg);
     width: calc(27.23mm + 49.2mm);
     font-size: 3mm;
-    text-align: center;
-    bottom: 0;
-    left: 0;
-    transform-origin: 3mm 2mm;
-    margin: 0;
+    white-space: nowrap;
   }
 }
 .circuit-scheme-item3 {
-  position: relative;
   .flex--wrapper {
-    position: absolute;
-    bottom: 0;
-    left: 0;
     display: flex;
-    justify-content: center;
+    align-items: center;
     transform: rotate(-90deg);
     width: calc(27.23mm + 49.2mm);
     font-size: 3mm;
-    transform-origin: 2mm 2mm;
     div {
+      white-space: nowrap;
       width: 47%;
       &:nth-child(2) {
-        height: 4mm;
+        white-space: wrap;
+        height: 5.5mm;
+        width: 40mm;
         display: flex;
         justify-content: center;
         text-align: center;
@@ -128,7 +126,6 @@ export default defineComponent({
   p {
     margin: 0;
     font-size: 2.4mm;
-    font-family: "Times New Roman", Times, serif;
     font-weight: lighter;
     &:nth-child(2) {
       margin-bottom: 2mm;
@@ -160,20 +157,19 @@ export default defineComponent({
 .circuit-scheme-item6 {
   grid-column: span 3;
   box-sizing: border-box;
-  padding: 1mm 1mm;
+  padding: 1mm 1mm 0mm 1mm;
   width: 100%;
   height: 100%;
   border-top: 0.5mm solid #000;
   font-size: 2.4mm;
   line-height: 1.4;
-  font-family: "Times New Roman", Times, serif;
   span {
     position: relative;
     &::after {
       content: "2";
       position: absolute;
       font-size: 2mm;
-      top: -1.3mm;
+      top: -0.5mm;
       left: 3mm;
     }
   }

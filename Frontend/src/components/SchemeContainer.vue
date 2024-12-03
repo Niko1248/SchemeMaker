@@ -122,10 +122,10 @@ export default defineComponent({
           const imgHeight = (canvas.height * imgWidth) / canvas.width
 
           // Добавляем изображение в PDF
-          pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight, undefined, "MEDIUM")
+          pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight, undefined, "FAST")
 
           // Сохраняем PDF
-          pdf.save("export.pdf")
+          pdf.save("Scheme.pdf")
         } catch (err) {
           console.error("Ошибка при экспорте PDF:", err)
         }

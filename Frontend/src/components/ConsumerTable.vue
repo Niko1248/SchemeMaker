@@ -1,7 +1,7 @@
 <template>
   <div class="consumer-table">
     <div class="table__header column0">
-      <div class="item item1">ЭЛЕКТРОПРИЁМНИК</div>
+      <div class="item item1"><p>ЭЛЕКТРОПРИЁМНИК</p></div>
       <div class="item item2"></div>
       <div class="item item3"></div>
       <div class="item item4"></div>
@@ -37,8 +37,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .consumer-table {
   display: flex;
-  position: absolute;
-  bottom: 60mm;
 }
 .table__header {
   display: grid;
@@ -51,16 +49,24 @@ export default defineComponent({
   grid-template-rows: 10mm 7mm 7mm 7mm 13mm;
   grid-template-columns: repeat(1, 15.5mm);
   grid-auto-flow: column;
+  text-align: center;
 }
 .item {
   border: 1px solid #000;
+  border-left: none;
 }
 .column0 {
+  font-size: 3mm;
+  .item {
+    display: flex;
+    align-items: center;
+  }
   .item1 {
+    p {
+      transform: rotate(-90deg);
+    }
     grid-row: 1/6;
     grid-column: 1;
-    writing-mode: vertical-lr;
-    transform: rotate(180deg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -71,5 +77,7 @@ export default defineComponent({
   .item5 {
     display: none;
   }
+}
+.item9 {
 }
 </style>
