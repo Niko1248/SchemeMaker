@@ -7,11 +7,11 @@
       }"
       ref="pages__wrapper"
     >
-      <div v-for="(item, index) in groupedItems" class="page" ref="page">
+      <div v-for="(item, index) in groupedItems" class="page" ref="page" :key="index">
         <div class="top-frame">
           <CircuitScheme :pageData="item" :listIndex="index + 1" />
           <SchemeOutsideLeftTables />
-          <SchemeInsideRightTable :tableData="tableData" :listIndex="index + 1" />
+          <SchemeInsideRightTable :tableData="tableData" :listIndex="index + 1" :totalPages="totalPages" />
         </div>
       </div>
     </div>
@@ -40,14 +40,17 @@ export default defineComponent({
     const positionY = ref(0) // Позиция по оси Y
 
     const scalableArea = ref(null) // Ссылка на область
-    const pages__wrapper = ref(null) // Ссылка на содержимое
+    const pages__wrapper = ref(0) // Ссылка на содержимое
 
+    let totalPages = ref(0)
     const itemsPerComponent = 14
     const groupedItems = computed(() => {
       const groups = []
+      totalPages.value = 0
       if (props.schemeData.length !== 0) {
         for (let i = 0; i < props.schemeData.length; i += itemsPerComponent) {
           groups.push(props.schemeData.slice(i, i + itemsPerComponent))
+          totalPages.value++
         }
       } else {
         groups.push({})
@@ -132,6 +135,7 @@ export default defineComponent({
       onWheelHandler,
       exportToPDF,
       groupedItems,
+      totalPages,
     }
   },
 })
