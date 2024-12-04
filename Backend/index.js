@@ -4,6 +4,7 @@ import path from "path"
 import { fileURLToPath } from "url"
 import multer from "multer"
 import ExcelJS from "exceljs"
+import { rootCertificates } from "tls"
 
 const app = express()
 const port = 3000
@@ -41,6 +42,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     const columnHeaderTable = []
     const columnHeaderScheme = []
     sheet.eachRow((row, rowIndex) => {
+      const rowData = {}
       // Убираем название заголовков из экселя
       if (rowIndex === 1 || rowIndex === 4) return
       // Добавляем названия колонок в массивы
@@ -49,14 +51,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
           columnHeaderTable.push(cell.value)
         })
         return
-      } else if (rowIndex === 5) {
-        row.eachCell((cell, colNumber) => {
-          columnHeaderScheme.push(cell.value)
-        })
-        return
       }
-      // Парсим значения ячеек в JSON который уйдет на фронт
-      const rowData = {}
       if (rowIndex === 3) {
         row.eachCell((cell, colNumber) => {
           if (columnHeaderTable[colNumber - 1] === "Дата") {
@@ -70,19 +65,30 @@ app.post("/upload", upload.single("file"), async (req, res) => {
           }
         })
         data.push(rowData)
-      } else {
+        return
+      }
+      if (rowIndex === 5) {
         row.eachCell((cell, colNumber) => {
-          if (cell.value.result) {
-            rowData[columnHeaderScheme[colNumber - 1]] = cell.value.result
-          } else {
-            rowData[columnHeaderScheme[colNumber - 1]] = null
-          }
+          columnHeaderScheme.push(cell.value)
         })
-        if (rowData.Группа && rowData.Группа !== null) {
-          data.push(rowData)
+        return
+      }
+      // Парсим значения ячеек в JSON который уйдет на фронт
+
+      row.eachCell((cell, colNumber) => {
+        if (cell.value.result) {
+          rowData[columnHeaderScheme[colNumber - 1]] = cell.value.result
+        } else if (!cell.value.formula) {
+          rowData[columnHeaderScheme[colNumber - 1]] = cell.value
+        } else {
+          rowData[columnHeaderScheme[colNumber - 1]] = null
         }
+      })
+      if (rowData.Группа !== null && rowData.Группа !== undefined) {
+        data.push(rowData)
       }
     })
+
     // Преобразую спорные типы, если в экселе будет забито неправильно
     for (const element of data) {
       if (element.Группа && element.Группа !== null) {
@@ -105,24 +111,39 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     }
     // Объединяю одинаковые группы
     const groupedItems = data.reduce((acc, item) => {
-      let key = item.Группа
-      if (key === undefined || key === null) {
-        key = "Таблица"
-      }
-      if (!acc[key]) {
-        acc[key] = [] // Инициализируем массив для нового ключа
+      // Определяем ключ для верхнего уровня группировки (по "Вводной щит")
+      let mainKey = item["Вводной щит"]
+      if (mainKey === undefined || mainKey === null) {
+        mainKey = "Таблица"
       }
 
-      acc[key].push(item) // Добавляем элемент в соответствующую группу
+      // Если группы с таким "Вводной щит" еще нет, инициализируем пустой объект
+      if (!acc[mainKey]) {
+        acc[mainKey] = {}
+      }
+
+      // Определяем ключ для вложенной группировки (по "Группа")
+      const groupKey = item["Группа"]
+      if (!acc[mainKey][groupKey]) {
+        acc[mainKey][groupKey] = [] // Инициализируем массив для вложенной группы
+      }
+
+      // Добавляем элемент в соответствующую вложенную группу
+      acc[mainKey][groupKey].push(item)
 
       return acc
     }, {})
 
-    const result = Object.keys(groupedItems).map((key) => ({
-      Группа: isNaN(parseInt(key)) ? key : parseInt(key), // Преобразуем ключ к числу, если требуется
-      Данные: groupedItems[key], // Массив объектов для текущего ключа
+    // Преобразуем объект с вложенной структурой в массив объектов (если требуется)
+    const result = Object.keys(groupedItems).map((mainKey) => ({
+      "Вводной щит": mainKey,
+      Группы: Object.keys(groupedItems[mainKey]).map((groupKey) => ({
+        Группа: groupKey,
+        Данные: groupedItems[mainKey][groupKey], // Массив данных для вложенной группы
+      })),
     }))
 
+    // Возвращаем результат
     res.status(200).json({ message: "Файл обработан", result })
   } catch (error) {
     console.log(error)

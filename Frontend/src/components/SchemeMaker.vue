@@ -58,6 +58,7 @@ export default defineComponent({
         // Работаем с таблицами
         let indexTable
         const excelData = response.data.result
+        console.log(excelData)
 
         indexTable = excelData.findIndex((el) => el.Группа === "Таблица")
         Object.assign(tableData, excelData[indexTable]) // Корректное обновление reactive объекта
