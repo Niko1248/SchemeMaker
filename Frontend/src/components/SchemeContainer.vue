@@ -9,6 +9,8 @@
     >
       <div v-for="(item, index) in groupedItems" class="page" ref="page" :key="index">
         <div class="top-frame">
+          <Scheme />
+
           <CircuitScheme :pageData="item" :listIndex="index + 1" />
           <SchemeOutsideLeftTables />
           <SchemeInsideRightTable :tableData="tableData" :listIndex="index + 1" :totalPages="totalPages" />
@@ -28,10 +30,11 @@ import SchemeOutsideLeftTables from "./SchemeOutsideLeftTables.vue"
 import SchemeInsideRightTable from "./SchemeInsideRightTable.vue"
 import CircuitScheme from "./CircuitScheme.vue"
 import ConsumerTable from "./ConsumerTable.vue"
+import Scheme from "./Scheme.vue"
 
 export default defineComponent({
   name: "SchemeContainer",
-  components: { SchemeOutsideLeftTables, SchemeInsideRightTable, CircuitScheme, ConsumerTable },
+  components: { SchemeOutsideLeftTables, SchemeInsideRightTable, CircuitScheme, ConsumerTable, Scheme },
   props: {
     tableData: { type: Object },
     inputDeviceData: { type: Object },
