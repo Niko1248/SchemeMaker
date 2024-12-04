@@ -17,7 +17,11 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .rdc__wrapper {
-  margin: 10mm;
+  width: 12mm;
+  height: 12mm;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 .parallelogram-1 {
   width: 3mm;
