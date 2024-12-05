@@ -1,6 +1,11 @@
 <template>
   <div class="grid">
-    <SchemeContainer :tableData="tableData" :inputDeviceData="inputDeviceData" :outputDevicesData="outputDevicesData" />
+    <SchemeContainer
+      :tableData="tableData"
+      :schemeDataChunk="doc"
+      v-for="(doc, index) in filteredSchemeData"
+      :key="`Щит${index}`"
+    />
     <div class="service__container">
       <div class="handler-file__wrapper">
         <form @submit.prevent="uploadFile">
@@ -11,11 +16,22 @@
         <p v-if="success">Файл успешно загружен и обработан!</p>
         <p v-if="error">{{ error }}</p>
       </div>
+      <div class="list">
+        <label v-for="(item, index) in schemeData" :key="'radio' + index" :for="'radio' + index"
+          ><input
+            type="radio"
+            name="checkDoc"
+            :value="item['Вводной щит']"
+            :id="'radio' + index"
+            v-model="checkDoc"
+          />{{ item["Вводной щит"] }}
+        </label>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import { defineComponent, reactive, ref } from "vue"
+import { defineComponent, reactive, ref, computed } from "vue"
 import axios from "axios"
 import SchemeContainer from "./SchemeContainer.vue"
 export default defineComponent({
@@ -26,11 +42,9 @@ export default defineComponent({
     const loading = ref(false)
     const success = ref(false)
     const error = ref("")
-
+    const checkDoc = ref()
     const tableData = reactive({})
     const schemeData = reactive([])
-    const inputDeviceData = reactive({})
-    const outputDevicesData = reactive([])
 
     const onFileChange = (event) => {
       const target = event.target
@@ -40,8 +54,6 @@ export default defineComponent({
     }
 
     const uploadFile = async () => {
-      if (!file.value) return
-
       const formData = new FormData()
       formData.append("file", file.value)
 
@@ -60,24 +72,40 @@ export default defineComponent({
         const excelData = response.data.result
         console.log(excelData)
 
-        indexTable = excelData.findIndex((el) => el.Группа === "Таблица")
-        Object.assign(tableData, excelData[indexTable]) // Корректное обновление reactive объекта
+        indexTable = excelData.findIndex((el) => el["Вводной щит"] === "Таблица")
+        Object.assign(tableData, excelData[indexTable]["Группы"][0]["Данные"][0]) // Корректное обновление reactive объекта
         schemeData.splice(0, schemeData.length, ...excelData.filter((_, index) => index !== indexTable)) // Обновление массива
 
-        Object.assign(inputDeviceData, schemeData[0])
-        outputDevicesData.splice(0, outputDevicesData.length, ...schemeData.slice(1))
+        checkDoc.value = schemeData[0]["Вводной щит"] || null
+        // Object.assign(inputDeviceData, schemeData[0])
+        // outputDevicesData.splice(0, outputDevicesData.length, ...schemeData.slice(1))
 
         console.log("tableData:", tableData)
         console.log("schemeData:", schemeData)
       } catch (err) {
         error.value = "Ошибка загрузки файла"
+        success.value = false // Сбрасываем флаг успеха
         console.error(err)
       } finally {
         loading.value = false
       }
     }
-
-    return { file, loading, success, error, onFileChange, uploadFile, tableData, inputDeviceData, outputDevicesData }
+    const filteredSchemeData = computed(() => {
+      if (!checkDoc.value) return []
+      return schemeData.filter((doc) => doc?.["Вводной щит"] == checkDoc.value)
+    })
+    return {
+      file,
+      loading,
+      success,
+      error,
+      onFileChange,
+      uploadFile,
+      tableData,
+      schemeData,
+      checkDoc,
+      filteredSchemeData,
+    }
   },
 })
 </script>

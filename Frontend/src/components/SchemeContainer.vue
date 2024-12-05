@@ -23,7 +23,7 @@
   <button @click="exportToPDF">Экспорт в PDF</button>
 </template>
 <script>
-import { defineComponent, ref, computed, watch } from "vue"
+import { defineComponent, ref, computed, watch, reactive } from "vue"
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
 import SchemeOutsideLeftTables from "./SchemeOutsideLeftTables.vue"
@@ -37,8 +37,7 @@ export default defineComponent({
   components: { SchemeOutsideLeftTables, SchemeInsideRightTable, CircuitScheme, ConsumerTable, Scheme },
   props: {
     tableData: { type: Object },
-    inputDeviceData: { type: Object },
-    outputDevicesData: { type: Array },
+    schemeDataChunk: { type: Object },
   },
   setup(props) {
     const scale = ref(1) // Начальный масштаб для элемента
@@ -48,13 +47,36 @@ export default defineComponent({
     const scalableArea = ref(null) // Ссылка на область
     const pages__wrapper = ref(0) // Ссылка на содержимое
 
+    const inputDeviceData = reactive({})
+    const outputDevicesData = reactive([])
+    console.log(props.schemeDataChunk)
+
     let totalPages = ref(0)
     const itemsPerComponent = 14
     const groupedItems = computed(() => {
+      if (!props.schemeDataChunk["Группы"]) {
+        return []
+      }
+      // Создаем копию, чтобы не изменять оригинальный массив
+      const groupsCopy = [...props.schemeDataChunk["Группы"]]
+
+      let indexInputDevice = groupsCopy.findIndex((el) => el["Данные"]["Группа"] == -1)
+
+      // Добавляем найденный элемент, но из копии
+      Object.assign(inputDeviceData, groupsCopy[indexInputDevice])
+
+      // Удаляем только из копии
+      groupsCopy.splice(indexInputDevice, 1)
+
+      // Перезаписываем outputDevicesData
+      outputDevicesData.splice(0, outputDevicesData.length, ...groupsCopy)
+
+      console.log(outputDevicesData)
+
       const groups = []
-      if (props.outputDevicesData.length !== 0) {
-        for (let i = 0; i < props.outputDevicesData.length; i += itemsPerComponent) {
-          groups.push(props.outputDevicesData.slice(i, i + itemsPerComponent))
+      if (outputDevicesData.length !== 0) {
+        for (let i = 0; i < outputDevicesData.length; i += itemsPerComponent) {
+          groups.push(outputDevicesData.slice(i, i + itemsPerComponent))
         }
       }
       return groups
@@ -104,31 +126,35 @@ export default defineComponent({
     const exportToPDF = async () => {
       if (pages__wrapper.value) {
         try {
-          // Рендерим элемент в canvas
-          const canvas = await html2canvas(pages__wrapper.value, {
-            scale: 3, // Увеличиваем масштаб для более высокого разрешения
-            useCORS: true, // Разрешаем кросс-домен
-          })
-          const imgData = canvas.toDataURL("image/png")
-
           // Создаем новый PDF
           const pdf = new jsPDF({
             orientation: "landscape", // Ориентация страницы
             unit: "mm", // Используем миллиметры
             format: "a4", // Размер страницы
           })
+          const pageElements = document.querySelectorAll(".page")
 
-          // Вычисляем размеры изображения
-          const pageWidth = 297 // A4 ширина в мм
-          const pageHeight = 210 // A4 высота в мм
-          const imgWidth = pageWidth
-          const imgHeight = (canvas.height * imgWidth) / canvas.width
+          for (let i = 0; i < pageElements.length; i++) {
+            const page = pageElements[i]
+            // Рендерим элемент в canvas
+            const canvas = await html2canvas(page, {
+              scale: 3, // Увеличиваем масштаб для более высокого разрешения
+              useCORS: true, // Разрешаем кросс-домен
+            })
 
-          // Добавляем изображение в PDF
-          pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight, undefined, "FAST")
+            const imgData = canvas.toDataURL("image/png") // Преобразуем canvas в Base64
+            const pageWidth = pdf.internal.pageSize.getWidth()
+            const pageHeight = pdf.internal.pageSize.getHeight()
+
+            pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pageHeight, undefined, "FAST")
+
+            if (i !== pageElements.length - 1) {
+              pdf.addPage()
+            }
+          }
 
           // Сохраняем PDF
-          pdf.save("Scheme.pdf")
+          pdf.save(`Схема-${props.schemeDataChunk["Вводной щит"]}`)
         } catch (err) {
           console.error("Ошибка при экспорте PDF:", err)
         }
