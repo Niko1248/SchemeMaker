@@ -38,21 +38,12 @@
     <SchemeName />
   </div>
 </template>
-<script>
-import { defineComponent } from "vue"
+<script setup>
 import SchemeName from "./SchemeName.vue"
 
-export default defineComponent({
-  name: "CircuitScheme",
-  components: { SchemeName },
-  props: {
-    pageData: { type: Array },
-    listIndex: { type: Number },
-  },
-  setup(props) {
-    console.log(props.pageData)
-    return {}
-  },
+const props = defineProps({
+  pageData: { type: Array },
+  listIndex: { type: Number },
 })
 </script>
 <style lang="scss" scoped>

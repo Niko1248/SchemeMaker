@@ -8,56 +8,47 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from "vue"
 
-export default {
-  name: "SchemeInsideRightTable",
-  props: {
-    tableData: {
-      type: Object,
-      default: () => ({}),
-    },
-    listIndex: { type: Number },
-    totalPages: { type: Number },
+const props = defineProps({
+  tableData: {
+    type: Object,
+    default: () => ({}),
   },
-  setup(props) {
-    const contentMap = computed(() => ({
-      7: (data) => data["Артикул"] || "",
-      27: (data) => data["Объект"] || "",
-      31: () => "Изм",
-      32: () => "Кол",
-      33: () => "Лист",
-      34: () => "№док",
-      35: () => "Подп",
-      36: () => "Дата",
-      41: (data) => data["Должность 1"] || "",
-      43: (data) => data["ФИО 1"] || "",
-      46: (data) => data["Дата"] || "",
-      51: (data) => data["Должность 2"] || "",
-      53: (data) => data["ФИО 2"] || "",
-      56: (data) => data["Дата"] || "",
-      57: (data) => data["Адрес"] || "",
-      58: () => "Стадия",
-      59: () => "Лист",
-      60: () => "Листов",
-      68: (data) => data["Стадия"] || "",
-      69: () => `${props.listIndex}`,
-      70: () => `${props.totalPages}`,
-      87: (data) => data["Название"] || "",
-      88: (data) => data["Фирма"] || "",
-    }))
+  listIndex: { type: Number },
+  totalPages: { type: Number },
+})
 
-    const resolveContent = (key) => {
-      const resolver = contentMap.value[key]
-      return typeof resolver === "function" ? resolver(props.tableData) : ""
-    }
+const contentMap = computed(() => ({
+  7: (data) => data["Артикул"] || "",
+  27: (data) => data["Объект"] || "",
+  31: () => "Изм",
+  32: () => "Кол",
+  33: () => "Лист",
+  34: () => "№док",
+  35: () => "Подп",
+  36: () => "Дата",
+  41: (data) => data["Должность 1"] || "",
+  43: (data) => data["ФИО 1"] || "",
+  46: (data) => data["Дата"] || "",
+  51: (data) => data["Должность 2"] || "",
+  53: (data) => data["ФИО 2"] || "",
+  56: (data) => data["Дата"] || "",
+  57: (data) => data["Адрес"] || "",
+  58: () => "Стадия",
+  59: () => "Лист",
+  60: () => "Листов",
+  68: (data) => data["Стадия"] || "",
+  69: () => `${props.listIndex}`,
+  70: () => `${props.totalPages}`,
+  87: (data) => data["Название"] || "",
+  88: (data) => data["Фирма"] || "",
+}))
 
-    return {
-      contentMap,
-      resolveContent,
-    }
-  },
+const resolveContent = (key) => {
+  const resolver = contentMap.value[key]
+  return typeof resolver === "function" ? resolver(props.tableData) : ""
 }
 </script>
 

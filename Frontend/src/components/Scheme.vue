@@ -4,16 +4,9 @@
     <QF_1 />
   </div>
 </template>
-<script>
-import { defineComponent } from "vue"
+<script setup>
 import RCD from "./legend/RCD.vue"
 import QF_1 from "./legend/QF-1.vue"
-
-export default defineComponent({
-  components: { RCD, QF_1 },
-  name: "Scheme",
-  setup() {},
-})
 </script>
 <style lang="scss" scoped>
 .scheme {

@@ -8,13 +8,7 @@
     </div>
   </div>
 </template>
-<script>
-import { defineComponent } from "vue"
-export default defineComponent({
-  name: "RCD",
-  setup() {},
-})
-</script>
+<script setup></script>
 <style lang="scss" scoped>
 .rdc__wrapper {
   width: 12mm;

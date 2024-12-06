@@ -8,13 +8,7 @@
     </div>
   </div>
 </template>
-<script>
-import { defineComponent } from "vue"
-export default defineComponent({
-  name: "QF-1",
-  setup() {},
-})
-</script>
+<script setup></script>
 <style lang="scss" scoped>
 .QF-1__wrapper {
   width: 12mm;

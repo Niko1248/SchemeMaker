@@ -39,17 +39,16 @@ export default defineComponent({
     tableData: { type: Object },
     schemeDataChunk: { type: Object },
   },
-  setup(props) {
+  setup(props, { expose }) {
     const scale = ref(1) // Начальный масштаб для элемента
     const positionX = ref(0) // Позиция по оси X
     const positionY = ref(0) // Позиция по оси Y
 
     const scalableArea = ref(null) // Ссылка на область
-    const pages__wrapper = ref(0) // Ссылка на содержимое
+    const pages__wrapper = ref(null) // Ссылка на содержимое
 
     const inputDeviceData = reactive({})
     const outputDevicesData = reactive([])
-    console.log(props.schemeDataChunk)
 
     let totalPages = ref(0)
     const itemsPerComponent = 14
@@ -70,8 +69,6 @@ export default defineComponent({
 
       // Перезаписываем outputDevicesData
       outputDevicesData.splice(0, outputDevicesData.length, ...groupsCopy)
-
-      console.log(outputDevicesData)
 
       const groups = []
       if (outputDevicesData.length !== 0) {
@@ -123,26 +120,27 @@ export default defineComponent({
       }
     }
     // Метод для экспорта в PDF
-    const exportToPDF = async () => {
+
+    const exportToPDF = async (event) => {
+      const schemeData = props.schemeDataChunk // Используем либо переданные данные, либо данные из пропсов
+
       if (pages__wrapper.value) {
         try {
-          // Создаем новый PDF
           const pdf = new jsPDF({
-            orientation: "landscape", // Ориентация страницы
-            unit: "mm", // Используем миллиметры
-            format: "a4", // Размер страницы
+            orientation: "landscape",
+            unit: "mm",
+            format: "a4",
           })
           const pageElements = document.querySelectorAll(".page")
 
           for (let i = 0; i < pageElements.length; i++) {
             const page = pageElements[i]
-            // Рендерим элемент в canvas
             const canvas = await html2canvas(page, {
-              scale: 3, // Увеличиваем масштаб для более высокого разрешения
-              useCORS: true, // Разрешаем кросс-домен
+              scale: 3,
+              useCORS: true,
             })
 
-            const imgData = canvas.toDataURL("image/png") // Преобразуем canvas в Base64
+            const imgData = canvas.toDataURL("image/png")
             const pageWidth = pdf.internal.pageSize.getWidth()
             const pageHeight = pdf.internal.pageSize.getHeight()
 
@@ -153,14 +151,24 @@ export default defineComponent({
             }
           }
 
-          // Сохраняем PDF
-          pdf.save(`Схема-${props.schemeDataChunk["Вводной щит"]}`)
+          const fileName = `Схема-${schemeData["Вводной щит"]}.pdf`
+          if (event?.target?.innerText === "Экспорт в PDF") {
+            pdf.save(fileName)
+          } else {
+            return {
+              file: pdf.output("blob"),
+              name: fileName,
+            }
+          }
         } catch (err) {
           console.error("Ошибка при экспорте PDF:", err)
         }
       }
     }
 
+    expose({
+      exportToPDF,
+    })
     return {
       scale,
       positionX,

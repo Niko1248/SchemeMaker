@@ -21,17 +21,9 @@
     </div>
   </div>
 </template>
-<script>
-import { defineComponent } from "vue"
-
-export default defineComponent({
-  name: "ConsumerTable",
-  props: {
-    pageData: { type: Array },
-  },
-  setup() {
-    return {}
-  },
+<script setup>
+const props = defineProps({
+  pageData: { type: Array },
 })
 </script>
 <style lang="scss" scoped>
@@ -77,7 +69,5 @@ export default defineComponent({
   .item5 {
     display: none;
   }
-}
-.item9 {
 }
 </style>

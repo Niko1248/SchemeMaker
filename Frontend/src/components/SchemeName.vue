@@ -1,13 +1,7 @@
 <template>
   <div class="scheme-name"><p>РЩ-7-Прачечная (подвал)</p></div>
 </template>
-<script>
-import { defineComponent } from "vue"
-export default defineComponent({
-  name: "SchemeName",
-  setup() {},
-})
-</script>
+<script setup></script>
 <style lang="scss" scoped>
 .scheme-name {
   position: absolute;
