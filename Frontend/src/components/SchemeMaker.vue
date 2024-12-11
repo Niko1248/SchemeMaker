@@ -28,7 +28,10 @@
           <div class="input-label" @click.prevent="changeScheme(item['Вводной щит'])">{{ item["Вводной щит"] }}</div>
         </div>
       </div>
-      <button @click="exportToPDF('Select')" v-if="schemeData.length !== 0 && selectedSchemes.length !== 0">
+      <button
+        @click="exportToPDF('Select')"
+        v-if="schemeData.length !== 0 && selectedSchemes.length !== 0 && schemeData.length !== selectedSchemes.length"
+      >
         Экспортировать элементов: {{ selectedSchemes.length }}
       </button>
       <button @click="exportToPDF('All')" v-if="schemeData.length !== 0">Экспортировать всё</button>
