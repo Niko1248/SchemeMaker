@@ -51,7 +51,7 @@ export default defineComponent({
     const outputDevicesData = reactive([])
 
     let totalPages = ref(0)
-    const itemsPerComponent = 14
+    const itemsPerComponent = 11
     const groupedItems = computed(() => {
       if (!props.schemeDataChunk["Группы"]) {
         return []

@@ -51,8 +51,8 @@ const props = defineProps({
   display: grid;
   align-items: center;
   justify-items: center;
-  grid-template-columns: repeat(2, 5.7mm) 31.5mm;
-  grid-template-rows: 4.3mm 27.23mm 49.2mm 15mm;
+  grid-template-columns: repeat(2, 6mm) 33mm;
+  grid-template-rows: 6mm 30mm 50mm 15mm;
   border-right: 0.5mm solid #000;
   width: fit-content;
   position: relative;

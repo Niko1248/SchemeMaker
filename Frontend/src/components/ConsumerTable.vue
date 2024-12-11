@@ -32,14 +32,14 @@ const props = defineProps({
 }
 .table__header {
   display: grid;
-  grid-template-rows: 10mm 7mm 7mm 7mm 13mm;
-  grid-template-columns: 6mm 44mm;
+  grid-template-rows: 10mm 6mm 6mm 6mm 14mm;
+  grid-template-columns: 6mm 43mm;
   grid-auto-flow: column;
 }
 .table__data {
   display: grid;
-  grid-template-rows: 10mm 7mm 7mm 7mm 13mm;
-  grid-template-columns: repeat(1, 15.5mm);
+  grid-template-rows: 10mm 6mm 6mm 6mm 14mm;
+  grid-template-columns: repeat(1, 20mm);
   grid-auto-flow: column;
   text-align: center;
 }

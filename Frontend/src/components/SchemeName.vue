@@ -11,7 +11,7 @@
   border-bottom: 0.5mm solid #000;
   width: 70mm;
   font-size: 3mm;
-  height: 4.3mm;
+  height: 6mm;
   p {
     margin: 0;
     margin-left: 3mm;
