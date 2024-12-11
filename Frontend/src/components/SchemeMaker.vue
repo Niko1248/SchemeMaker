@@ -18,13 +18,22 @@
         <p v-if="error">{{ error }}</p>
       </div>
       <div class="list">
-        <label v-for="(item, index) in schemeData" :key="'radio' + index" :for="'radio' + index">
-          <input type="radio" name="checkDoc" :value="item['Вводной щит']" :id="'radio' + index" v-model="checkDoc" />{{
+        <div class="list__item" v-for="(item, index) in schemeData" :key="`item-${index}`">
+          <input
+            type="checkbox"
+            :id="`checkbox-${index}`"
+            :value="item['Вводной щит']"
+            @change="toogleCheckbox(item['Вводной щит'])"
+          />
+          <label :for="`checkbox-${index}`" @click.prevent="changeScheme(item['Вводной щит'])">{{
             item["Вводной щит"]
-          }}
-        </label>
+          }}</label>
+        </div>
       </div>
-      <button @click="exportAllToPDF">Все</button>
+      <button @click="exportToPDF('Select')" v-if="schemeData.length !== 0 && selectedSchemes.length !== 0">
+        Экспортировать {{ selectedSchemes.length }} элемент(ов)
+      </button>
+      <button @click="exportToPDF('All')" v-if="schemeData.length !== 0">Экспортировать всё</button>
     </div>
   </div>
 </template>
@@ -40,16 +49,29 @@ const file = ref(null)
 const loading = ref(false)
 const success = ref(false)
 const error = ref("")
-const checkDoc = ref()
+const checkDoc = ref("")
 const tableData = reactive({})
 const schemeData = reactive([])
 const collectedFiles = reactive([])
 const activeRef = ref(null)
+const selectedSchemes = ref([])
+
+const changeScheme = (name) => {
+  checkDoc.value = name
+}
 
 const onFileChange = (event) => {
   const target = event.target
   if (target.files && target.files.length > 0) {
     file.value = target.files[0]
+  }
+}
+
+const toogleCheckbox = (name) => {
+  if (selectedSchemes.value.includes(name)) {
+    selectedSchemes.value = selectedSchemes.value.filter((item) => item !== name)
+  } else {
+    selectedSchemes.value.push(name)
   }
 }
 
@@ -68,7 +90,6 @@ const uploadFile = async () => {
     success.value = true
     let indexTable
     const excelData = response.data.result
-    console.log(excelData)
 
     indexTable = excelData.findIndex((el) => el["Вводной щит"] === "Таблица")
     Object.assign(tableData, excelData[indexTable]["Группы"][0]["Данные"][0])
@@ -88,25 +109,46 @@ const filteredSchemeData = computed(() => {
   return schemeData.filter((doc) => doc?.["Вводной щит"] == checkDoc.value)
 })
 
-const exportAllToPDF = async () => {
-  for (const el of schemeData) {
-    if (checkDoc.value !== el["Вводной щит"]) {
-      checkDoc.value = el["Вводной щит"]
-      await nextTick()
+const exportToPDF = async (type) => {
+  collectedFiles.splice(0, collectedFiles.length)
+  if (type === "All") {
+    for (const el of schemeData) {
+      if (checkDoc.value !== el["Вводной щит"]) {
+        checkDoc.value = el["Вводной щит"]
+        await nextTick()
+      }
+      const result = await activeRef.value[0].exportToPDF()
+      collectedFiles.push(result)
     }
-    const result = await activeRef.value[0].exportToPDF()
-    collectedFiles.push(result)
-  }
-  const zip = new JSZip()
-  collectedFiles.forEach(({ file, name }) => {
-    zip.file(name, file)
-  })
-
-  try {
-    const zipBlob = await zip.generateAsync({ type: "blob" })
-    saveAs(zipBlob, "Schemes.zip")
-  } catch (err) {
-    console.error("Ошибка создания ZIP:", err)
+    const zip = new JSZip()
+    collectedFiles.forEach(({ file, name }) => {
+      zip.file(name, file)
+    })
+    try {
+      const zipBlob = await zip.generateAsync({ type: "blob" })
+      saveAs(zipBlob, "Schemes.zip")
+    } catch (err) {
+      console.error("Ошибка создания ZIP:", err)
+    }
+  } else if (type === "Select") {
+    for (const el of selectedSchemes.value) {
+      if (checkDoc.value !== el) {
+        checkDoc.value = el
+        await nextTick()
+      }
+      const result = await activeRef.value[0].exportToPDF()
+      collectedFiles.push(result)
+    }
+    const zip = new JSZip()
+    collectedFiles.forEach(({ file, name }) => {
+      zip.file(name, file)
+    })
+    try {
+      const zipBlob = await zip.generateAsync({ type: "blob" })
+      saveAs(zipBlob, "Schemes.zip")
+    } catch (err) {
+      console.error("Ошибка создания ZIP:", err)
+    }
   }
 }
 </script>
@@ -135,10 +177,6 @@ const exportAllToPDF = async () => {
     align-items: center;
     flex-wrap: wrap;
   }
-  input {
-    width: 100%;
-    margin-bottom: 10px;
-  }
   button {
     background: #252525;
     width: 50%;
@@ -153,6 +191,26 @@ const exportAllToPDF = async () => {
     &:hover {
       background: #171717;
       transition: 0.3ss ease;
+    }
+  }
+}
+.list {
+  width: 100%;
+  height: fit-content;
+  max-height: 60%;
+  background-color: #8f8f8f;
+  overflow-y: scroll;
+  margin-bottom: 20px;
+}
+.list__item {
+  margin-bottom: 5px;
+  input {
+    margin-right: 10px;
+  }
+  label {
+    cursor: pointer;
+    &:hover {
+      color: #fff;
     }
   }
 }

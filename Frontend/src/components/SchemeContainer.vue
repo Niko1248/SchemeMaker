@@ -19,8 +19,6 @@
       </div>
     </div>
   </div>
-  <!-- Кнопка для экспорта в PDF -->
-  <button @click="exportToPDF">Экспорт в PDF</button>
 </template>
 <script>
 import { defineComponent, ref, computed, watch, reactive } from "vue"
@@ -152,13 +150,10 @@ export default defineComponent({
           }
 
           const fileName = `Схема-${schemeData["Вводной щит"]}.pdf`
-          if (event?.target?.innerText === "Экспорт в PDF") {
-            pdf.save(fileName)
-          } else {
-            return {
-              file: pdf.output("blob"),
-              name: fileName,
-            }
+
+          return {
+            file: pdf.output("blob"),
+            name: fileName,
           }
         } catch (err) {
           console.error("Ошибка при экспорте PDF:", err)
