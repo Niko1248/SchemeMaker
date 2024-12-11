@@ -10,7 +10,6 @@
       <div v-for="(item, index) in groupedItems" class="page" ref="page" :key="index">
         <div class="top-frame">
           <Scheme />
-
           <CircuitScheme :pageData="item" :listIndex="index + 1" />
           <SchemeOutsideLeftTables />
           <SchemeInsideRightTable :tableData="tableData" :listIndex="index + 1" :totalPages="totalPages" />
@@ -119,8 +118,8 @@ export default defineComponent({
     }
     // Метод для экспорта в PDF
 
-    const exportToPDF = async (event) => {
-      const schemeData = props.schemeDataChunk // Используем либо переданные данные, либо данные из пропсов
+    const exportToPDF = async () => {
+      const schemeData = props.schemeDataChunk
 
       if (pages__wrapper.value) {
         try {

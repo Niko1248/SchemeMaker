@@ -25,13 +25,11 @@
             :value="item['Вводной щит']"
             @change="toogleCheckbox(item['Вводной щит'])"
           />
-          <label :for="`checkbox-${index}`" @click.prevent="changeScheme(item['Вводной щит'])">{{
-            item["Вводной щит"]
-          }}</label>
+          <div class="input-label" @click.prevent="changeScheme(item['Вводной щит'])">{{ item["Вводной щит"] }}</div>
         </div>
       </div>
       <button @click="exportToPDF('Select')" v-if="schemeData.length !== 0 && selectedSchemes.length !== 0">
-        Экспортировать {{ selectedSchemes.length }} элемент(ов)
+        Экспортировать элементов: {{ selectedSchemes.length }}
       </button>
       <button @click="exportToPDF('All')" v-if="schemeData.length !== 0">Экспортировать всё</button>
     </div>
@@ -120,16 +118,6 @@ const exportToPDF = async (type) => {
       const result = await activeRef.value[0].exportToPDF()
       collectedFiles.push(result)
     }
-    const zip = new JSZip()
-    collectedFiles.forEach(({ file, name }) => {
-      zip.file(name, file)
-    })
-    try {
-      const zipBlob = await zip.generateAsync({ type: "blob" })
-      saveAs(zipBlob, "Schemes.zip")
-    } catch (err) {
-      console.error("Ошибка создания ZIP:", err)
-    }
   } else if (type === "Select") {
     for (const el of selectedSchemes.value) {
       if (checkDoc.value !== el) {
@@ -139,16 +127,20 @@ const exportToPDF = async (type) => {
       const result = await activeRef.value[0].exportToPDF()
       collectedFiles.push(result)
     }
-    const zip = new JSZip()
-    collectedFiles.forEach(({ file, name }) => {
-      zip.file(name, file)
-    })
-    try {
-      const zipBlob = await zip.generateAsync({ type: "blob" })
-      saveAs(zipBlob, "Schemes.zip")
-    } catch (err) {
-      console.error("Ошибка создания ZIP:", err)
-    }
+  }
+  saveToZIP()
+}
+
+const saveToZIP = async () => {
+  const zip = new JSZip()
+  collectedFiles.forEach(({ file, name }) => {
+    zip.file(name, file)
+  })
+  try {
+    const zipBlob = await zip.generateAsync({ type: "blob" })
+    saveAs(zipBlob, "Schemes.zip")
+  } catch (err) {
+    console.error("Ошибка создания ZIP:", err)
   }
 }
 </script>
@@ -204,10 +196,11 @@ const exportToPDF = async (type) => {
 }
 .list__item {
   margin-bottom: 5px;
+  display: flex;
   input {
     margin-right: 10px;
   }
-  label {
+  .input-label {
     cursor: pointer;
     &:hover {
       color: #fff;
