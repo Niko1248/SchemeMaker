@@ -9,7 +9,10 @@
           <img class="connection" src="./../assets/img/connection-3.svg" alt="" />
         </div>
         <div class="input-line"></div>
-        <div class="input-node"></div>
+        <div class="input-node">
+          <div class="input-node-item"><img class="" src="./../assets/img/input-Щит.svg" alt="" /></div>
+          <div class="input-node-item"><img class="" src="./../assets/img/connection-Щит.svg" alt="" /></div>
+        </div>
       </div>
       <div class="power__wrapp">
         <div class="power-line">
@@ -62,10 +65,15 @@
 }
 .input-node {
   width: 60mm;
-  height: 16mm;
+  height: 20mm;
   border: 0.5mm solid #000;
-  border-top: none;
-  transform: translateY(-8mm);
+  transform: translateY(-10mm);
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  div {
+    margin-top: 21.5px;
+  }
 }
 .connection {
   position: absolute;
