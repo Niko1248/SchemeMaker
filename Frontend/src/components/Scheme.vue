@@ -4,8 +4,19 @@
       <div class="input__wrapp">
         <div class="input-Q">
           <div class="input-q-wrapp"><img class="input-Q-img" src="./../assets/img/input.svg" alt="" /></div>
-          <div><img src="./../assets/img/QD.svg" alt="" /></div>
-          <div><img src="./../assets/img/QF.svg" alt="" /></div>
+          <div>
+            <img v-if="firstObject(props.inputDeviceData)" src="./../assets/img/QD.svg" alt="" />
+            <img v-else src="./../assets/img/connection-3.svg" alt="" />
+          </div>
+          <div>
+            <img v-if="secondObject(props.inputDeviceData)?.['Тип'] === 'QF'" src="./../assets/img/QF.svg" alt="" />
+            <img
+              v-else-if="secondObject(props.inputDeviceData)?.['Тип'] === 'QFD'"
+              src="./../assets/img/QFD.svg"
+              alt=""
+            />
+            <img v-else src="./../assets/img/connection-3.svg" alt="" />
+          </div>
           <div><img class="connection" src="./../assets/img/connection-3.svg" alt="" /></div>
         </div>
         <div class="input-line"></div>
@@ -27,27 +38,23 @@
           </div>
         </div>
         <div class="power-nodes__wrapp">
-          <div class="power-node-item">
+          <div class="power-node-item" v-for="(item, index) in props.outputDevicesData" :key="'outputLine-' + index">
             <div class="node-connetcion">
               <img src="./../assets/img/connection-3.svg" alt="" />
             </div>
-            <div class="node-el node-el-1">
+            <div class="node-el node-connection-line">
               <img src="./../assets/img/connection-line.svg" alt="" />
             </div>
-            <div class="node-el node-el-2">
-              <div class="node-el-2-param__wrapp">
-                <p>ABB</p>
-                <p>sh201l</p>
-                <p>с32А</p>
-              </div>
-              <img src="./../assets/img/QF-3.svg" alt="" />
+            <div class="node-el node-el-1">
+              <img v-if="firstObject(item)" src="./../assets/img/QD-3.svg" alt="" />
+              <img v-else src="./../assets/img/connection-line.svg" alt="" />
             </div>
-            <div class="node-el node-el-3">
-              <div class="node-el-3-param__wrapp">
-                <p>ВВГнг(А)-LS</p>
-                <p>3х6</p>
-              </div>
-
+            <div class="node-el node-el-2">
+              <img v-if="secondObject(item)?.['Тип'] === 'QF'" src="./../assets/img/QF-3.svg" alt="" />
+              <img v-else-if="secondObject(item)?.['Тип'] === 'QFD'" src="./../assets/img/QFD-3.svg" alt="" />
+              <img v-else src="./../assets/img/connection-line.svg" alt="" />
+            </div>
+            <div class="node-el node-arrow">
               <img src="./../assets/img/arrow.svg" alt="" />
             </div>
           </div>
@@ -56,7 +63,18 @@
     </div>
   </div>
 </template>
-<script setup></script>
+<script setup>
+const props = defineProps({
+  inputDeviceData: { type: Object },
+  outputDevicesData: { type: Array },
+})
+const firstObject = (data) => {
+  return data["Данные"].find((obj) => obj?.["Тип"] === "QD")
+}
+const secondObject = (data) => {
+  return data["Данные"].find((obj) => obj?.["Тип"] === "QF" || obj?.["Тип"] === "QFD")
+}
+</script>
 <style lang="scss" scoped>
 .scheme {
   position: absolute;
@@ -140,7 +158,7 @@
   flex-direction: row;
 }
 .power-node-item {
-  margin-left: 30px;
+  width: 20mm;
 }
 ////
 
@@ -156,32 +174,8 @@
 }
 .node-el {
   display: flex;
-  position: relative;
 }
 .node-el-2 {
   transform: translateX(-8px);
-}
-.node-el-2-param__wrapp {
-  position: absolute;
-  text-align: center;
-  width: 80px;
-  top: -20%;
-  left: -200%;
-  p {
-    margin: 0;
-    font-size: 14px;
-  }
-}
-.node-el-3-param__wrapp {
-  transform: rotate(-90deg);
-  position: absolute;
-  text-align: center;
-  width: 80px;
-  top: 25%;
-  left: -115%;
-  p {
-    margin: 0;
-    font-size: 10px;
-  }
 }
 </style>

@@ -9,7 +9,7 @@
     >
       <div v-for="(item, index) in groupedItems" class="page" ref="page" :key="index">
         <div class="top-frame">
-          <Scheme />
+          <Scheme :inputDeviceData="inputDeviceData" :outputDevicesData="item" />
           <CircuitScheme :pageData="item" :listIndex="index + 1" />
           <SchemeOutsideLeftTables />
           <SchemeInsideRightTable :tableData="tableData" :listIndex="index + 1" :totalPages="totalPages" />
@@ -56,7 +56,7 @@ export default defineComponent({
       // Создаем копию, чтобы не изменять оригинальный массив
       const groupsCopy = [...props.schemeDataChunk["Группы"]]
 
-      let indexInputDevice = groupsCopy.findIndex((el) => el["Данные"]["Группа"] == -1)
+      let indexInputDevice = groupsCopy.findIndex((el) => el["Группа"] == -1)
 
       // Добавляем найденный элемент, но из копии
       Object.assign(inputDeviceData, groupsCopy[indexInputDevice])
@@ -173,6 +173,8 @@ export default defineComponent({
       exportToPDF,
       groupedItems,
       totalPages,
+      inputDeviceData,
+      outputDevicesData,
     }
   },
 })
