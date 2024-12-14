@@ -35,9 +35,19 @@
               <img src="./../assets/img/connection-line.svg" alt="" />
             </div>
             <div class="node-el node-el-2">
+              <div class="node-el-2-param__wrapp">
+                <p>ABB</p>
+                <p>sh201l</p>
+                <p>с32А</p>
+              </div>
               <img src="./../assets/img/QF-3.svg" alt="" />
             </div>
             <div class="node-el node-el-3">
+              <div class="node-el-3-param__wrapp">
+                <p>ВВГнг(А)-LS</p>
+                <p>3х6</p>
+              </div>
+
               <img src="./../assets/img/arrow.svg" alt="" />
             </div>
           </div>
@@ -129,7 +139,9 @@
   display: flex;
   flex-direction: row;
 }
-
+.power-node-item {
+  margin-left: 30px;
+}
 ////
 
 .node-connetcion {
@@ -144,8 +156,32 @@
 }
 .node-el {
   display: flex;
+  position: relative;
 }
 .node-el-2 {
   transform: translateX(-8px);
+}
+.node-el-2-param__wrapp {
+  position: absolute;
+  text-align: center;
+  width: 80px;
+  top: -20%;
+  left: -200%;
+  p {
+    margin: 0;
+    font-size: 14px;
+  }
+}
+.node-el-3-param__wrapp {
+  transform: rotate(-90deg);
+  position: absolute;
+  text-align: center;
+  width: 80px;
+  top: 25%;
+  left: -115%;
+  p {
+    margin: 0;
+    font-size: 10px;
+  }
 }
 </style>
