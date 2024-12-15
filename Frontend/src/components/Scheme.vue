@@ -3,10 +3,10 @@
     <div class="scheme__wrapp">
       <div class="input__wrapp">
         <div class="input-Q">
-          <div class="input-q-wrapp"><img class="input-Q-img" src="./../assets/img/input.svg" alt="" /></div>
+          <div class="input-q-wrapp"><img class="input-Q-img" src="./../assets/img/input.svg" /></div>
           <div>
-            <div v-if="firstObject(props.inputDeviceData)">
-              <img src="./../assets/img/QD.svg" alt="" />
+            <div v-if="firstObject(props.inputDeviceData)" class="node">
+              <img src="./../assets/img/QD.svg" />
               <div class="text__wrap">
                 <p>ABB</p>
                 <p>{{ firstObject(props.inputDeviceData)?.["Автомат"] }}</p>
@@ -14,11 +14,11 @@
                 <p>{{ firstObject(props.inputDeviceData)?.["Ток утечки УЗО"] }}</p>
               </div>
             </div>
-            <img v-else src="./../assets/img/connection-3.svg" alt="" />
+            <img v-else src="./../assets/img/connection-3.svg" />
           </div>
           <div>
-            <div v-if="secondObject(props.inputDeviceData)?.['Тип'] === 'QF'">
-              <img src="./../assets/img/QF.svg" alt="" />
+            <div class="node" v-if="secondObject(props.inputDeviceData)?.['Тип'] === 'QF'">
+              <img src="./../assets/img/QF.svg" />
               <div class="text__wrap">
                 <p>ABB</p>
                 <p>{{ secondObject(props.inputDeviceData)?.["Автомат"] }}</p>
@@ -26,7 +26,7 @@
                 <p>{{ secondObject(props.inputDeviceData)?.["Ток утечки УЗО"] }}</p>
               </div>
             </div>
-            <div v-else-if="secondObject(props.inputDeviceData)?.['Тип'] === 'QFD'">
+            <div class="node" v-else-if="secondObject(props.inputDeviceData)?.['Тип'] === 'QFD'">
               <div class="text__wrap">
                 <p>ABB</p>
                 <p>{{ secondObject(props.inputDeviceData)?.["Автомат"] }}</p>
@@ -48,11 +48,15 @@
       <div class="power__wrapp">
         <div class="power-line">
           <div class="L"></div>
-          <div class="N"></div>
+          <div class="N">
+            <svg width="2500" height="14">
+              <line x1="0" y1="0" x2="2500" y2="0" stroke="black" stroke-width="1" />
+            </svg>
+          </div>
           <div class="PE">
             <div class="PE-line">
               <svg width="1000" height="20">
-                <line x1="0" y1="9" x2="1000" y2="9" stroke="black" stroke-width="1" stroke-dasharray="70, 20" />
+                <line x1="0" y1="8" x2="1000" y2="8" stroke="black" stroke-width="0.5" stroke-dasharray="70, 20" />
               </svg>
             </div>
           </div>
@@ -67,7 +71,7 @@
             </div>
             <div class="node-el node-el-1">
               <div v-if="firstObject(item)">
-                <img src="./../assets/img/QD-3.svg" alt="" />
+                <img src="./../assets/img/QD.svg" alt="" />
                 <div class="text__wrap">
                   <p>ABB</p>
                   <p>{{ firstObject(item)?.["Автомат"] }}</p>
@@ -88,7 +92,7 @@
                 </div>
               </div>
               <div v-else-if="secondObject(item)?.['Тип'] === 'QFD'">
-                <img src="./../assets/img/QFD-3.svg" alt="" />
+                <img src="./../assets/img/QFD.svg" alt="" />
                 <div class="text__wrap">
                   <p>ABB</p>
                   <p>{{ secondObject(item)?.["Автомат"] }}</p>
@@ -135,7 +139,7 @@ const secondObject = (data) => {
   display: flex;
   flex-direction: row;
   width: 190mm;
-  transform: translateX(20mm);
+  transform: translateX(15mm);
 }
 .input-Q {
   position: relative;
@@ -179,13 +183,13 @@ const secondObject = (data) => {
 .L {
   height: 1mm;
   width: auto;
-  border: 0.5mm solid #000;
+  border: 0.5px solid #000;
 }
 .N {
   height: 1mm;
   width: auto;
-  margin-top: 1mm;
-  border-bottom: 0.5mm solid #000;
+  margin-top: 5px;
+  overflow: hidden;
 }
 .PE {
   height: 1mm;
@@ -200,9 +204,14 @@ const secondObject = (data) => {
 .power-nodes__wrapp {
   display: flex;
   flex-direction: row;
+  width: auto;
+  justify-content: flex-start;
+  margin-left: 27px;
 }
 .power-node-item {
   width: 20mm;
+  &:nth-child(1) {
+  }
 }
 ////
 
@@ -218,8 +227,27 @@ const secondObject = (data) => {
 }
 .node-el {
   display: flex;
+  div {
+    display: flex;
+  }
 }
 .node-el-2 {
   transform: translateX(-8px);
+}
+.node {
+  position: relative;
+}
+.text__wrap {
+  position: absolute;
+  left: -33px;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  p {
+    margin: 0;
+    line-height: 120%;
+    font-size: 10px;
+    text-align: center;
+  }
 }
 </style>
