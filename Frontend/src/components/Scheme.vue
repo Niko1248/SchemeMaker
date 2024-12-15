@@ -5,16 +5,36 @@
         <div class="input-Q">
           <div class="input-q-wrapp"><img class="input-Q-img" src="./../assets/img/input.svg" alt="" /></div>
           <div>
-            <img v-if="firstObject(props.inputDeviceData)" src="./../assets/img/QD.svg" alt="" />
+            <div v-if="firstObject(props.inputDeviceData)">
+              <img src="./../assets/img/QD.svg" alt="" />
+              <div class="text__wrap">
+                <p>ABB</p>
+                <p>{{ firstObject(props.inputDeviceData)?.["Автомат"] }}</p>
+                <p>{{ firstObject(props.inputDeviceData)?.["Номинал"] + "А" }}</p>
+                <p>{{ firstObject(props.inputDeviceData)?.["Ток утечки УЗО"] }}</p>
+              </div>
+            </div>
             <img v-else src="./../assets/img/connection-3.svg" alt="" />
           </div>
           <div>
-            <img v-if="secondObject(props.inputDeviceData)?.['Тип'] === 'QF'" src="./../assets/img/QF.svg" alt="" />
-            <img
-              v-else-if="secondObject(props.inputDeviceData)?.['Тип'] === 'QFD'"
-              src="./../assets/img/QFD.svg"
-              alt=""
-            />
+            <div v-if="secondObject(props.inputDeviceData)?.['Тип'] === 'QF'">
+              <img src="./../assets/img/QF.svg" alt="" />
+              <div class="text__wrap">
+                <p>ABB</p>
+                <p>{{ secondObject(props.inputDeviceData)?.["Автомат"] }}</p>
+                <p>{{ secondObject(props.inputDeviceData)?.["Номинал"] + "А" }}</p>
+                <p>{{ secondObject(props.inputDeviceData)?.["Ток утечки УЗО"] }}</p>
+              </div>
+            </div>
+            <div v-else-if="secondObject(props.inputDeviceData)?.['Тип'] === 'QFD'">
+              <div class="text__wrap">
+                <p>ABB</p>
+                <p>{{ secondObject(props.inputDeviceData)?.["Автомат"] }}</p>
+                <p>{{ secondObject(props.inputDeviceData)?.["Номинал"] + "А" }}</p>
+                <p>{{ secondObject(props.inputDeviceData)?.["Ток утечки УЗО"] }}</p>
+              </div>
+              <img src="./../assets/img/QFD.svg" alt="" />
+            </div>
             <img v-else src="./../assets/img/connection-3.svg" alt="" />
           </div>
           <div><img class="connection" src="./../assets/img/connection-3.svg" alt="" /></div>
@@ -46,12 +66,36 @@
               <img src="./../assets/img/connection-line.svg" alt="" />
             </div>
             <div class="node-el node-el-1">
-              <img v-if="firstObject(item)" src="./../assets/img/QD-3.svg" alt="" />
+              <div v-if="firstObject(item)">
+                <img src="./../assets/img/QD-3.svg" alt="" />
+                <div class="text__wrap">
+                  <p>ABB</p>
+                  <p>{{ firstObject(item)?.["Автомат"] }}</p>
+                  <p>{{ firstObject(item)?.["Номинал"] }}</p>
+                  <p>{{ firstObject(item)?.["Ток утечки УЗО"] }}</p>
+                </div>
+              </div>
               <img v-else src="./../assets/img/connection-line.svg" alt="" />
             </div>
             <div class="node-el node-el-2">
-              <img v-if="secondObject(item)?.['Тип'] === 'QF'" src="./../assets/img/QF-3.svg" alt="" />
-              <img v-else-if="secondObject(item)?.['Тип'] === 'QFD'" src="./../assets/img/QFD-3.svg" alt="" />
+              <div v-if="secondObject(item)?.['Тип'] === 'QF'">
+                <img src="./../assets/img/QF-3.svg" alt="" />
+                <div class="text__wrap">
+                  <p>ABB</p>
+                  <p>{{ secondObject(item)?.["Автомат"] }}</p>
+                  <p>{{ secondObject(item)?.["Номинал"] }}</p>
+                  <p>{{ secondObject(item)?.["Ток утечки УЗО"] }}</p>
+                </div>
+              </div>
+              <div v-else-if="secondObject(item)?.['Тип'] === 'QFD'">
+                <img src="./../assets/img/QFD-3.svg" alt="" />
+                <div class="text__wrap">
+                  <p>ABB</p>
+                  <p>{{ secondObject(item)?.["Автомат"] }}</p>
+                  <p>{{ secondObject(item)?.["Номинал"] }}</p>
+                  <p>{{ secondObject(item)?.["Ток утечки УЗО"] }}</p>
+                </div>
+              </div>
               <img v-else src="./../assets/img/connection-line.svg" alt="" />
             </div>
             <div class="node-el node-arrow">
