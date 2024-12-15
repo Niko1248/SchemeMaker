@@ -49,14 +49,16 @@
         <div class="power-line">
           <div class="L"></div>
           <div class="N">
-            <svg width="2500" height="14">
-              <line x1="0" y1="0" x2="2500" y2="0" stroke="black" stroke-width="1" />
-            </svg>
+            <div class="N-line">
+              <svg width="1000" height="14">
+                <line x1="0" y1="0" x2="1000" y2="0" stroke="black" stroke-width="1" />
+              </svg>
+            </div>
           </div>
           <div class="PE">
             <div class="PE-line">
               <svg width="1000" height="20">
-                <line x1="0" y1="8" x2="1000" y2="8" stroke="black" stroke-width="0.5" stroke-dasharray="70, 20" />
+                <line x1="0" y1="8" x2="1000" y2="8" stroke="black" stroke-width="0.5" stroke-dasharray="70, 30" />
               </svg>
             </div>
           </div>
@@ -133,6 +135,7 @@ const secondObject = (data) => {
   max-width: 220mm;
   display: flex;
   flex-direction: column;
+  width: min-content;
 }
 .input__wrapp {
   margin-bottom: 0mm;
@@ -191,12 +194,17 @@ const secondObject = (data) => {
   margin-top: 5px;
   overflow: hidden;
 }
+
 .PE {
   height: 1mm;
   width: auto;
 }
-.PE-line {
+.PE-line,
+.N-line {
   overflow: hidden;
+  svg {
+    width: 100%;
+  }
 }
 .power-line {
   margin-top: 3.4mm;
@@ -204,7 +212,7 @@ const secondObject = (data) => {
 .power-nodes__wrapp {
   display: flex;
   flex-direction: row;
-  width: auto;
+  width: inherit;
   justify-content: flex-start;
   margin-left: 27px;
 }
