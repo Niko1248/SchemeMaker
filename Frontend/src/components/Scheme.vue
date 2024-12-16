@@ -2,42 +2,47 @@
   <div class="scheme">
     <div class="scheme__wrapp">
       <div class="input__wrapp">
-        <div class="input-Q">
-          <div class="input-q-wrapp"><img class="input-Q-img" src="./../assets/img/input.svg" /></div>
-          <div>
-            <div v-if="firstObject(props.inputDeviceData)" class="node">
-              <img src="./../assets/img/QD.svg" />
-              <div class="text__wrap">
-                <p>ABB</p>
-                <p>{{ firstObject(props.inputDeviceData)?.["Автомат"] }}</p>
-                <p>{{ firstObject(props.inputDeviceData)?.["Номинал"] + "А" }}</p>
-                <p>{{ firstObject(props.inputDeviceData)?.["Ток утечки УЗО"] }}</p>
+        <div class="flex__wrap">
+          <div class="input-Q">
+            <div class="input-q-wrapp"><img class="input-Q-img" src="./../assets/img/input.svg" /></div>
+            <div>
+              <div>
+                <div v-if="firstObject(props.inputDeviceData)" class="node">
+                  <img src="./../assets/img/QD.svg" />
+                  <div class="text__wrap">
+                    <p>ABB</p>
+                    <p>{{ firstObject(props.inputDeviceData)?.["Автомат"].trim() }}</p>
+                    <p>{{ firstObject(props.inputDeviceData)?.["Номинал"] + "А" }}</p>
+                    <p>{{ firstObject(props.inputDeviceData)?.["Ток утечки УЗО"] }}</p>
+                  </div>
+                </div>
+                <img v-else src="./../assets/img/connection-3.svg" />
               </div>
             </div>
-            <img v-else src="./../assets/img/connection-3.svg" />
+            <div>
+              <div class="node" v-if="secondObject(props.inputDeviceData)?.['Тип'] === 'QF'">
+                <img src="./../assets/img/QF.svg" />
+                <div class="text__wrap">
+                  <p>ABB</p>
+                  <p>{{ secondObject(props.inputDeviceData)?.["Автомат"].trim() }}</p>
+                  <p>{{ secondObject(props.inputDeviceData)?.["Номинал"] + "А" }}</p>
+                  <p>{{ secondObject(props.inputDeviceData)?.["Ток утечки УЗО"] }}</p>
+                </div>
+              </div>
+              <div class="node" v-else-if="secondObject(props.inputDeviceData)?.['Тип'] === 'QFD'">
+                <div class="text__wrap">
+                  <p>ABB</p>
+                  <p>{{ secondObject(props.inputDeviceData)?.["Автомат"].trim() }}</p>
+                  <p>{{ secondObject(props.inputDeviceData)?.["Номинал"] + "А" }}</p>
+                  <p>{{ secondObject(props.inputDeviceData)?.["Ток утечки УЗО"] }}</p>
+                </div>
+                <img src="./../assets/img/QFD.svg" alt="" />
+              </div>
+              <img v-else src="./../assets/img/connection-3.svg" alt="" />
+            </div>
+            <div><img class="connection" src="./../assets/img/connection-3.svg" alt="" /></div>
           </div>
-          <div>
-            <div class="node" v-if="secondObject(props.inputDeviceData)?.['Тип'] === 'QF'">
-              <img src="./../assets/img/QF.svg" />
-              <div class="text__wrap">
-                <p>ABB</p>
-                <p>{{ secondObject(props.inputDeviceData)?.["Автомат"] }}</p>
-                <p>{{ secondObject(props.inputDeviceData)?.["Номинал"] + "А" }}</p>
-                <p>{{ secondObject(props.inputDeviceData)?.["Ток утечки УЗО"] }}</p>
-              </div>
-            </div>
-            <div class="node" v-else-if="secondObject(props.inputDeviceData)?.['Тип'] === 'QFD'">
-              <div class="text__wrap">
-                <p>ABB</p>
-                <p>{{ secondObject(props.inputDeviceData)?.["Автомат"] }}</p>
-                <p>{{ secondObject(props.inputDeviceData)?.["Номинал"] + "А" }}</p>
-                <p>{{ secondObject(props.inputDeviceData)?.["Ток утечки УЗО"] }}</p>
-              </div>
-              <img src="./../assets/img/QFD.svg" alt="" />
-            </div>
-            <img v-else src="./../assets/img/connection-3.svg" alt="" />
-          </div>
-          <div><img class="connection" src="./../assets/img/connection-3.svg" alt="" /></div>
+          <div class="PE-line-device"></div>
         </div>
         <div class="input-line"></div>
         <div class="input-node">
@@ -55,7 +60,7 @@
               </svg>
             </div>
           </div>
-          <div class="PE">
+          <div v-if="checkLinePE !== -1" class="PE">
             <div class="PE-line">
               <svg width="1000" height="20">
                 <line x1="0" y1="8" x2="1000" y2="8" stroke="black" stroke-width="0.5" stroke-dasharray="70, 30" />
@@ -65,47 +70,58 @@
         </div>
         <div class="power-nodes__wrapp">
           <div class="power-node-item" v-for="(item, index) in props.outputDevicesData" :key="'outputLine-' + index">
-            <div class="node-connetcion">
-              <img src="./../assets/img/connection-3.svg" alt="" />
-            </div>
-            <div class="node-el node-connection-line">
-              <img src="./../assets/img/connection-line.svg" alt="" />
-            </div>
-            <div class="node-el node-el-1">
-              <div v-if="firstObject(item)">
-                <img src="./../assets/img/QD.svg" alt="" />
-                <div class="text__wrap">
-                  <p>ABB</p>
-                  <p>{{ firstObject(item)?.["Автомат"] }}</p>
-                  <p>{{ firstObject(item)?.["Номинал"] }}</p>
-                  <p>{{ firstObject(item)?.["Ток утечки УЗО"] }}</p>
+            <div class="flex__wrap">
+              <div>
+                <div class="node-connetcion">
+                  <img src="./../assets/img/connection-3.svg" alt="" />
+                </div>
+                <div class="node-el node-connection-line">
+                  <img src="./../assets/img/connection-line.svg" alt="" />
+                </div>
+                <div class="node-el node-el-1">
+                  <div v-if="firstObject(item)">
+                    <img src="./../assets/img/QD.svg" alt="" />
+                    <div class="text__wrap">
+                      <p>ABB</p>
+                      <p>{{ firstObject(item)?.["Автомат"].trim() }}</p>
+                      <p>{{ firstObject(item)?.["Номинал"] }}</p>
+                      <p>{{ firstObject(item)?.["Ток утечки УЗО"] }}</p>
+                    </div>
+                  </div>
+                  <img v-else src="./../assets/img/connection-line.svg" alt="" />
+                </div>
+                <div class="node-el node-el-2">
+                  <div v-if="secondObject(item)?.['Тип'] === 'QF'">
+                    <img src="./../assets/img/QF-3.svg" alt="" />
+                    <div class="text__wrap">
+                      <p>ABB</p>
+                      <p>{{ secondObject(item)?.["Автомат"].trim() }}</p>
+                      <p>{{ secondObject(item)?.["Номинал"] }}</p>
+                      <p>{{ secondObject(item)?.["Ток утечки УЗО"] }}</p>
+                    </div>
+                  </div>
+                  <div v-else-if="secondObject(item)?.['Тип'] === 'QFD'">
+                    <img src="./../assets/img/QFD.svg" alt="" />
+                    <div class="text__wrap">
+                      <p>ABB</p>
+                      <p>{{ secondObject(item)?.["Автомат"].trim() }}</p>
+                      <p>{{ secondObject(item)?.["Номинал"] }}</p>
+                      <p>{{ secondObject(item)?.["Ток утечки УЗО"] }}</p>
+                    </div>
+                  </div>
+                  <img v-else src="./../assets/img/connection-line.svg" alt="" />
+                </div>
+                <div class="node-el node-arrow">
+                  <img src="./../assets/img/arrow.svg" alt="" />
+                </div>
+                <div class="phase-line__wrap">
+                  <div v-for="index in checkPhase(item)" :key="index" class="phase-line"></div>
+                </div>
+                <div class="phase-text">
+                  {{ swapPhase(item) }}
                 </div>
               </div>
-              <img v-else src="./../assets/img/connection-line.svg" alt="" />
-            </div>
-            <div class="node-el node-el-2">
-              <div v-if="secondObject(item)?.['Тип'] === 'QF'">
-                <img src="./../assets/img/QF-3.svg" alt="" />
-                <div class="text__wrap">
-                  <p>ABB</p>
-                  <p>{{ secondObject(item)?.["Автомат"] }}</p>
-                  <p>{{ secondObject(item)?.["Номинал"] }}</p>
-                  <p>{{ secondObject(item)?.["Ток утечки УЗО"] }}</p>
-                </div>
-              </div>
-              <div v-else-if="secondObject(item)?.['Тип'] === 'QFD'">
-                <img src="./../assets/img/QFD.svg" alt="" />
-                <div class="text__wrap">
-                  <p>ABB</p>
-                  <p>{{ secondObject(item)?.["Автомат"] }}</p>
-                  <p>{{ secondObject(item)?.["Номинал"] }}</p>
-                  <p>{{ secondObject(item)?.["Ток утечки УЗО"] }}</p>
-                </div>
-              </div>
-              <img v-else src="./../assets/img/connection-line.svg" alt="" />
-            </div>
-            <div class="node-el node-arrow">
-              <img src="./../assets/img/arrow.svg" alt="" />
+              <div v-if="firstObject(item)?.['PE'] || secondObject(item)?.['PE']" class="PE-line-device"></div>
             </div>
           </div>
         </div>
@@ -114,6 +130,7 @@
   </div>
 </template>
 <script setup>
+import { computed } from "vue"
 const props = defineProps({
   inputDeviceData: { type: Object },
   outputDevicesData: { type: Array },
@@ -123,6 +140,36 @@ const firstObject = (data) => {
 }
 const secondObject = (data) => {
   return data["Данные"].find((obj) => obj?.["Тип"] === "QF" || obj?.["Тип"] === "QFD")
+}
+const checkLinePE = computed(() => {
+  return props.outputDevicesData.findIndex((obj) => obj?.["Данные"][0]["PE"])
+})
+const checkPhase = (data) => {
+  const phaseArr = data["Данные"][0]["Фаза"]
+    .split(",") // Разбиваем строку в массив
+    .map((el) => el.trim()) // Убираем пробелы у каждого элемента
+
+  let arrLength = Math.min(phaseArr.length, 3) // Ограничиваем длину максимум 3.
+
+  if (phaseArr.includes("N")) {
+    arrLength -= 1 // Уменьшаем значение на 1, если есть "N".
+  }
+  return arrLength
+}
+const swapPhase = (data) => {
+  return String(
+    data["Данные"][0]["Фаза"]
+      .split(",") // Разбиваем строку на массив
+      .map((el) => el.trim()) // Убираем пробелы
+      .filter((el) => el !== "N") // Удаляем все элементы "N"
+      .map((el) => {
+        // Заменяем значения
+        if (el === "1") return "A"
+        if (el === "2") return "B"
+        if (el === "3") return "C"
+        return el // Возвращаем неизменное значение, если это не 1, 2 или 3
+      })
+  )
 }
 </script>
 <style lang="scss" scoped>
@@ -218,6 +265,7 @@ const secondObject = (data) => {
 }
 .power-node-item {
   width: 20mm;
+  position: relative;
   &:nth-child(1) {
   }
 }
@@ -257,5 +305,25 @@ const secondObject = (data) => {
     font-size: 10px;
     text-align: center;
   }
+}
+.flex__wrap {
+  display: flex;
+}
+.PE-line-device {
+  border: 3px solid #000;
+}
+.phase-line__wrap {
+  position: absolute;
+  top: 20px;
+  transform: rotate(45deg);
+}
+.phase-line {
+  border: 1px solid #000;
+  width: 3mm;
+  margin-top: 5px;
+}
+.phase-text {
+  position: absolute;
+  top: -38px;
 }
 </style>
