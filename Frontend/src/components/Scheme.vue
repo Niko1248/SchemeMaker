@@ -4,7 +4,12 @@
       <div class="input__wrapp">
         <div class="flex__wrap">
           <div class="input-Q">
-            <div class="input-q-wrapp"><img class="input-Q-img" src="./../assets/img/input.svg" /></div>
+            <div v-if="!checkLinePE" class="input-q-wrapp">
+              <img class="" src="./../assets/img/input+PE.svg" />
+            </div>
+            <div v-else class="input-q-wrapp PE--transformX">
+              <img class="input-Q-img" src="./../assets/img/input.svg" />
+            </div>
             <div>
               <div>
                 <div v-if="firstObject(props.inputDeviceData)" class="node">
@@ -16,12 +21,15 @@
                     <p>{{ firstObject(props.inputDeviceData)?.["Ток утечки УЗО"] }}</p>
                   </div>
                 </div>
-                <img v-else src="./../assets/img/connection-3.svg" />
+                <img v-else src="./../assets/img/connection-line.svg" />
+                <div v-if="!checkLinePE">
+                  <img src="./../assets/img/connection-line+PE.svg" alt="" />
+                </div>
               </div>
             </div>
             <div>
               <div class="node" v-if="secondObject(props.inputDeviceData)?.['Тип'] === 'QF'">
-                <img src="./../assets/img/QF.svg" />
+                <img src="./../assets/img/QF-1.svg" />
                 <div class="text__wrap">
                   <p>ABB</p>
                   <p>{{ secondObject(props.inputDeviceData)?.["Автомат"].trim() }}</p>
@@ -38,16 +46,16 @@
                 </div>
                 <img src="./../assets/img/QFD.svg" alt="" />
               </div>
-              <img v-else src="./../assets/img/connection-3.svg" alt="" />
+              <img v-if="!checkLinePE" class="111" src="./../assets/img/connection-line+PE.svg" />
             </div>
-            <div><img class="connection" src="./../assets/img/connection-3.svg" alt="" /></div>
+            <div v-if="!checkLinePE"><img class="connection" src="./../assets/img/connection+PE.svg" alt="" /></div>
+            <div v-else><img class="connection PE--transformX" src="./../assets/img/connection.svg" alt="" /></div>
           </div>
-          <div class="PE-line-device"></div>
         </div>
         <div class="input-line"></div>
         <div class="input-node">
-          <div class="input-node-item"><img class="" src="./../assets/img/input-Щит.svg" alt="" /></div>
-          <div class="input-node-item"><img class="" src="./../assets/img/connection-Щит.svg" alt="" /></div>
+          <div class="input-node-item"><img class="" src="./../assets/img/input-QF.svg" alt="" /></div>
+          <div class="input-node-item"><img class="" src="./../assets/img/input-connection.svg" alt="" /></div>
         </div>
       </div>
       <div class="power__wrapp">
@@ -72,15 +80,19 @@
           <div class="power-node-item" v-for="(item, index) in props.outputDevicesData" :key="'outputLine-' + index">
             <div class="flex__wrap">
               <div>
-                <div class="node-connetcion">
-                  <img src="./../assets/img/connection-3.svg" alt="" />
+                <div v-if="!checkLinePE" class="node-connetcion">
+                  <img class="connection" src="./../assets/img/connection+PE.svg" alt="" />
                 </div>
+                <div v-else class="node-connetcion">
+                  <img class="connection" src="./../assets/img/connection.svg" alt="" />
+                </div>
+                <img v-if="!checkLinePE" class="connection-line-PE_node" src="./../assets/img/connection-line+PE.svg" />
                 <div class="node-el node-connection-line">
                   <img src="./../assets/img/connection-line.svg" alt="" />
                 </div>
                 <div class="node-el node-el-1">
                   <div v-if="firstObject(item)">
-                    <img src="./../assets/img/QD.svg" alt="" />
+                    <img class="node-el-1-Q" src="./../assets/img/QD.svg" alt="" />
                     <div class="text__wrap">
                       <p>ABB</p>
                       <p>{{ firstObject(item)?.["Автомат"].trim() }}</p>
@@ -88,11 +100,18 @@
                       <p>{{ firstObject(item)?.["Ток утечки УЗО"] }}</p>
                     </div>
                   </div>
-                  <img v-else src="./../assets/img/connection-line.svg" alt="" />
+                  <div v-else>
+                    <img src="./../assets/img/connection-line.svg" alt="" />
+                    <img
+                      v-if="!checkLinePE"
+                      class="connection-line-PE_node"
+                      src="./../assets/img/connection-line+PE.svg"
+                    />
+                  </div>
                 </div>
                 <div class="node-el node-el-2">
                   <div v-if="secondObject(item)?.['Тип'] === 'QF'">
-                    <img src="./../assets/img/QF-3.svg" alt="" />
+                    <img src="./../assets/img/QF.svg" alt="" />
                     <div class="text__wrap">
                       <p>ABB</p>
                       <p>{{ secondObject(item)?.["Автомат"].trim() }}</p>
@@ -110,6 +129,16 @@
                     </div>
                   </div>
                   <img v-else src="./../assets/img/connection-line.svg" alt="" />
+                  <img
+                    v-if="!checkLinePE && secondObject(item)?.['Тип'] === 'QF'"
+                    class="connection-line-PE_Q"
+                    src="./../assets/img/connection-line+PE-Q.svg"
+                  />
+                  <img
+                    v-if="!checkLinePE && secondObject(item)?.['Тип'] === 'QFD'"
+                    class="connection-line-PE_Q"
+                    src="./../assets/img/connection-line+PE-QFD.svg"
+                  />
                 </div>
                 <div class="node-el node-arrow">
                   <img src="./../assets/img/arrow.svg" alt="" />
@@ -121,7 +150,6 @@
                   {{ swapPhase(item) }}
                 </div>
               </div>
-              <div v-if="firstObject(item)?.['PE'] || secondObject(item)?.['PE']" class="PE-line-device"></div>
             </div>
           </div>
         </div>
@@ -203,16 +231,19 @@ const swapPhase = (data) => {
   position: relative;
   height: 35px;
 }
+
 .input-Q-img {
-  transform: translateX(2.15mm);
   margin-bottom: 0.5mm;
   position: absolute;
 }
 .input-line {
   width: 100%;
-  height: 0.5mm;
-  border-top: 0.5mm solid #000;
+  border-top: 1px solid #000;
 }
+.PE--transformX {
+  transform: translateX(-8px);
+}
+
 .input-node {
   width: 60mm;
   height: 20mm;
@@ -228,8 +259,8 @@ const swapPhase = (data) => {
 .connection {
   position: absolute;
   top: 100%;
-  transform: translateX(8px);
 }
+
 .L {
   height: 1mm;
   width: auto;
@@ -274,7 +305,7 @@ const swapPhase = (data) => {
 .node-connetcion {
   display: flex;
   position: relative;
-  height: 21px;
+  height: 10px;
   img {
     transform: rotate(180deg);
     position: absolute;
@@ -287,6 +318,7 @@ const swapPhase = (data) => {
     display: flex;
   }
 }
+
 .node-el-2 {
   transform: translateX(-8px);
 }
@@ -325,5 +357,16 @@ const swapPhase = (data) => {
 .phase-text {
   position: absolute;
   top: -38px;
+}
+.connection-line-PE_node {
+  position: absolute;
+  left: 18px;
+}
+.connection-line-PE_Q {
+  position: absolute;
+  left: 13px;
+}
+.node-el-1-Q {
+  transform: translateX(-8px);
 }
 </style>

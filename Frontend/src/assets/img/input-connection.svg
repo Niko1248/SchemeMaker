@@ -1,5 +1,5 @@
 <svg width="46" height="39" viewBox="0 0 46 39" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_17_43)">
+<g clip-path="url(#clip0_307_198)">
 <circle cx="36.5" cy="15.5" r="2.5" transform="rotate(-90 36.5 15.5)" fill="#040000"/>
 <circle cx="24.5" cy="23.5" r="2.5" transform="rotate(-90 24.5 23.5)" fill="#040000"/>
 <path d="M27.5 2.5C28.3284 2.5 29 3.17157 29 4C29 4.82843 28.3284 5.5 27.5 5.5C26.6716 5.5 26 4.82843 26 4C26 3.17157 26.6716 2.5 27.5 2.5Z" fill="#040000"/>
@@ -11,13 +11,13 @@
 <path d="M24.5 39L24.5 0.999999" stroke="black" stroke-width="0.5"/>
 <path d="M36.0151 35V1" stroke="black" stroke-width="0.5"/>
 <path d="M11.5 38.5V1" stroke="black" stroke-width="0.5"/>
-<path d="M8.82324 9.18799L14 4" stroke="#030000" stroke-width="0.5"/>
+<path d="M8.82349 9.18799L14.0002 4" stroke="#030000" stroke-width="0.5"/>
 <path d="M22.1768 9.32326L27.5 4" stroke="#030000" stroke-width="0.5"/>
-<path d="M33.3385 5.5L38.6617 0.176738M33.3384 9L38.6616 3.67674M33.3384 13.0001L38.6616 7.67682" stroke="#030000" stroke-width="0.5"/>
+<path d="M33.3385 5.5L38.6617 0.176738M33.3385 9L38.6617 3.67674M33.3385 13.0001L38.6616 7.67682" stroke="#030000" stroke-width="0.5"/>
 <path d="M14 6V2.00003" stroke="black" stroke-width="0.5"/>
 </g>
 <defs>
-<clipPath id="clip0_17_43">
+<clipPath id="clip0_307_198">
 <rect width="39" height="46" fill="white" transform="translate(0 39) rotate(-90)"/>
 </clipPath>
 </defs>
