@@ -46,7 +46,10 @@
                 </div>
                 <img src="./../assets/img/QFD.svg" alt="" />
               </div>
-              <img v-if="!checkLinePE" class="111" src="./../assets/img/connection-line+PE.svg" />
+              <img v-else src="./../assets/img/connection-line.svg" />
+              <div v-if="!checkLinePE">
+                <img src="./../assets/img/connection-line+PE.svg" alt="" />
+              </div>
             </div>
             <div v-if="!checkLinePE"><img class="connection" src="./../assets/img/connection+PE.svg" alt="" /></div>
             <div v-else><img class="connection PE--transformX" src="./../assets/img/connection.svg" alt="" /></div>
