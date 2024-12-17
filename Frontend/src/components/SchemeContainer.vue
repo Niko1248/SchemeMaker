@@ -23,11 +23,11 @@
 import { defineComponent, ref, computed, watch, reactive } from "vue"
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
-import SchemeOutsideLeftTables from "./SchemeOutsideLeftTables.vue"
-import SchemeInsideRightTable from "./SchemeInsideRightTable.vue"
-import CircuitScheme from "./CircuitScheme.vue"
-import ConsumerTable from "./ConsumerTable.vue"
-import Scheme from "./Scheme.vue"
+import SchemeOutsideLeftTables from "./table/SchemeOutsideLeftTables.vue"
+import SchemeInsideRightTable from "./table/SchemeInsideRightTable.vue"
+import CircuitScheme from "./table/CircuitTable.vue"
+import ConsumerTable from "./table/ConsumerTable.vue"
+import Scheme from "./scheme/Scheme.vue"
 
 export default defineComponent({
   name: "SchemeContainer",

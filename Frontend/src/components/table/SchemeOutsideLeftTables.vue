@@ -38,7 +38,7 @@
 
 <script setup></script>
 <style lang="scss" scoped>
-@use "./../scss/size.scss" as size;
+@use "../../scss/size.scss" as size;
 
 .left-table-outside-the-frame {
   position: absolute;
