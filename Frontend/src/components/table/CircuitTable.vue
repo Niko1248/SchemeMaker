@@ -35,7 +35,7 @@
       Марка и сечение провода (кабеля), <span>мм.</span> Длина участка сети, м.<br />
       Способ прокладки
     </div>
-    <SchemeName />
+    <SchemeName :schemeName="props.pageData?.[0]?.['Данные']?.[0]?.['Вводной щит']" />
   </div>
 </template>
 <script setup>

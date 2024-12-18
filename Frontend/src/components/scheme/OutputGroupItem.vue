@@ -51,9 +51,12 @@
         src="../../assets/img/connection-line+PE-QFD.svg"
       />
     </div>
-    <!-- Стрелка -->
+    <!-- Стрелка + кабель -->
     <div class="node-el node-arrow">
       <img src="../../assets/img/arrow2.svg" alt="" />
+    </div>
+    <div class="cable-info">
+      {{ props.itemData?.["Данные"]?.[0]?.["Провод"] }}
     </div>
     <!-- Фазы (линии + текст) -->
     <div class="phase-line__wrap">
@@ -74,7 +77,7 @@ const props = defineProps({
 })
 
 const checkPhase = (data) => {
-  const phaseArr = data["Данные"][0]["Фаза"]
+  const phaseArr = data?.["Данные"]?.[0]?.["Фаза"]
     .split(",") // Разбиваем строку в массив
     .map((el) => el.trim()) // Убираем пробелы у каждого элемента
 
@@ -87,7 +90,7 @@ const checkPhase = (data) => {
 }
 const swapPhase = (data) => {
   return String(
-    data["Данные"][0]["Фаза"]
+    data?.["Данные"]?.[0]?.["Фаза"]
       .split(",") // Разбиваем строку на массив
       .map((el) => el.trim()) // Убираем пробелы
       .filter((el) => el !== "N") // Удаляем все элементы "N"
@@ -122,7 +125,11 @@ const swapPhase = (data) => {
     display: flex;
   }
 }
+.node-el-1 {
+  position: relative;
+}
 .node-el-2 {
+  position: relative;
   transform: translateX(-8px);
 }
 .phase-line__wrap {
@@ -151,5 +158,13 @@ const swapPhase = (data) => {
 }
 .node-el-1-Q {
   transform: translateX(-8px);
+}
+.cable-info {
+  position: absolute;
+  bottom: 0;
+  left: -50px;
+  transform: rotate(-90deg);
+  width: max-content;
+  font-size: 12px;
 }
 </style>

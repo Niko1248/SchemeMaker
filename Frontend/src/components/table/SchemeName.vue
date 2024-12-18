@@ -1,7 +1,13 @@
 <template>
-  <div class="scheme-name"><p>РЩ-7-Прачечная (подвал)</p></div>
+  <div class="scheme-name">
+    <p>{{ props.schemeName }}</p>
+  </div>
 </template>
-<script setup></script>
+<script setup>
+const props = defineProps({
+  schemeName: { type: String },
+})
+</script>
 <style lang="scss" scoped>
 .scheme-name {
   position: absolute;

@@ -47,7 +47,7 @@ const checkLinePE = computed(() => {
 <style lang="scss" scoped>
 .scheme {
   position: absolute;
-  left: 50mm; //     Позицианирование относительно левой таблицы  "Данные питающей сети"
+  left: 55mm; //     Позицианирование относительно левой таблицы  "Данные питающей сети"
   top: 8mm; //     Позицианирование относительно левой таблицы  "Данные питающей сети"
 }
 .input__wrapp {
@@ -55,10 +55,10 @@ const checkLinePE = computed(() => {
   display: flex;
   flex-direction: row;
   width: 190mm;
-  transform: translateX(15mm);
+  transform: translateX(11mm);
 }
 .power__wrapp {
-  max-width: 220mm;
+  max-width: 215mm;
   display: flex;
   flex-direction: column;
   width: min-content;
@@ -69,7 +69,7 @@ const checkLinePE = computed(() => {
   flex-direction: row;
   width: inherit;
   justify-content: flex-start;
-  margin-left: 27px;
+  margin-left: 10px;
 }
 .power-node-item {
   width: 20mm;
