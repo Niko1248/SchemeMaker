@@ -128,12 +128,14 @@ const swapPhase = (data) => {
 .phase-line__wrap {
   position: absolute;
   top: 20px;
-  transform: rotate(45deg);
+  display: flex;
+  flex-direction: column;
 }
 .phase-line {
-  border: 1px solid #000;
+  border-bottom: 1px solid #000;
   width: 3mm;
   margin-top: 5px;
+  transform: rotate(45deg);
 }
 .phase-text {
   position: absolute;

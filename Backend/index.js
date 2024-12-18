@@ -151,5 +151,5 @@ app.post("/upload", upload.single("file"), async (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`)
+  console.log(`Server is running on http://192.168.0.110:${port}`)
 })
