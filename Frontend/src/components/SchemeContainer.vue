@@ -9,20 +9,22 @@
     >
       <div v-for="(item, index) in groupedItems" class="page" ref="page" :key="index">
         <div class="top-frame">
-          <Scheme :inputDeviceData="inputDeviceData" :outputDevicesData="item" />
+          <Scheme :inputDeviceData="inputDeviceData" :outputDevicesData="item" :listIndex="index + 1" />
           <CircuitScheme :pageData="item" :listIndex="index + 1" />
           <SchemeOutsideLeftTables />
           <SchemeInsideRightTable :tableData="tableData" :listIndex="index + 1" :totalPages="totalPages" />
           <ConsumerTable :pageData="item" />
+          <ContinueNote v-if="totalPages !== 1" :listIndex="index + 1" :totalPages="totalPages" />
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { defineComponent, ref, computed, watch, reactive } from "vue"
+import { defineComponent, ref, computed, watch, reactive, onMounted } from "vue"
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
+import ContinueNote from "../components/ContinueNote.vue"
 import SchemeOutsideLeftTables from "./table/SchemeOutsideLeftTables.vue"
 import SchemeInsideRightTable from "./table/SchemeInsideRightTable.vue"
 import CircuitScheme from "./table/CircuitTable.vue"
@@ -31,7 +33,7 @@ import Scheme from "./scheme/Scheme.vue"
 
 export default defineComponent({
   name: "SchemeContainer",
-  components: { SchemeOutsideLeftTables, SchemeInsideRightTable, CircuitScheme, ConsumerTable, Scheme },
+  components: { SchemeOutsideLeftTables, SchemeInsideRightTable, CircuitScheme, ConsumerTable, Scheme, ContinueNote },
   props: {
     tableData: { type: Object },
     schemeDataChunk: { type: Object },
@@ -120,7 +122,8 @@ export default defineComponent({
 
     const exportToPDF = async () => {
       const schemeData = props.schemeDataChunk
-
+      scale.value = 1
+      await new Promise((resolve) => setTimeout(resolve, 2000))
       if (pages__wrapper.value) {
         try {
           const pdf = new jsPDF({
@@ -205,6 +208,7 @@ export default defineComponent({
   padding: 5mm 5mm 5mm 20mm;
   box-sizing: border-box;
   margin-bottom: 1vw;
+  position: relative;
 }
 .top-frame {
   width: 100%;

@@ -3,7 +3,8 @@
     <p>ABB</p>
     <p>{{ props.textData?.["Автомат"].replace(/\s/g, "") }}</p>
     <p>{{ props.textData?.["Номинал"] ? props.textData?.["Номинал"] + "А" : "" }}</p>
-    <p>{{ props.textData?.["Ток утечки УЗО"] }}</p>
+    <p>{{ props.textData?.["Ток утечки УЗО"] ? props.textData?.["Ток утечки УЗО"] + "мА " : "" }}</p>
+    <p>{{ props.textData?.["Класс"] }}</p>
   </div>
 </template>
 <script setup>

@@ -117,7 +117,6 @@ const exportToPDF = async (type) => {
       if (checkDoc.value !== el["Вводной щит"]) {
         checkDoc.value = el["Вводной щит"]
         await nextTick()
-        await new Promise((resolve) => setTimeout(resolve, 3000))
       }
       const result = await activeRef.value[0].exportToPDF()
       collectedFiles.push(result)
@@ -127,7 +126,6 @@ const exportToPDF = async (type) => {
       if (checkDoc.value !== el) {
         checkDoc.value = el
         await nextTick()
-        await new Promise((resolve) => setTimeout(resolve, 3000))
       }
       const result = await activeRef.value[0].exportToPDF()
       collectedFiles.push(result)

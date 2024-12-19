@@ -9,7 +9,7 @@
     <!-- Первый объект (УЗО или линия) -->
     <div>
       <div>
-        <div v-if="firstObject" class="node">
+        <div v-if="props.firstObject" class="node">
           <img src="../../assets/img/QD.svg" />
           <DeviceInfo :textData="props.firstObject" />
         </div>
@@ -21,11 +21,11 @@
     </div>
     <!-- Второй объект (автомат, дифавтомат или линия) -->
     <div>
-      <div class="node" v-if="secondObject?.['Тип'] === 'QF'">
+      <div class="node" v-if="props.secondObject?.['Тип'] === 'QF'">
         <img src="../../assets/img/QF-1.svg" />
         <DeviceInfo :textData="props.secondObject" />
       </div>
-      <div class="node" v-else-if="secondObject?.['Тип'] === 'QFD'">
+      <div class="node" v-else-if="props.secondObject?.['Тип'] === 'QFD'">
         <DeviceInfo :textData="props.secondObject" />
         <img src="../../assets/img/QFD.svg" alt="" />
       </div>
@@ -42,6 +42,14 @@
   </div>
   <!-- Линия и ввод -->
   <div class="input-line"></div>
+  <!-- <div class="input-cable">
+    <p v-if="props.firstObject?.['Марка кабеля']">
+      {{ props.firstObject["Марка кабеля"] + props.firstObject?.["Сечение кабеля"] }}
+    </p>
+    <p v-else-if="props.secondObject?.['Марка кабеля']">
+      {{ props.secondObject["Марка кабеля"] + props.secondObject?.["Сечение кабеля"] }}
+    </p>
+  </div> -->
   <div class="input-node">
     <div class="input-node-item"><img class="" src="../../assets/img/input-QF.svg" alt="" /></div>
     <div class="input-node-item"><img class="" src="../../assets/img/input-connection.svg" alt="" /></div>
@@ -77,6 +85,11 @@ const props = defineProps({
 .input-line {
   width: 100%;
   border-top: 1px solid #000;
+}
+.input-cable {
+  position: absolute;
+  right: 8cm;
+  top: -1cm;
 }
 .node {
   position: relative;

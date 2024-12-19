@@ -55,8 +55,11 @@
     <div class="node-el node-arrow">
       <img src="../../assets/img/arrow2.svg" alt="" />
     </div>
-    <div class="cable-info">
-      {{ props.itemData?.["Данные"]?.[0]?.["Провод"] }}
+    <div class="cable-name">
+      {{ props.itemData?.["Данные"]?.[0]?.["Марка кабеля"] }}
+    </div>
+    <div class="cable-size">
+      {{ props.itemData?.["Данные"]?.[0]?.["Сечение кабеля"] }}
     </div>
     <!-- Фазы (линии + текст) -->
     <div class="phase-line__wrap">
@@ -159,12 +162,19 @@ const swapPhase = (data) => {
 .node-el-1-Q {
   transform: translateX(-8px);
 }
-.cable-info {
+.cable-name,
+.cable-size {
   position: absolute;
-  bottom: 0;
-  left: -50px;
   transform: rotate(-90deg);
   width: max-content;
   font-size: 12px;
+}
+.cable-name {
+  bottom: 26px;
+  left: -38px;
+}
+.cable-size {
+  bottom: 28px;
+  left: 4px;
 }
 </style>

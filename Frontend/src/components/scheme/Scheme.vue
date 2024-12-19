@@ -1,7 +1,7 @@
 <template>
   <div class="scheme">
     <div class="scheme__wrapp">
-      <div class="input__wrapp">
+      <div class="input__wrapp" :style="listIndex > 1 ? 'visibility: hidden;' : ''">
         <InputGroup
           :checkLinePE="checkLinePE"
           :firstObject="firstObject(props.inputDeviceData)"
@@ -33,6 +33,7 @@ import OutputGroupItem from "./OutputGroupItem.vue"
 const props = defineProps({
   inputDeviceData: { type: Object },
   outputDevicesData: { type: Array },
+  listIndex: { type: Number },
 })
 const firstObject = (data) => {
   return data["Данные"].find((obj) => obj?.["Тип"] === "QD")

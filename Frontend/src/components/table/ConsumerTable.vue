@@ -15,8 +15,8 @@
     <div class="table__data" :class="`column${index + 1}`" v-for="(data, index) in pageData">
       <div class="item item1"></div>
       <div class="item item2">{{ data["Данные"]?.[0]?.["Группа"] }}</div>
-      <div class="item item3"></div>
-      <div class="item item4"></div>
+      <div class="item item3">{{ findPower(data["Данные"]) }}</div>
+      <div class="item item4">{{ findAmperage(data["Данные"]) }}</div>
       <div class="item item5"></div>
     </div>
   </div>
@@ -25,6 +25,18 @@
 const props = defineProps({
   pageData: { type: Array },
 })
+const findAmperage = (data) => {
+  const foundElement = data.find((el) => el["Тип"] !== "QD" && el["Расчетный ток"])
+  if (foundElement) {
+    return foundElement?.["Расчетный ток"]
+  }
+}
+const findPower = (data) => {
+  const foundElement = data.find((el) => el["Тип"] !== "QD" && el["Установленная мощность"])
+  if (foundElement) {
+    return foundElement?.["Установленная мощность"]
+  }
+}
 </script>
 <style lang="scss" scoped>
 .consumer-table {
