@@ -6,14 +6,24 @@
     <div v-else class="node-connection">
       <img class="connection" src="../../assets/img/connection.svg" alt="" />
     </div>
-    <img
-      v-if="props.checkLinePE !== -1"
-      class="connection-line-PE_node"
-      src="../../assets/img/connection-line+PE.svg"
-    />
-    <div class="node-el node-connection-line">
-      <img src="../../assets/img/connection-line.svg" alt="" />
+    <div class="node-el-connection-line">
+      <img
+        v-if="props.checkLinePE !== -1"
+        style="width: 8px; object-position: 0px 11px"
+        class="connection-line-PE_node"
+        src="../../assets/img/connection-line+PE.svg"
+      />
+      <div class="node-el">
+        <img
+          style="width: 18px"
+          src="../../assets/img/connection-line.svg"
+          :style="{
+            objectPosition: props.checkLinePE !== -1 ? '0px 11px' : '0px 3px',
+          }"
+        />
+      </div>
     </div>
+
     <!-- Первый объект (УЗО или линия) -->
     <div class="node-el node-el-1">
       <div v-if="props.firstObject">
@@ -25,6 +35,7 @@
         <img
           v-if="props.checkLinePE !== -1"
           class="connection-line-PE_node"
+          style="width: 8px"
           src="../../assets/img/connection-line+PE.svg"
         />
       </div>
@@ -137,14 +148,14 @@ const swapPhase = (data) => {
 }
 .phase-line__wrap {
   position: absolute;
-  top: 20px;
+  top: 10px;
   display: flex;
   flex-direction: column;
 }
 .phase-line {
   border-bottom: 1px solid #000;
   width: 3mm;
-  margin-top: 5px;
+  margin-top: 3px;
   transform: rotate(45deg);
 }
 .phase-text {
@@ -162,6 +173,14 @@ const swapPhase = (data) => {
 .node-el-1-Q {
   transform: translateX(-8px);
 }
+.node-el-connection-line {
+  img {
+    height: 20px;
+    width: 18px;
+    object-fit: cover;
+    object-position: 0px 3px;
+  }
+}
 .cable-name,
 .cable-size {
   position: absolute;
@@ -170,11 +189,11 @@ const swapPhase = (data) => {
   font-size: 12px;
 }
 .cable-name {
-  bottom: 26px;
+  bottom: 48px;
   left: -38px;
 }
 .cable-size {
-  bottom: 28px;
+  bottom: 46px;
   left: 4px;
 }
 </style>

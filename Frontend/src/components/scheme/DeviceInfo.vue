@@ -2,9 +2,11 @@
   <div class="text__wrap">
     <p>ABB</p>
     <p>{{ props.textData?.["Автомат"].replace(/\s/g, "") }}</p>
-    <p>{{ props.textData?.["Номинал"] ? props.textData?.["Номинал"] + "А" : "" }}</p>
+    <div style="display: flex; justify-content: center">
+      <p style="text-transform: lowercase">{{ props.textData?.["Класс"] }}</p>
+      <p>{{ props.textData?.["Номинал"] ? props.textData?.["Номинал"] + "А" : "" }}</p>
+    </div>
     <p>{{ props.textData?.["Ток утечки УЗО"] ? props.textData?.["Ток утечки УЗО"] + "мА " : "" }}</p>
-    <p>{{ props.textData?.["Класс"] }}</p>
   </div>
 </template>
 <script setup>
@@ -21,7 +23,7 @@ const props = defineProps({
   flex-direction: column;
   p {
     margin: 0;
-    line-height: 120%;
+    line-height: 100%;
     font-size: 10px;
     text-align: center;
   }

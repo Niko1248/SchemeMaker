@@ -71,11 +71,12 @@ const props = defineProps({
   flex-direction: column;
   div {
     display: flex;
+    align-items: flex-start;
   }
 }
 .input-q-wrapp {
   position: relative;
-  height: 35px;
+  height: 24px;
 }
 
 .input-Q-img {
