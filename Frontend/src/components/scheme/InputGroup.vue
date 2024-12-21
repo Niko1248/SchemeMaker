@@ -1,6 +1,6 @@
 <template>
   <div class="input-Q">
-    <div v-if="props.checkLinePE !== -1" class="input-q-wrapp">
+    <div v-if="props.linePE !== -1" class="input-q-wrapp">
       <img class="" src="../../assets/img/input+PE.svg" />
     </div>
     <div v-else class="input-q-wrapp PE--transformX">
@@ -14,7 +14,7 @@
           <DeviceInfo :textData="props.firstObject" />
         </div>
         <img v-else src="../../assets/img/connection-line.svg" />
-        <div v-if="props.checkLinePE !== -1">
+        <div v-if="props.linePE !== -1">
           <img src="../../assets/img/connection-line+PE.svg" alt="" />
         </div>
       </div>
@@ -30,38 +30,48 @@
         <img src="../../assets/img/QFD.svg" alt="" />
       </div>
       <img v-else src="../../assets/img/connection-line.svg" />
-      <div v-if="props.checkLinePE !== -1">
+      <div v-if="props.linePE !== -1">
         <img src="../../assets/img/connection-line+PE.svg" alt="" />
       </div>
     </div>
 
-    <div v-if="props.checkLinePE !== -1">
+    <div v-if="props.linePE !== -1">
       <img class="connection" src="../../assets/img/connection+PE.svg" alt="" />
     </div>
     <div v-else><img class="connection PE--transformX" src="../../assets/img/connection.svg" alt="" /></div>
   </div>
   <!-- Линия и ввод -->
   <div class="input-line"></div>
-  <!-- <div class="input-cable">
-    <p v-if="props.firstObject?.['Марка кабеля']">
-      {{ props.firstObject["Марка кабеля"] + props.firstObject?.["Сечение кабеля"] }}
+  <div class="input-cable">
+    <p v-if="checkInputCable['Сечение кабеля']">
+      {{ checkInputCable?.["Марка кабеля"] + checkInputCable?.["Сечение кабеля"] }}
     </p>
-    <p v-else-if="props.secondObject?.['Марка кабеля']">
-      {{ props.secondObject["Марка кабеля"] + props.secondObject?.["Сечение кабеля"] }}
+    <p v-else>
+      {{ checkInputCable?.["Марка кабеля"] }}
     </p>
-  </div> -->
+  </div>
   <div class="input-node">
     <div class="input-node-item"><img class="" src="../../assets/img/input-QF.svg" alt="" /></div>
     <div class="input-node-item"><img class="" src="../../assets/img/input-connection.svg" alt="" /></div>
+    <div class="input-phase">
+      <p v-if="props.inputPhase > 1" class="powerLine-info">~380/220В</p>
+      <p v-else class="powerLine-info">~220В</p>
+    </div>
   </div>
 </template>
 
 <script setup>
+import { computed } from "vue"
 import DeviceInfo from "./DeviceInfo.vue"
 const props = defineProps({
-  checkLinePE: { type: Number },
+  linePE: { type: Number },
   firstObject: { type: Object },
   secondObject: { type: Object },
+  inputDeviceData: { type: Object },
+  inputPhase: { type: Number },
+})
+const checkInputCable = computed(() => {
+  return props.inputDeviceData?.["Данные"].find((obj) => obj["Марка кабеля"])
 })
 </script>
 <style lang="scss" scoped>

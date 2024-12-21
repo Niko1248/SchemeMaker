@@ -3,17 +3,19 @@
     <div class="scheme__wrapp">
       <div class="input__wrapp" :style="listIndex > 1 ? 'visibility: hidden;' : ''">
         <InputGroup
-          :checkLinePE="checkLinePE"
+          :linePE="checkLinePE"
           :firstObject="firstObject(props.inputDeviceData)"
           :secondObject="secondObject(props.inputDeviceData)"
+          :inputDeviceData="inputDeviceData"
+          :inputPhase="checkInputPhase(props.inputDeviceData)"
         />
       </div>
       <div class="power__wrapp">
-        <PowerLine :checkLinePE="checkLinePE" />
+        <PowerLine :linePE="checkLinePE" :inputPhase="checkInputPhase(props.inputDeviceData)" />
         <div class="power-nodes__wrapp">
           <div class="power-node-item" v-for="(item, index) in props.outputDevicesData" :key="'outputLine-' + index">
             <OutputGroupItem
-              :checkLinePE="checkLinePE"
+              :linePE="checkLinePE"
               :firstObject="firstObject(item)"
               :secondObject="secondObject(item)"
               :itemData="item"
@@ -35,15 +37,45 @@ const props = defineProps({
   outputDevicesData: { type: Array },
   listIndex: { type: Number },
 })
+//Нахожу 1 объект (УЗО)
 const firstObject = (data) => {
   return data["Данные"].find((obj) => obj?.["Тип"] === "QD")
 }
+//Нахожу 2 объект (автомат, дифавтомат)
 const secondObject = (data) => {
   return data["Данные"].find((obj) => obj?.["Тип"] === "QF" || obj?.["Тип"] === "QFD")
 }
+//Проверка наличия линии PE
 const checkLinePE = computed(() => {
   return props.outputDevicesData.findIndex((obj) => obj?.["Данные"][0]["PE"])
 })
+// Фаза входной группы
+const checkInputPhase = (data) => {
+  for (const el of data["Данные"]) {
+    // Проверяем, есть ли поле "Фаза"
+    if (!el?.["Фаза"]) continue
+
+    // Разбиваем строку по запятой и убираем пробелы
+    const phaseArr = el["Фаза"].split(",").map((phase) => phase.trim())
+
+    // Считаем длину массива, уменьшая на 1, если есть "N"
+    let arrLength = phaseArr.length
+    if (phaseArr.includes("N")) {
+      arrLength -= 1
+    }
+
+    // Ограничиваем длину до 3
+    arrLength = Math.min(arrLength, 3)
+
+    // Если длина больше 0, возвращаем результат
+    if (arrLength > 0) {
+      return arrLength
+    }
+  }
+
+  // Если ничего не найдено, возвращаем undefined
+  return undefined
+}
 </script>
 <style lang="scss" scoped>
 .scheme {

@@ -1,6 +1,7 @@
 <template>
   <div class="power-line">
-    <p class="powerLine-info">~380/220В</p>
+    <p v-if="props.inputPhase > 1" class="powerLine-info">~380/220В</p>
+    <p v-else class="powerLine-info">~220В</p>
     <div class="L">
       <p>L1,2,3</p>
     </div>
@@ -12,7 +13,7 @@
       </div>
       <p>N</p>
     </div>
-    <div v-if="props.checkLinePE !== -1" class="PE">
+    <div v-if="props.linePE !== -1" class="PE">
       <div class="PE-line">
         <svg width="1000" height="20">
           <line x1="0" y1="8" x2="1000" y2="8" stroke="black" stroke-width="0.5" stroke-dasharray="40, 10" />
@@ -24,7 +25,8 @@
 </template>
 <script setup>
 const props = defineProps({
-  checkLinePE: { type: Number },
+  linePE: { type: Number },
+  inputPhase: { type: Number },
 })
 </script>
 <style lang="scss" scoped>

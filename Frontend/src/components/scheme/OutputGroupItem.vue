@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="props.checkLinePE !== -1" class="node-connection">
+    <div v-if="props.linePE !== -1" class="node-connection">
       <img class="connection" src="../../assets/img/connection+PE.svg" alt="" />
     </div>
     <div v-else class="node-connection">
@@ -8,7 +8,7 @@
     </div>
     <div class="node-el-connection-line">
       <img
-        v-if="props.checkLinePE !== -1"
+        v-if="props.linePE !== -1"
         style="width: 8px; object-position: 0px 11px"
         class="connection-line-PE_node"
         src="../../assets/img/connection-line+PE.svg"
@@ -18,7 +18,7 @@
           style="width: 18px"
           src="../../assets/img/connection-line.svg"
           :style="{
-            objectPosition: props.checkLinePE !== -1 ? '0px 11px' : '0px 3px',
+            objectPosition: props.linePE !== -1 ? '0px 11px' : '0px 3px',
           }"
         />
       </div>
@@ -33,7 +33,7 @@
       <div v-else>
         <img src="../../assets/img/connection-line.svg" alt="" />
         <img
-          v-if="props.checkLinePE !== -1"
+          v-if="props.linePE !== -1"
           class="connection-line-PE_node"
           style="width: 8px"
           src="../../assets/img/connection-line+PE.svg"
@@ -44,20 +44,20 @@
     <div class="node-el node-el-2">
       <div v-if="props.secondObject?.['Тип'] === 'QF'">
         <img src="../../assets/img/QF.svg" alt="" />
-        <DeviceInfo :textData="secondObject" />
+        <DeviceInfo :textData="secondObject" class="secondObjInfo" />
       </div>
       <div v-else-if="props.secondObject?.['Тип'] === 'QFD'">
         <img src="../../assets/img/QFD.svg" alt="" />
-        <DeviceInfo :textData="secondObject" />
+        <DeviceInfo :textData="secondObject" class="secondObjInfo" />
       </div>
       <img v-else src="../../assets/img/connection-line.svg" alt="" />
       <img
-        v-if="props.checkLinePE !== -1 && props.secondObject?.['Тип'] === 'QF'"
+        v-if="props.linePE !== -1 && props.secondObject?.['Тип'] === 'QF'"
         class="connection-line-PE_Q"
         src="../../assets/img/connection-line+PE-Q.svg"
       />
       <img
-        v-if="props.checkLinePE !== -1 && props.secondObject?.['Тип'] === 'QFD'"
+        v-if="props.linePE !== -1 && props.secondObject?.['Тип'] === 'QFD'"
         class="connection-line-PE_Q"
         src="../../assets/img/connection-line+PE-QFD.svg"
       />
@@ -84,7 +84,7 @@
 <script setup>
 import DeviceInfo from "./DeviceInfo.vue"
 const props = defineProps({
-  checkLinePE: { type: Number },
+  linePE: { type: Number },
   firstObject: { type: Object },
   secondObject: { type: Object },
   itemData: { type: Object },
@@ -195,5 +195,8 @@ const swapPhase = (data) => {
 .cable-size {
   bottom: 46px;
   left: 4px;
+}
+.secondObjInfo {
+  top: 5px;
 }
 </style>
