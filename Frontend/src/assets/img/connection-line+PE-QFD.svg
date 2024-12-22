@@ -1,9 +1,10 @@
-<svg width="17" height="45" viewBox="0 0 17 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="17" height="44" viewBox="0 0 17 44" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_335_14)">
-<path d="M16.5293 0.00012207L16.5293 35.2305" stroke="black" stroke-width="0.5"/>
-<path d="M0.5 42.5L16.5 35" stroke="black" stroke-width="0.5"/>
+<path d="M16.5293 0.00012207L16.5293 4.40392L16.5293 6.60581M16.5293 35.2305L16.5293 30.8267L16.5293 28.6248M16.5293 22.0191L16.5293 17.6153L16.5293 13.2115" stroke="black" stroke-width="0.5"/>
+<path d="M0.5 42.5L8.5 38.75M16.5 35L14.5 35.9375" stroke="black" stroke-width="0.5"/>
 <path d="M8.5 45L8.5 39.5" stroke="white"/>
 <rect x="8" y="39.26" width="1" height="1" transform="rotate(-25.2187 8 39.26)" fill="white"/>
+<rect x="8.36572" y="38.4635" width="1.59016" height="1.23647" transform="rotate(-25.2187 8.36572 38.4635)" fill="white"/>
 <rect x="7.56836" y="37.6294" width="1.47718" height="1.16175" transform="rotate(-25.2187 7.56836 37.6294)" fill="white"/>
 <path d="M8.5 33.1752V38" stroke="white"/>
 <path d="M8.5 33L0.498607 42.5012" stroke="#030000" stroke-width="0.5"/>
@@ -11,7 +12,7 @@
 </g>
 <defs>
 <clipPath id="clip0_335_14">
-<rect width="17" height="45" fill="white"/>
+<rect width="17" height="44" fill="white"/>
 </clipPath>
 </defs>
 </svg>

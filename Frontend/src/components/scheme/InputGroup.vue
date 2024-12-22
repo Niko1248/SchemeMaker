@@ -13,9 +13,13 @@
           <img src="../../assets/img/QD.svg" />
           <DeviceInfo :textData="props.firstObject" />
         </div>
-        <img v-else src="../../assets/img/connection-line.svg" />
+        <img
+          v-else
+          src="../../assets/img/connection-line.svg"
+          :style="{ marginLeft: props.linePE !== -1 ? '8px' : '0px' }"
+        />
         <div v-if="props.linePE !== -1">
-          <img src="../../assets/img/connection-line+PE.svg" alt="" />
+          <img src="../../assets/img/connection-line+PE.svg" />
         </div>
       </div>
     </div>
@@ -86,7 +90,7 @@ const checkInputCable = computed(() => {
 }
 .input-q-wrapp {
   position: relative;
-  height: 24px;
+  height: 23px;
 }
 
 .input-Q-img {
