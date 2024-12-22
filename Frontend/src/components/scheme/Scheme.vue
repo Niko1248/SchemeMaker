@@ -89,6 +89,7 @@ const checkInputPhase = (data) => {
   flex-direction: row;
   width: 190mm;
   transform: translateX(11mm);
+  position: relative;
 }
 .power__wrapp {
   max-width: 215mm;

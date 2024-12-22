@@ -38,7 +38,7 @@ const props = defineProps({
   p {
     font-size: 12px;
     position: absolute;
-    top: -20px;
+    top: -7px;
     left: -35px;
   }
 }
@@ -49,7 +49,7 @@ const props = defineProps({
   position: relative;
   p {
     position: absolute;
-    top: -19px;
+    top: -6px;
     left: -23px;
     font-size: 12px;
   }
@@ -61,7 +61,7 @@ const props = defineProps({
   position: relative;
   p {
     position: absolute;
-    top: -12px;
+    top: 1px;
     left: -27px;
     font-size: 12px;
   }
@@ -79,7 +79,7 @@ const props = defineProps({
 }
 .powerLine-info {
   position: absolute;
-  top: -23px;
+  top: -15px;
   font-size: 9px;
   left: -35px;
 }

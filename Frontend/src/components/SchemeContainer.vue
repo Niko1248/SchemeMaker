@@ -12,7 +12,12 @@
           <Scheme :inputDeviceData="inputDeviceData" :outputDevicesData="item" :listIndex="index + 1" />
           <CircuitScheme :pageData="item" :listIndex="index + 1" />
           <SchemeOutsideLeftTables />
-          <SchemeInsideRightTable :tableData="tableData" :listIndex="index + 1" :totalPages="totalPages" />
+          <SchemeInsideRightTable
+            :tableData="tableData"
+            :listIndex="index + 1"
+            :totalPages="totalPages"
+            :pageData="item"
+          />
           <ConsumerTable :pageData="item" />
           <ContinueNote v-if="totalPages !== 1" :listIndex="index + 1" :totalPages="totalPages" />
         </div>

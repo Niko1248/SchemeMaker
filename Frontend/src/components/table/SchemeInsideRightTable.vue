@@ -1,9 +1,7 @@
 <template>
   <div class="right-inside-table">
     <div class="item" :class="`item${n}`" v-for="n in 100" :key="n">
-      <span v-if="contentMap[n]">
-        {{ resolveContent(n) }}
-      </span>
+      <div v-if="contentMap[n]" v-html="resolveContent(n)" :class="`item${n}-text`"></div>
     </div>
   </div>
 </template>
@@ -18,11 +16,12 @@ const props = defineProps({
   },
   listIndex: { type: Number },
   totalPages: { type: Number },
+  pageData: { type: Array },
 })
 
 const contentMap = computed(() => ({
   7: (data) => data["Артикул"] || "",
-  27: (data) => data["Объект"] || "",
+  27: (data) => `<p'>Объект: ${data["Объект"]}</p><p'>Заказчик: ${data["Заказчик"]}</p> ` || "",
   31: () => "Изм",
   32: () => "Кол",
   33: () => "Лист",
@@ -35,17 +34,18 @@ const contentMap = computed(() => ({
   51: (data) => data["Должность 2"] || "",
   53: (data) => data["ФИО 2"] || "",
   56: (data) => data["Дата"] || "",
-  57: (data) => data["Адрес"] || "",
+  57: (data) => "Адрес: " + data["Адрес"] || "",
   58: () => "Стадия",
   59: () => "Лист",
   60: () => "Листов",
   68: (data) => data["Стадия"] || "",
   69: () => `${props.listIndex}`,
   70: () => `${props.totalPages}`,
-  87: (data) => data["Название"] || "",
+  87: () => `<p'>Однолинейная схема</p><p'>${props.pageData?.[0]?.["Данные"]?.[0]?.["Вводной щит"]}</p> ` || "",
   88: (data) => data["Фирма"] || "",
 }))
 
+// Метод для разрешения контента
 const resolveContent = (key) => {
   const resolver = contentMap.value[key]
   return typeof resolver === "function" ? resolver(props.tableData) : ""
@@ -74,25 +74,15 @@ const resolveContent = (key) => {
   border: 0.5mm solid #000;
   width: 100%;
   height: 100%;
-  text-align: center;
   font-size: 4mm;
   overflow: hidden;
   white-space: nowrap;
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: start;
 }
-.item43,
-.item53 {
-  justify-content: flex-start;
-}
-.item7,
-.item27,
-.item57,
-.item87 {
-  font-size: 7mm;
-  white-space: wrap;
-}
+// Настройка таблицы
 /* prettier-ignore */
 .item8,.item9,.item10,.item17,.item18,.item19,.item20,.item28,.item29,.item30,
 .item37,.item38,.item39,.item40,.item42,.item44,.item47,.item48,.item49,.item50,
@@ -139,5 +129,69 @@ const resolveContent = (key) => {
 .item88 {
   grid-row: 9/11;
   grid-column: 8/11;
+}
+// Стили отдельных элементов
+
+// Артикул
+.item7 {
+  justify-content: flex-start;
+  font-size: 7mm;
+  white-space: wrap;
+  div {
+    padding-left: 2mm;
+  }
+}
+// Объект и заказчик
+.item27-text {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-left: 2mm;
+  font-size: 5mm;
+  white-space: wrap;
+}
+
+// Должность 1
+.item41 {
+  justify-content: flex-start;
+  white-space: wrap;
+  div {
+    padding-left: 1mm;
+  }
+}
+
+// Должность 2
+.item51 {
+  justify-content: flex-start;
+  white-space: wrap;
+  div {
+    padding-left: 1mm;
+  }
+}
+// Адрес
+.item57 {
+  justify-content: flex-start;
+  font-size: 5mm;
+  white-space: wrap;
+  div {
+    padding-left: 2mm;
+  }
+}
+// Название схемы
+.item87 {
+  justify-content: flex-start;
+  font-size: 5mm;
+  white-space: wrap;
+  div {
+    padding-left: 2mm;
+  }
+}
+// Название фирмы
+.item88 {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 5mm;
 }
 </style>

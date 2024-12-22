@@ -10,6 +10,8 @@ const props = defineProps({
 </script>
 <style lang="scss" scoped>
 .scheme-name {
+  display: flex;
+  align-items: center;
   position: absolute;
   top: 0;
   left: 100%;

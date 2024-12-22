@@ -55,8 +55,10 @@
     </p>
   </div>
   <div class="input-node">
-    <div class="input-node-item"><img class="" src="../../assets/img/input-QF.svg" alt="" /></div>
-    <div class="input-node-item"><img class="" src="../../assets/img/input-connection.svg" alt="" /></div>
+    <!-- <div class="input-node-item"><img class="" src="../../assets/img/input-QF.svg" alt="" /></div>
+    <div class="input-node-item"><img class="" src="../../assets/img/input-connection.svg" alt="" /></div> -->
+    <img src="../../assets/img/input-connection2.svg" alt="" />
+    <div class="input-name">ВЩ-1</div>
     <div class="input-phase">
       <p v-if="props.inputPhase > 1" class="powerLine-info">~380/220В</p>
       <p v-else class="powerLine-info">~220В</p>
@@ -104,21 +106,27 @@ const checkInputCable = computed(() => {
 .input-cable {
   position: absolute;
   right: 8cm;
-  top: -1cm;
+  top: -5mm;
 }
 .node {
   position: relative;
 }
 .input-node {
-  width: 60mm;
-  height: 20mm;
-  border: 0.5mm solid #000;
-  transform: translateY(-10mm);
+  width: 52mm;
+  height: 13mm;
+  background: url("../../assets/img/input-border.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translateY(-7mm);
   display: flex;
-  flex-direction: row;
-  align-items: start;
-  div {
-    margin-top: 21.5px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  img {
+    position: absolute;
+    left: 0;
+    top: 19px;
   }
 }
 .PE--transformX {
@@ -127,5 +135,8 @@ const checkInputCable = computed(() => {
 .connection {
   position: absolute;
   top: 100%;
+}
+.powerLine-info {
+  font-size: 3mm;
 }
 </style>
