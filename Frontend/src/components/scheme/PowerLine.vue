@@ -1,9 +1,9 @@
 <template>
   <div class="power-line">
-    <p v-if="props.inputPhase > 1" class="powerLine-info">~380/220В</p>
+    <p v-if="props.inputPhase.length > 1" class="powerLine-info">~380/220В</p>
     <p v-else class="powerLine-info">~220В</p>
     <div class="L">
-      <p>L1,2,3</p>
+      <p>{{ "L" + props.inputPhase.data.join() }}</p>
     </div>
     <div class="N">
       <div class="N-line">
@@ -26,7 +26,7 @@
 <script setup>
 const props = defineProps({
   linePE: { type: Number },
-  inputPhase: { type: Number },
+  inputPhase: { type: Object },
 })
 </script>
 <style lang="scss" scoped>
@@ -50,7 +50,7 @@ const props = defineProps({
   p {
     position: absolute;
     top: -6px;
-    left: -23px;
+    left: -34px;
     font-size: 12px;
   }
 }
@@ -62,7 +62,7 @@ const props = defineProps({
   p {
     position: absolute;
     top: 1px;
-    left: -27px;
+    left: -34px;
     font-size: 12px;
   }
 }

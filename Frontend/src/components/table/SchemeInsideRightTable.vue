@@ -21,7 +21,7 @@ const props = defineProps({
 
 const contentMap = computed(() => ({
   7: (data) => data["Артикул"] || "",
-  27: (data) => `<p'>Объект: ${data["Объект"]}</p><p'>Заказчик: ${data["Заказчик"]}</p> ` || "",
+  27: (data) => `<p>Объект: ${data["Объект"]}</p><p>Заказчик: ${data["Заказчик"]}</p> ` || "",
   31: () => "Изм",
   32: () => "Кол",
   33: () => "Лист",
@@ -41,7 +41,7 @@ const contentMap = computed(() => ({
   68: (data) => data["Стадия"] || "",
   69: () => `${props.listIndex}`,
   70: () => `${props.totalPages}`,
-  87: () => `<p'>Однолинейная схема</p><p'>${props.pageData?.[0]?.["Данные"]?.[0]?.["Вводной щит"]}</p> ` || "",
+  87: () => `<p>Однолинейная схема</p><p>${props.pageData?.[0]?.["Данные"]?.[0]?.["Вводной щит"]}</p> ` || "",
   88: (data) => data["Фирма"] || "",
 }))
 
@@ -80,7 +80,7 @@ const resolveContent = (key) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: start;
+  text-align: center;
 }
 // Настройка таблицы
 /* prettier-ignore */
@@ -130,63 +130,49 @@ const resolveContent = (key) => {
   grid-row: 9/11;
   grid-column: 8/11;
 }
+.item7,
+.item27,
+.item41,
+.item51,
+.item57,
+.item87 {
+  white-space: wrap;
+}
 // Стили отдельных элементов
 
 // Артикул
 .item7 {
-  justify-content: flex-start;
   font-size: 7mm;
-  white-space: wrap;
-  div {
-    padding-left: 2mm;
-  }
 }
 // Объект и заказчик
-.item27-text {
+.item27 {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding-left: 2mm;
   font-size: 5mm;
-  white-space: wrap;
 }
 
 // Должность 1
 .item41 {
-  justify-content: flex-start;
-  white-space: wrap;
-  div {
-    padding-left: 1mm;
-  }
+  font-size: 3mm;
 }
-
+// Фамилия 1
+.item43 {
+  font-size: 3mm;
+}
 // Должность 2
 .item51 {
-  justify-content: flex-start;
-  white-space: wrap;
-  div {
-    padding-left: 1mm;
-  }
+  font-size: 3mm;
+}
+// Фамилия 2
+.item53 {
+  font-size: 3mm;
 }
 // Адрес
 .item57 {
-  justify-content: flex-start;
   font-size: 5mm;
-  white-space: wrap;
-  div {
-    padding-left: 2mm;
-  }
 }
 // Название схемы
 .item87 {
-  justify-content: flex-start;
   font-size: 5mm;
-  white-space: wrap;
-  div {
-    padding-left: 2mm;
-  }
 }
 // Название фирмы
 .item88 {

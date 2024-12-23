@@ -17,7 +17,7 @@
       <div class="item item2">{{ data["Данные"]?.[0]?.["Группа"] }}</div>
       <div class="item item3">{{ findPower(data["Данные"]) }}</div>
       <div class="item item4">{{ findAmperage(data["Данные"]) }}</div>
-      <div class="item item5"></div>
+      <div class="item item5">{{ findConsumerName(data["Данные"]) }}</div>
     </div>
   </div>
 </template>
@@ -35,6 +35,12 @@ const findPower = (data) => {
   const foundElement = data.find((el) => el["Тип"] !== "QD" && el["Установленная мощность"])
   if (foundElement) {
     return foundElement?.["Установленная мощность"]
+  }
+}
+const findConsumerName = (data) => {
+  const foundElement = data.find((el) => el["Тип"] !== "QD" && el["Наименование потребителя"])
+  if (foundElement) {
+    return foundElement?.["Наименование потребителя"]
   }
 }
 </script>
@@ -58,6 +64,12 @@ const findPower = (data) => {
 .item {
   border: 1px solid #000;
   border-left: none;
+}
+.item5 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3mm;
 }
 .column0 {
   font-size: 3mm;

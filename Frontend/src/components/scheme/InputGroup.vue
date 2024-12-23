@@ -58,9 +58,9 @@
     <!-- <div class="input-node-item"><img class="" src="../../assets/img/input-QF.svg" alt="" /></div>
     <div class="input-node-item"><img class="" src="../../assets/img/input-connection.svg" alt="" /></div> -->
     <img src="../../assets/img/input-connection2.svg" alt="" />
-    <div class="input-name">ВЩ-1</div>
+    <div class="input-name">{{ checkInputName["Наименование потребителя"] }}</div>
     <div class="input-phase">
-      <p v-if="props.inputPhase > 1" class="powerLine-info">~380/220В</p>
+      <p v-if="props.inputPhase.length > 1" class="powerLine-info">~380/220В</p>
       <p v-else class="powerLine-info">~220В</p>
     </div>
   </div>
@@ -74,10 +74,13 @@ const props = defineProps({
   firstObject: { type: Object },
   secondObject: { type: Object },
   inputDeviceData: { type: Object },
-  inputPhase: { type: Number },
+  inputPhase: { type: Object },
 })
 const checkInputCable = computed(() => {
   return props.inputDeviceData?.["Данные"].find((obj) => obj["Марка кабеля"])
+})
+const checkInputName = computed(() => {
+  return props.inputDeviceData?.["Данные"].find((obj) => obj["Наименование потребителя"])
 })
 </script>
 <style lang="scss" scoped>

@@ -69,7 +69,7 @@ const checkInputPhase = (data) => {
 
     // Если длина больше 0, возвращаем результат
     if (arrLength > 0) {
-      return arrLength
+      return { data: phaseArr, length: arrLength }
     }
   }
 

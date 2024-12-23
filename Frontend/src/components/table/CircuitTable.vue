@@ -58,6 +58,9 @@ const props = defineProps({
   position: relative;
 }
 .circuit-scheme-item1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   grid-column: span 3;
   border: 0.5mm solid #000;
   width: 100%;

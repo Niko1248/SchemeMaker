@@ -92,6 +92,10 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     // Преобразую спорные типы, если в экселе будет забито неправильно
     for (const element of data) {
       if (element.Группа && element.Группа !== null) {
+        let group = String(element.Группа)
+        if (group.toLowerCase() === "ввод") {
+          element.Группа = -1
+        }
         element.Группа = Number(element.Группа)
       }
       if (element.Фаза && element.Фаза !== null) {
