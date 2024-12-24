@@ -9,7 +9,7 @@
     <div class="node-el-connection-line">
       <img
         v-if="props.linePE !== -1"
-        style="width: 8px; object-position: 0px 11px"
+        style="width: 8px; object-position: 0px 14px"
         class="connection-line-PE_node"
         src="../../assets/img/connection-line+PE.svg"
       />
@@ -18,7 +18,7 @@
           style="width: 18px"
           src="../../assets/img/connection-line.svg"
           :style="{
-            objectPosition: props.linePE !== -1 ? '0px 11px' : '0px 3px',
+            objectPosition: props.linePE !== -1 ? '0px 8px' : '0px 3px',
           }"
         />
       </div>
@@ -28,6 +28,11 @@
     <div class="node-el node-el-1">
       <div v-if="props.firstObject">
         <img class="node-el-1-Q" src="../../assets/img/QD.svg" alt="" />
+        <img
+          v-if="props.linePE !== -1"
+          src="../../assets/img/connection-line+PE.svg"
+          style="transform: translateX(-8px)"
+        />
         <DeviceInfo :textData="firstObject" />
       </div>
       <div v-else>

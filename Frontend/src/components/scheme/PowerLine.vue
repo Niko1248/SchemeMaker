@@ -8,7 +8,7 @@
     <div class="N">
       <div class="N-line">
         <svg width="1000" height="14">
-          <line x1="0" y1="0" x2="1000" y2="0" stroke="black" stroke-width="1" />
+          <line x1="0" y1="2" x2="1000" y2="2" stroke="black" stroke-width="1" />
         </svg>
       </div>
       <p>N</p>
@@ -74,7 +74,7 @@ const props = defineProps({
   }
 }
 .power-line {
-  margin-top: 3.4mm;
+  margin-top: 9px;
   position: relative;
 }
 .powerLine-info {

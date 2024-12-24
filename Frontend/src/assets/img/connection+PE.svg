@@ -1,8 +1,15 @@
-<svg width="35" height="39" viewBox="0 0 35 39" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="29.5" cy="35.5" r="2.5" fill="#040000"/>
-<path d="M13.5 0L13.5 14.0001" stroke="black" stroke-width="0.5"/>
-<path d="M21.5 24.8473L21.5 0.00703108" stroke="black" stroke-width="0.5"/>
-<path d="M29.5 34.5001L29.5 6.13343e-05" stroke="black" stroke-width="0.5"/>
-<ellipse cx="13.5" cy="15.7223" rx="2.5" ry="2.53472" fill="#040000"/>
-<ellipse cx="21.5" cy="25.5347" rx="2.5" ry="2.53472" fill="#040000"/>
+<svg width="35" height="36" viewBox="0 0 35 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_346_47)">
+<circle cx="29.5" cy="32.5" r="2.5" fill="#040000"/>
+<path d="M13.5 0L13.5 11.0001" stroke="black" stroke-width="0.5"/>
+<path d="M21.5 21.8473L21.5 -2.99297" stroke="black" stroke-width="0.5"/>
+<path d="M29.5 31.5001L29.5 -2.99994" stroke="black" stroke-width="0.5"/>
+<ellipse cx="13.5" cy="12.7222" rx="2.5" ry="2.53472" fill="#040000"/>
+<ellipse cx="21.5" cy="22.5347" rx="2.5" ry="2.53472" fill="#040000"/>
+</g>
+<defs>
+<clipPath id="clip0_346_47">
+<rect width="35" height="36" fill="white" transform="translate(35 36) rotate(-180)"/>
+</clipPath>
+</defs>
 </svg>

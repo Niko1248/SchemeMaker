@@ -42,7 +42,9 @@
     <div v-if="props.linePE !== -1">
       <img class="connection" src="../../assets/img/connection+PE.svg" alt="" />
     </div>
-    <div v-else><img class="connection PE--transformX" src="../../assets/img/connection.svg" alt="" /></div>
+    <div v-else>
+      <img class="connection PE--transformX connection-1" src="../../assets/img/connection.svg" alt="" />
+    </div>
   </div>
   <!-- Линия и ввод -->
   <div class="input-line"></div>
@@ -117,7 +119,7 @@ const checkInputName = computed(() => {
 .input-node {
   width: 52mm;
   height: 13mm;
-  background: url("../../assets/img/input-border.png");
+  background: url("../../assets/img/input-border.svg");
   background-size: contain;
   background-repeat: no-repeat;
   transform: translateY(-7mm);
@@ -134,6 +136,12 @@ const checkInputName = computed(() => {
 }
 .PE--transformX {
   transform: translateX(-8px);
+}
+.connection-1 {
+  width: 27px;
+  height: 27px;
+  object-fit: cover;
+  object-position: bottom;
 }
 .connection {
   position: absolute;
