@@ -112,7 +112,7 @@ export default defineComponent({
           scale.value -= 0.1 // Уменьшаем масштаб
         }
         // Ограничиваем масштаб от 0.5 до 2
-        scale.value = Math.max(0.5, Math.min(scale.value, 2))
+        scale.value = Math.max(0.5, Math.min(scale.value, 5))
       }
       // Управление положением по оси Y
       else {
