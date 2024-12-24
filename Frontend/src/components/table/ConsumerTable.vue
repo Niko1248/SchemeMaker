@@ -12,8 +12,10 @@
       <div class="item item9">Расчетный ток, А</div>
       <div class="item item10">Наименование потребителя</div>
     </div>
-    <div class="table__data" :class="`column${index + 1}`" v-for="(data, index) in pageData">
-      <div class="item item1"></div>
+    <div class="table__data" :class="`column${index + 1}`" v-for="(data, index) in pageData" :key="index">
+      <div class="item item1">
+        <img :src="getLegend(data['Данные'])" alt="" />
+      </div>
       <div class="item item2">{{ data["Данные"]?.[0]?.["Группа"] }}</div>
       <div class="item item3">{{ findPower(data["Данные"]) }}</div>
       <div class="item item4">{{ findAmperage(data["Данные"]) }}</div>
@@ -21,29 +23,42 @@
     </div>
   </div>
 </template>
+
 <script setup>
-const props = defineProps({
-  pageData: { type: Array },
+import { reactive, defineProps } from "vue"
+
+const legendObj = reactive({
+  1: new URL("../../assets/img/legend/svet.svg", import.meta.url).href,
+  2: new URL("../../assets/img/legend/shit.svg", import.meta.url).href,
+  3: new URL("../../assets/img/legend/rozetka.svg", import.meta.url).href,
+  4: new URL("../../assets/img/legend/pig.svg", import.meta.url).href,
 })
+
+const props = defineProps({
+  pageData: { type: Array, required: true },
+})
+
 const findAmperage = (data) => {
   const foundElement = data.find((el) => el["Тип"] !== "QD" && el["Расчетный ток"])
-  if (foundElement) {
-    return foundElement?.["Расчетный ток"]
-  }
+  return foundElement ? foundElement["Расчетный ток"] : null
 }
+
 const findPower = (data) => {
   const foundElement = data.find((el) => el["Тип"] !== "QD" && el["Установленная мощность"])
-  if (foundElement) {
-    return foundElement?.["Установленная мощность"]
-  }
+  return foundElement ? foundElement["Установленная мощность"] : null
 }
+
 const findConsumerName = (data) => {
   const foundElement = data.find((el) => el["Тип"] !== "QD" && el["Наименование потребителя"])
-  if (foundElement) {
-    return foundElement?.["Наименование потребителя"]
-  }
+  return foundElement ? foundElement["Наименование потребителя"] : null
+}
+
+const getLegend = (data) => {
+  const foundElement = data.find((el) => el["Условное обозначение"])
+  return foundElement ? legendObj[foundElement["Условное обозначение"]] : null
 }
 </script>
+
 <style lang="scss" scoped>
 .consumer-table {
   display: flex;
@@ -60,6 +75,11 @@ const findConsumerName = (data) => {
   grid-template-columns: repeat(1, 20mm);
   grid-auto-flow: column;
   text-align: center;
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 .item {
   border: 1px solid #000;
