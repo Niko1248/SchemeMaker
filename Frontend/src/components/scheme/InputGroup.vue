@@ -33,7 +33,11 @@
         <DeviceInfo :textData="props.secondObject" />
         <img src="../../assets/img/QFD.svg" alt="" />
       </div>
-      <img v-else src="../../assets/img/connection-line.svg" />
+      <img
+        v-else
+        :style="{ marginLeft: props.linePE !== -1 ? '8px' : '0px' }"
+        src="../../assets/img/connection-line.svg"
+      />
       <div v-if="props.linePE !== -1">
         <img src="../../assets/img/connection-line+PE.svg" alt="" />
       </div>

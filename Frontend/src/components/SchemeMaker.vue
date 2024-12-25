@@ -19,12 +19,12 @@
             accept=".xlsx, .xls"
           />
           <span class="upload-file__span" v-if="fileName">{{ fileName }}</span>
-          <span class="upload-file__span" v-else>Добавьте файл Exel</span>
+          <span class="upload-file__span" v-else>Добавьте файл Exсel</span>
           <label
             for="upload-file__input"
             class="upload-file__lable"
             :style="{
-              border: success ? '1px solid green' : error ? '1px solid red' : '1px dashed #fff;',
+              border: success ? '1px solid #00ff2f' : error ? '1px solid red' : '1px dashed #fff;',
             }"
           ></label>
           <button class="upload-file__button" type="submit" :disabled="!fileName">
@@ -106,7 +106,7 @@ const uploadFile = async () => {
   success.value = false
 
   try {
-    const response = await axios.post("http://62.176.10.62:83/upload", formData, {
+    const response = await axios.post("http://localhost:3000/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
     success.value = true
@@ -185,6 +185,7 @@ const saveToZIP = async () => {
   margin-top: 10px;
   border-radius: 15px;
   backdrop-filter: blur(20px);
+
   height: fit-content;
 }
 .handler-file__wrapper {
@@ -271,7 +272,7 @@ const saveToZIP = async () => {
   height: 1vw;
   border: 1px solid #00ddff;
   border-radius: 50%;
-  border-top: none;
+  border-top: 1px solid #00000000;
   animation: rotate 1s linear infinite;
   box-shadow: 0px 0px 10px #00ddff;
 }
@@ -296,6 +297,7 @@ const saveToZIP = async () => {
   margin-top: 5px;
   background: #ffffff83;
   border-radius: 5px;
+  font-family: WixMadeforDisplay-Regular;
 
   &:hover {
     transition: 0.1s ease-in;
@@ -305,7 +307,10 @@ const saveToZIP = async () => {
 .list__item {
   margin-bottom: 5px;
   display: flex;
+  font-family: WixMadeforDisplay-Regular;
   color: #fff;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed #1e7a5a;
   input {
     margin-right: 10px;
   }
