@@ -43,6 +43,7 @@ export default defineComponent({
     tableData: { type: Object },
     schemeDataChunk: { type: Object },
   },
+
   setup(props, { expose }) {
     const scale = ref(1) // Начальный масштаб для элемента
     const positionX = ref(0) // Позиция по оси X
@@ -94,7 +95,8 @@ export default defineComponent({
     // Обработчик событий колесика
     const onWheelHandler = (event) => {
       event.preventDefault() // Предотвращаем стандартное поведение (масштаб страницы)
-
+      const wrapperRect = pages__wrapper.value.getBoundingClientRect()
+      const windowHeight = window.innerHeight
       // Управление положением по оси X при зажатом Shift
       if (event.shiftKey) {
         if (event.deltaY < 0) {
@@ -103,7 +105,6 @@ export default defineComponent({
           positionX.value -= 20 // Двигаем влево
         }
       }
-
       // Масштабирование
       else if (event.ctrlKey) {
         if (event.deltaY < 0) {
@@ -112,14 +113,16 @@ export default defineComponent({
           scale.value -= 0.1 // Уменьшаем масштаб
         }
         // Ограничиваем масштаб от 0.5 до 2
-        scale.value = Math.max(0.5, Math.min(scale.value, 5))
+        scale.value = Math.max(0.5, Math.min(scale.value, 3))
       }
       // Управление положением по оси Y
-      else {
-        if (event.deltaY < 0) {
-          positionY.value += 50 // Двигаем вверх
-        } else {
-          positionY.value -= 50 // Двигаем вниз
+      else if (event.deltaY < 0) {
+        if (wrapperRect.top + 50 <= 0) {
+          positionY.value += 50
+        }
+      } else {
+        if (wrapperRect.bottom - 50 >= windowHeight) {
+          positionY.value -= 50
         }
       }
     }
@@ -190,7 +193,8 @@ export default defineComponent({
 <style lang="scss">
 @use "./../scss/size.scss" as size;
 .scheme__container {
-  background: #d9d9d9;
+  /*   background: #d9d9d9;
+ */
   width: 80vw;
   height: 100svh;
   display: flex;
@@ -199,7 +203,9 @@ export default defineComponent({
   font-family: type-A;
 }
 .pages__wrapper {
-  transition: 0.2s ease;
+  transition: 0.2s ease-out;
+  padding: 50px 0;
+  box-sizing: border-box;
 }
 .page {
   height: size.$height;

@@ -10,11 +10,29 @@
     <div class="service__container">
       <div class="handler-file__wrapper">
         <form @submit.prevent="uploadFile">
-          <input type="file" @change="onFileChange" accept=".xlsx, .xls" />
-          <button type="submit" :disabled="!file">Загрузить</button>
+          <input
+            class="upload-file__input"
+            id="upload-file__input"
+            ref="fileInput"
+            type="file"
+            @change="handleFileChange"
+            accept=".xlsx, .xls"
+          />
+          <span class="upload-file__span" v-if="fileName">{{ fileName }}</span>
+          <span class="upload-file__span" v-else>Добавьте файл Exel</span>
+          <label
+            for="upload-file__input"
+            class="upload-file__lable"
+            :style="{
+              border: success ? '1px solid green' : error ? '1px solid red' : '1px dashed #fff;',
+            }"
+          ></label>
+          <button class="upload-file__button" type="submit" :disabled="!fileName">
+            <p v-if="loading">идет загрузка</p>
+            <p v-else>загрузить</p>
+          </button>
         </form>
-        <p v-if="loading">Загрузка файла...</p>
-        <p v-if="success">Файл успешно загружен и обработан!</p>
+        <p class="upload-file__loading" v-if="loading"></p>
         <p v-if="error">{{ error }}</p>
       </div>
       <div class="list">
@@ -29,12 +47,15 @@
         </div>
       </div>
       <button
+        class="export-button"
         @click="exportToPDF('Select')"
         v-if="schemeData.length !== 0 && selectedSchemes.length !== 0 && schemeData.length !== selectedSchemes.length"
       >
         Экспортировать элементов: {{ selectedSchemes.length }}
       </button>
-      <button @click="exportToPDF('All')" v-if="schemeData.length !== 0">Экспортировать всё</button>
+      <button class="export-button" @click="exportToPDF('All')" v-if="schemeData.length !== 0">
+        Экспортировать всё
+      </button>
     </div>
   </div>
 </template>
@@ -46,8 +67,8 @@ import JSZip from "jszip"
 import { saveAs } from "file-saver"
 import SchemeContainer from "./SchemeContainer.vue"
 
-const file = ref(null)
-const loading = ref(false)
+/* const file = ref(null)
+ */ const loading = ref(false)
 const success = ref(false)
 const error = ref("")
 const checkDoc = ref("")
@@ -56,18 +77,18 @@ const schemeData = reactive([])
 const collectedFiles = reactive([])
 const activeRef = ref(null)
 const selectedSchemes = ref([])
+const fileName = ref(null)
+const fileInput = ref(null)
 
 const changeScheme = (name) => {
   checkDoc.value = name
 }
 
-const onFileChange = (event) => {
-  const target = event.target
-  if (target.files && target.files.length > 0) {
-    file.value = target.files[0]
-  }
+// Функция обработки выбора файла
+const handleFileChange = (event) => {
+  const file = event.target.files[0]
+  fileName.value = file ? file.name : null // Отображаем имя файла
 }
-
 const toogleCheckbox = (name) => {
   if (selectedSchemes.value.includes(name)) {
     selectedSchemes.value = selectedSchemes.value.filter((item) => item !== name)
@@ -78,14 +99,14 @@ const toogleCheckbox = (name) => {
 
 const uploadFile = async () => {
   const formData = new FormData()
-  formData.append("file", file.value)
+  formData.append("file", fileInput.value.files[0])
 
   loading.value = true
   error.value = null
   success.value = false
 
   try {
-    const response = await axios.post("http://localhost:3000/upload", formData, {
+    const response = await axios.post("http://62.176.10.62:83/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
     success.value = true
@@ -153,60 +174,145 @@ const saveToZIP = async () => {
   display: flex;
   width: 100svw;
   overflow: hidden;
+  height: 100svh;
 }
 .service__container {
   width: 20vw;
-  padding: 1vw 1vw;
-  background: #323232;
+  padding: 1vw 0.1vw;
+  background: #00000089;
   z-index: 99;
+  margin: 0 auto;
+  margin-top: 10px;
+  border-radius: 15px;
+  backdrop-filter: blur(20px);
+  height: fit-content;
 }
 .handler-file__wrapper {
+  font-family: WixMadeforDisplay-Regular;
+  margin-bottom: 2vw;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 3vw;
+  margin-top: 1vw;
+  padding-top: 5vw;
   form {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
   }
-  button {
-    background: #252525;
-    width: 50%;
-    border: 1px solid #252525;
-    border-radius: 3px;
-    font-size: 16px;
-    height: 30px;
-    color: #fff;
-    cursor: pointer;
-    transition: 0.5s ease;
+  input {
+    width: 15vw;
+  }
+}
 
-    &:hover {
-      background: #171717;
-      transition: 0.3ss ease;
-    }
+.upload-file__input {
+  position: absolute;
+  top: 0;
+  left: 2.5vw;
+  width: 0vw;
+  height: 0vw;
+  opacity: 0;
+  z-index: 999;
+  cursor: pointer;
+}
+.upload-file__lable {
+  position: absolute;
+  top: 0;
+  left: 2.5vw;
+  cursor: pointer;
+  width: 15vw;
+  border: 1px dashed #fff;
+  height: 4vw;
+  border-radius: 10px;
+  transition: 0.2s ease-in;
+  box-sizing: border-box;
+  &:hover {
+    transition: 0.1s ease-in;
+    background: #ffffff3f;
+    border: 1px solid #00f7ff;
+  }
+}
+
+.upload-file__span {
+  position: absolute;
+  font-size: 19px;
+  top: 1.4vw;
+  left: 2.5vw;
+  width: 15vw;
+  text-align: center;
+  color: #fff;
+  overflow: hidden;
+}
+.upload-file__button {
+  box-sizing: border-box;
+  width: 15vw;
+  height: 1.5vw;
+  position: absolute;
+  left: 2.5vw;
+  border: none;
+  background: #ffffff83;
+  border-radius: 5px;
+  p {
+    margin-bottom: 3px;
+  }
+  &:hover {
+    transition: 0.1s ease-in;
+    background: #ffffffeb;
+  }
+}
+.upload-file__loading {
+  display: block;
+  position: absolute;
+  left: 15vw;
+  width: 1vw;
+  height: 1vw;
+  border: 1px solid #00ddff;
+  border-radius: 50%;
+  border-top: none;
+  animation: rotate 1s linear infinite;
+  box-shadow: 0px 0px 10px #00ddff;
+}
+@keyframes rotate {
+  from {
+    transform: rotate(360deg);
   }
 }
 .list {
-  width: 100%;
+  width: 15vw;
+  margin-left: 2.5vw;
   height: fit-content;
   max-height: 60%;
-  background-color: #8f8f8f;
-  overflow-y: scroll;
   margin-bottom: 20px;
+}
+.export-button {
+  margin-left: 2.5vw;
+  box-sizing: border-box;
+  width: 15vw;
+  height: 1.5vw;
+  border: none;
+  margin-top: 5px;
+  background: #ffffff83;
+  border-radius: 5px;
+
+  &:hover {
+    transition: 0.1s ease-in;
+    background: #ffffffeb;
+  }
 }
 .list__item {
   margin-bottom: 5px;
   display: flex;
+  color: #fff;
   input {
     margin-right: 10px;
   }
   .input-label {
     cursor: pointer;
     &:hover {
-      color: #fff;
+      color: #b3d0dd;
     }
   }
 }

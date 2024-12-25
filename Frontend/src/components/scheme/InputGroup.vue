@@ -57,8 +57,6 @@
     </p>
   </div>
   <div class="input-node">
-    <!-- <div class="input-node-item"><img class="" src="../../assets/img/input-QF.svg" alt="" /></div>
-    <div class="input-node-item"><img class="" src="../../assets/img/input-connection.svg" alt="" /></div> -->
     <img src="../../assets/img/input-connection2.svg" alt="" />
     <div class="input-name">{{ checkInputName["Наименование потребителя"] }}</div>
     <div class="input-phase">

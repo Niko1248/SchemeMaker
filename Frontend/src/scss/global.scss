@@ -1,5 +1,10 @@
 html {
-  background-color: #323232;
+  background: rgb(27, 95, 119);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(57, 113, 110, 1) 100%);
+}
+
+#app {
+  height: 100svh;
 }
 
 html,

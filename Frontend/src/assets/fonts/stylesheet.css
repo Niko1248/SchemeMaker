@@ -3,3 +3,9 @@
     src: url('./type-A.ttf');
     font-weight: 400;
 }
+
+@font-face {
+    font-family: 'WixMadeforDisplay-Regular';
+    src: url('./WixMadeforDisplay-Regular.ttf');
+    font-weight: 400;
+}
