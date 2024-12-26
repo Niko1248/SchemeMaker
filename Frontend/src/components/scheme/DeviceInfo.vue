@@ -1,6 +1,6 @@
 <template>
   <div class="text__wrap">
-    <p>ABB</p>
+    <p>{{ props.textData?.["Производитель"] }}</p>
     <p>{{ props.textData?.["Автомат"].replace(/\s/g, "") }}</p>
     <div style="display: flex; justify-content: center">
       <p style="text-transform: lowercase">{{ props.textData?.["Класс"] }}</p>

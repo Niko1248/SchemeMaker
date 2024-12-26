@@ -104,7 +104,7 @@ const uploadFile = async () => {
   loading.value = true
   error.value = null
   success.value = false
-
+  // http://138.124.31.181:3000/upload
   try {
     const response = await axios.post("http://localhost:3000/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },

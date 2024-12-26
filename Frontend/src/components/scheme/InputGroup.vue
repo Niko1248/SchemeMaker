@@ -53,16 +53,13 @@
   <!-- Линия и ввод -->
   <div class="input-line"></div>
   <div class="input-cable">
-    <p v-if="checkInputCable['Сечение кабеля']">
-      {{ checkInputCable?.["Марка кабеля"] + checkInputCable?.["Сечение кабеля"] }}
-    </p>
-    <p v-else>
-      {{ checkInputCable?.["Марка кабеля"] }}
+    <p>
+      {{ checkInputCableMarka + checkInputCableSize }}
     </p>
   </div>
   <div class="input-node">
     <img src="../../assets/img/input-connection2.svg" alt="" />
-    <div class="input-name">{{ checkInputName["Наименование потребителя"] }}</div>
+    <div class="input-name">{{ "от " + checkInputName["Наименование потребителя"] }}</div>
     <div class="input-phase">
       <p v-if="props.inputPhase.length > 1" class="powerLine-info">~380/220В</p>
       <p v-else class="powerLine-info">~220В</p>
@@ -80,9 +77,14 @@ const props = defineProps({
   inputDeviceData: { type: Object },
   inputPhase: { type: Object },
 })
-const checkInputCable = computed(() => {
-  return props.inputDeviceData?.["Данные"].find((obj) => obj["Марка кабеля"])
+const checkInputCableMarka = computed(() => {
+  return props.inputDeviceData?.["Данные"].find((obj) => obj["Марка кабеля"])?.["Марка кабеля"] || ""
 })
+
+const checkInputCableSize = computed(() => {
+  return props.inputDeviceData?.["Данные"].find((obj) => obj["Сечение кабеля"])?.["Сечение кабеля"] || ""
+})
+
 const checkInputName = computed(() => {
   return props.inputDeviceData?.["Данные"].find((obj) => obj["Наименование потребителя"])
 })
