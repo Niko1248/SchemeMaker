@@ -4,7 +4,6 @@ import path from "path"
 import { fileURLToPath } from "url"
 import multer from "multer"
 import ExcelJS from "exceljs"
-import { rootCertificates } from "tls"
 
 const app = express()
 const port = 3000
@@ -154,6 +153,6 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   }
 })
 
-app.listen(port, () => {
+app.listen(3000, () => {
   console.log(`Server is running on http://192.168.0.110:${port}`)
 })
