@@ -26,8 +26,26 @@
 
     <!-- Первый объект (УЗО или линия) -->
     <div class="node-el node-el-1">
-      <div v-if="props.firstObject">
+      <div v-if="props.firstObject['Тип'] === 'QD'">
         <img class="node-el-1-Q" src="../../assets/img/QD.svg" alt="" />
+        <img
+          v-if="props.linePE !== -1"
+          src="../../assets/img/connection-line+PE.svg"
+          style="transform: translateX(-8px)"
+        />
+        <DeviceInfo :textData="firstObject" />
+      </div>
+      <div v-else-if="props.firstObject['Тип'] === 'QF'">
+        <img class="node-el-1-Q" src="../../assets/img/QF-1.svg" alt="" />
+        <img
+          v-if="props.linePE !== -1"
+          src="../../assets/img/connection-line+PE.svg"
+          style="transform: translateX(-8px)"
+        />
+        <DeviceInfo :textData="firstObject" />
+      </div>
+      <div v-else-if="props.firstObject['Тип'] === 'QFD'">
+        <img class="node-el-1-Q" src="../../assets/img/QFD.svg" alt="" />
         <img
           v-if="props.linePE !== -1"
           src="../../assets/img/connection-line+PE.svg"
@@ -47,7 +65,11 @@
     </div>
     <!-- Второй объект (автомат, дифавтомат или линия) -->
     <div class="node-el node-el-2">
-      <div v-if="props.secondObject?.['Тип'] === 'QF'">
+      <div v-if="props.secondObject?.['Тип'] === 'QD'">
+        <img src="../../assets/img/QD.svg" alt="" />
+        <DeviceInfo :textData="secondObject" class="secondObjInfo" />
+      </div>
+      <div v-else-if="props.secondObject?.['Тип'] === 'QF'">
         <img src="../../assets/img/QF.svg" alt="" />
         <DeviceInfo :textData="secondObject" class="secondObjInfo" />
       </div>

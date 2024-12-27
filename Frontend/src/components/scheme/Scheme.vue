@@ -39,11 +39,11 @@ const props = defineProps({
 })
 //Нахожу 1 объект (УЗО)
 const firstObject = (data) => {
-  return data["Данные"].find((obj) => obj?.["Тип"] === "QD")
+  return data["Данные"][0]
 }
 //Нахожу 2 объект (автомат, дифавтомат)
 const secondObject = (data) => {
-  return data["Данные"].find((obj) => obj?.["Тип"] === "QF" || obj?.["Тип"] === "QFD")
+  return data["Данные"][1]
 }
 //Проверка наличия линии PE
 const checkLinePE = computed(() => {

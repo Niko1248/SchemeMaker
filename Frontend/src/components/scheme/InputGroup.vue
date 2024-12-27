@@ -9,9 +9,17 @@
     <!-- Первый объект (УЗО или линия) -->
     <div>
       <div>
-        <div v-if="props.firstObject" class="node">
+        <div v-if="props.firstObject['Тип'] === 'QD'" class="node">
           <img src="../../assets/img/QD.svg" />
-          <DeviceInfo :textData="props.firstObject" />
+          <DeviceInfo :textData="props.inputDeviceData?.['Данные']?.[0]" />
+        </div>
+        <div v-else-if="props.firstObject['Тип'] === 'QF'" class="node">
+          <img src="../../assets/img/QF-1.svg" />
+          <DeviceInfo :textData="props.inputDeviceData?.['Данные']?.[0]" />
+        </div>
+        <div v-else-if="props.firstObject['Тип'] === 'QFD'" class="node">
+          <img src="../../assets/img/QFD.svg" />
+          <DeviceInfo :textData="props.inputDeviceData?.['Данные']?.[0]" />
         </div>
         <img
           v-else
@@ -27,10 +35,14 @@
     <div>
       <div class="node" v-if="props.secondObject?.['Тип'] === 'QF'">
         <img src="../../assets/img/QF-1.svg" />
-        <DeviceInfo :textData="props.secondObject" />
+        <DeviceInfo :textData="props.inputDeviceData?.['Данные']?.[1]" />
+      </div>
+      <div class="node" v-else-if="props.secondObject?.['Тип'] === 'QD'">
+        <DeviceInfo :textData="props.inputDeviceData?.['Данные']?.[1]" />
+        <img src="../../assets/img/QD.svg" alt="" />
       </div>
       <div class="node" v-else-if="props.secondObject?.['Тип'] === 'QFD'">
-        <DeviceInfo :textData="props.secondObject" />
+        <DeviceInfo :textData="props.inputDeviceData?.['Данные']?.[1]" />
         <img src="../../assets/img/QFD.svg" alt="" />
       </div>
       <img
