@@ -17,6 +17,7 @@ const props = defineProps({
 <style lang="scss" scoped>
 .text__wrap {
   position: absolute;
+  max-width: 10mm;
   left: -33px;
   top: 0;
   display: flex;

@@ -191,19 +191,18 @@ const swapPhase = (data) => {
   position: absolute;
   transform: rotate(-90deg);
   width: 100%;
-  font-size: 12px;
+  font-size: 11px;
 }
 .cable-name {
-  bottom: 24%;
+  bottom: 13mm;
   text-align: center;
-  left: -2vw;
-  max-width: 70px;
+  left: -10mm;
   max-width: 70px;
   word-break: break-word;
 }
 .cable-size {
-  bottom: 24%;
-  left: -1.2vw;
+  bottom: 12mm;
+  left: -6.5mm;
   text-align: center;
 }
 .secondObjInfo {

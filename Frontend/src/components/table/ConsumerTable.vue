@@ -79,6 +79,7 @@ const getLegend = (data) => {
     display: flex;
     align-items: center;
     justify-content: center;
+    word-break: break-word;
   }
 }
 .item {
