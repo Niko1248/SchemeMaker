@@ -89,14 +89,14 @@
         src="../../assets/img/connection-line+PE-Q.svg"
       />
       <img
-        v-if="props.linePE !== -1 && props.secondObject?.['Тип'] === 'QFD'"
+        v-if="(props.linePE !== -1 && props.secondObject?.['Тип'] === 'QFD') || props.secondObject?.['Тип'] === 'QD'"
         class="connection-line-PE_Q"
         src="../../assets/img/connection-line+PE-QFD.svg"
       />
     </div>
     <!-- Стрелка + кабель -->
     <div class="node-el node-arrow">
-      <img src="../../assets/img/arrow2.svg" alt="" />
+      <img src="../../assets/img/arrow2.svg" />
     </div>
     <div class="cable-name">
       {{ props.itemData?.["Данные"]?.[0]?.["Марка кабеля"] }}
