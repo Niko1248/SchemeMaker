@@ -77,9 +77,14 @@
         <img src="../../assets/img/QFD.svg" alt="" />
         <DeviceInfo :textData="secondObject" class="secondObjInfo" />
       </div>
-      <img v-else src="../../assets/img/connection-line.svg" alt="" />
+      <img v-else src="../../assets/img/kura.svg" alt="" />
       <img
         v-if="props.linePE !== -1 && props.secondObject?.['Тип'] === 'QF'"
+        class="connection-line-PE_Q"
+        src="../../assets/img/connection-line+PE-Q.svg"
+      />
+      <img
+        v-else-if="props.linePE !== -1 && props.secondObject?.['Тип'] === undefined"
         class="connection-line-PE_Q"
         src="../../assets/img/connection-line+PE-Q.svg"
       />
