@@ -1,9 +1,9 @@
 <template>
   <div class="text__wrap">
-    <p>{{ props.textData?.["Производитель"] }}</p>
-    <p>{{ props.textData?.["Автомат"].replace(/\s/g, "") }}</p>
+    <p>{{ props.textData["Производитель"] ? props.textData["Производитель"] : "" }}</p>
+    <p>{{ props.textData["Автомат"] ? props.textData["Автомат"].replace(/\s/g, "") : "" }}</p>
     <div style="display: flex; justify-content: center">
-      <p style="text-transform: lowercase">{{ props.textData?.["Класс"] }}</p>
+      <p style="text-transform: lowercase">{{ props.textData["Класс"] ? props.textData["Класс"] : "" }}</p>
       <p>{{ props.textData?.["Номинал"] ? props.textData?.["Номинал"] + "А" : "" }}</p>
     </div>
     <p>{{ props.textData?.["Ток утечки УЗО"] ? props.textData?.["Ток утечки УЗО"] + "мА " : "" }}</p>
