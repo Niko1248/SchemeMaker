@@ -40,8 +40,6 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
 
   const checkLinePE = (data) => {
     const isLinePE = data["Данные"].findIndex((obj) => obj?.["PE"])
-    console.log(isLinePE)
-
     return isLinePE
   }
 

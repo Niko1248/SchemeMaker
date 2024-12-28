@@ -36,7 +36,7 @@
         <p v-if="error">{{ error }}</p>
       </div>
       <div class="list">
-        <div class="list__item" v-for="(item, index) in schemeData" :key="`item-${index}`">
+        <div class="list__item" v-for="(item, index) in schemeDataStore.schemeData" :key="`item-${index}`">
           <input
             type="checkbox"
             :id="`checkbox-${index}`"
@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed, nextTick } from "vue"
+import { reactive, ref, nextTick } from "vue"
 import { useSchemeDataStore } from "../stores/SchemeData.js"
 import axios from "axios"
 import JSZip from "jszip"
@@ -117,9 +117,7 @@ const uploadFile = async () => {
     let indexTable
     indexTable = excelData.findIndex((el) => el["Вводной щит"] === "Таблица")
     schemeDataStore.splitTableAndSchemeData(excelData, indexTable)
-    Object.assign(tableData, excelData[indexTable]["Группы"][0]["Данные"][0])
-    schemeData.splice(0, schemeData.length, ...excelData.filter((_, index) => index !== indexTable))
-    checkDoc.value = schemeData[0]["Вводной щит"] || null
+    checkDoc.value = schemeDataStore.schemeData[0]["Вводной щит"] || null
   } catch (err) {
     error.value = "Ошибка загрузки файла"
     success.value = false
