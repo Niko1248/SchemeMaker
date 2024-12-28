@@ -10,8 +10,22 @@
     <div class="logo">
       <img src="./../assets/img/Logo.svg" />
     </div>
-    <div :class="checkDoc ? 'service__container--success' : 'service__container'">
-      <div class="clouse-ico"></div>
+    <div
+      :class="checkDoc ? 'service__container--success' : 'service__container'"
+      :style="{
+        transform: menuOpen ? 'translateX(0)' : 'translateX(97%)',
+      }"
+    >
+      <div
+        v-if="checkDoc"
+        class="close-ico"
+        @click="toggleMenu"
+        :style="{
+          transform: menuOpen ? 'scale(-1,1)' : 'scale(1,1)',
+        }"
+      >
+        <img src="./../assets/img/Close.svg" alt="" />
+      </div>
       <div class="handler-file__wrapper">
         <form @submit.prevent="uploadFile">
           <input
@@ -77,7 +91,6 @@ import axios from "axios"
 import JSZip from "jszip"
 import { saveAs } from "file-saver"
 import SchemeContainer from "./SchemeContainer.vue"
-
 const schemeDataStore = useSchemeDataStore()
 const loading = ref(false)
 const success = ref(false)
@@ -90,9 +103,15 @@ const activeRef = ref(null)
 const selectedSchemes = ref([])
 const fileName = ref(null)
 const fileInput = ref(null)
-/* const isSuccess = ref(false)
- */ const changeScheme = (name) => {
+const menuOpen = ref(true)
+
+const changeScheme = (name) => {
   checkDoc.value = name
+}
+
+// Функция открытия / закрытия меню
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value
 }
 
 // Функция обработки выбора файла
@@ -219,11 +238,24 @@ const saveToZIP = async () => {
     left: 25px;
   }
 }
-.clouse-ico {
+.close-ico {
   position: absolute;
+  cursor: pointer;
+  left: 5px;
+  top: calc(50% - 10px);
+  transition: 0.3s;
+  transform: scale(-1, 1);
+  img {
+    width: 20px;
+    height: 20px;
+  }
+  &:hover {
+    filter: drop-shadow(0px 0px 5px #fff);
+    transition: 0.3s ease;
+  }
 }
 .service__container {
-  width: 20.5vw;
+  width: 20.3vw;
   padding: 1.6vw 1vw;
   background: #00000089;
   z-index: 99;
@@ -257,12 +289,10 @@ const saveToZIP = async () => {
 }
 .service__container--success {
   width: 14vw;
-  padding: 25px 25px;
-  margin-right: 25px;
+  padding: 25px 25px 25px 30px;
   background: #00000089;
-  transform: translateX(200%);
   z-index: 99;
-  margin-top: 25px;
+  margin: 15px;
   border-radius: 10px;
   backdrop-filter: blur(20px);
   height: fit-content;
@@ -271,8 +301,9 @@ const saveToZIP = async () => {
   flex-direction: column;
   justify-content: flex-start;
   box-shadow: -5px 5px 10px #0000006b;
-  animation: DocTrue 1s ease forwards;
+  animation: DocTrue 1s ease;
   will-change: transform;
+  transition: 0.5s ease;
 }
 @keyframes DocTrue {
   from {
