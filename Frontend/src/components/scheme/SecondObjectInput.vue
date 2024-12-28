@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="node">
     <div v-if="deviceType" class="node">
       <img :src="deviceImage" />
       <DeviceInfo :textData="deviceData" />
@@ -38,8 +38,4 @@ const deviceImages = reactive({
 const deviceImage = computed(() => (deviceType.value ? deviceImages[deviceType.value] : ""))
 </script>
 
-<style lang="scss" scoped>
-.node {
-  position: relative;
-}
-</style>
+<style lang="scss" scoped></style>

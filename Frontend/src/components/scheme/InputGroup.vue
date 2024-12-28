@@ -87,9 +87,7 @@ const checkInputName = computed(() => {
   right: 8cm;
   top: -5mm;
 }
-.node {
-  position: relative;
-}
+
 .input-node {
   width: 52mm;
   height: 13mm;

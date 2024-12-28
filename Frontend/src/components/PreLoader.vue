@@ -1,6 +1,6 @@
 <template>
   <div class="preloader">
-    <Vue3Lottie :animationData="currentAnimationData" :loop="false" :height="700" :width="700" :autoPlay="true" />
+    <Vue3Lottie :animationData="currentAnimationData" :loop="false" :height="1080" :width="1920" :autoPlay="true" />
   </div>
 </template>
 
@@ -26,6 +26,7 @@ const currentAnimationData = ref(Preloader)
   background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(57, 113, 110, 1) 100%);
   animation: exit 1s ease-in forwards;
   animation-delay: 5s;
+  overflow: hidden;
 }
 @keyframes exit {
   0% {
@@ -40,7 +41,7 @@ const currentAnimationData = ref(Preloader)
   }
 }
 .lottie-animation-container {
-  width: 100vw !important;
-  height: 100svh !important;
+  width: 97vw !important;
+  height: 46vw !important;
 }
 </style>

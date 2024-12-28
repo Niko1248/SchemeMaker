@@ -1,5 +1,5 @@
 <template>
-  <div class="grid" :style="{ alignItems: success ? 'flex-start' : 'center' }">
+  <div class="grid" :style="{ alignItems: checkDoc ? 'flex-start' : 'center' }">
     <SchemeContainer
       v-for="(doc, index) in schemeDataStore.filteredSchemeData(checkDoc)"
       :key="'Щит' + index"
@@ -10,7 +10,8 @@
     <div class="logo">
       <img src="./../assets/img/Logo.svg" />
     </div>
-    <div class="service__container">
+    <div :class="checkDoc ? 'service__container--success' : 'service__container'">
+      <div class="clouse-ico"></div>
       <div class="handler-file__wrapper">
         <form @submit.prevent="uploadFile">
           <input
@@ -21,22 +22,24 @@
             @change="handleFileChange"
             accept=".xlsx, .xls"
           />
-          <span class="upload-file__span" v-if="fileName">{{ fileName }}</span>
-          <span class="upload-file__span" v-else>Добавьте файл Exсel</span>
+
           <label
             for="upload-file__input"
             class="upload-file__lable"
             :style="{
               border: success ? '1px solid #00ff2f' : error ? '1px solid red' : '1px dashed #fff;',
             }"
-          ></label>
+            ><span class="upload-file__span" v-if="fileName">{{ fileName }}</span>
+            <span class="upload-file__span" v-else> + Добавьте файл Exсel </span></label
+          >
           <button class="upload-file__button" type="submit" :disabled="!fileName">
             <p v-if="loading">идет загрузка</p>
             <p v-else>загрузить</p>
+
+            <p class="upload-file__loading" v-if="loading"></p>
+            <p v-if="error">{{ error }}</p>
           </button>
         </form>
-        <p class="upload-file__loading" v-if="loading"></p>
-        <p v-if="error">{{ error }}</p>
       </div>
       <div class="list">
         <div class="list__item" v-for="(item, index) in schemeDataStore.schemeData" :key="`item-${index}`">
@@ -87,8 +90,8 @@ const activeRef = ref(null)
 const selectedSchemes = ref([])
 const fileName = ref(null)
 const fileInput = ref(null)
-
-const changeScheme = (name) => {
+/* const isSuccess = ref(false)
+ */ const changeScheme = (name) => {
   checkDoc.value = name
 }
 
@@ -178,6 +181,7 @@ const saveToZIP = async () => {
   width: 100svw;
   overflow: hidden;
   height: 100svh;
+  justify-content: space-between;
 }
 .logo {
   position: absolute;
@@ -187,6 +191,8 @@ const saveToZIP = async () => {
   opacity: 0;
   animation: logo 3.3s ease forwards;
   animation-delay: 3s;
+  will-change: transform;
+
   img {
     width: 15vw;
     height: 3.1vw;
@@ -213,19 +219,33 @@ const saveToZIP = async () => {
     left: 25px;
   }
 }
+.clouse-ico {
+  position: absolute;
+}
 .service__container {
-  width: 20vw;
-  padding: 1vw 0.1vw;
+  width: 20.5vw;
+  padding: 1.6vw 1vw;
   background: #00000089;
   z-index: 99;
   margin: 0 auto;
   margin-top: 10px;
   border-radius: 15px;
   backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   border: 5px solid #fff;
   height: fit-content;
   animation: borderNone 0.5s ease forwards;
   animation-delay: 6s;
+  box-shadow: 0px 0px 15px #000000d9;
+  will-change: transform;
+
+  box-sizing: border-box;
+  .list {
+    margin: 0;
+  }
 }
 @keyframes borderNone {
   0% {
@@ -235,48 +255,73 @@ const saveToZIP = async () => {
     border: 0px solid #ffffff00;
   }
 }
+.service__container--success {
+  width: 14vw;
+  padding: 25px 25px;
+  margin-right: 25px;
+  background: #00000089;
+  transform: translateX(200%);
+  z-index: 99;
+  margin-top: 25px;
+  border-radius: 10px;
+  backdrop-filter: blur(20px);
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-shadow: -5px 5px 10px #0000006b;
+  animation: DocTrue 1s ease forwards;
+  will-change: transform;
+}
+@keyframes DocTrue {
+  from {
+    transform: translateX(150%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
 .handler-file__wrapper {
   font-family: WixMadeforDisplay-Regular;
-  margin-bottom: 2vw;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 1vw;
-  padding-top: 5vw;
+  width: 100%;
   form {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
+    width: 100%;
+    flex-direction: column;
   }
   input {
-    width: 15vw;
+    width: 100%;
+    height: 4vw;
   }
 }
-
 .upload-file__input {
-  position: absolute;
-  top: 0;
-  left: 2.5vw;
-  width: 0vw;
-  height: 0vw;
-  opacity: 0;
   z-index: 999;
+  visibility: hidden;
   cursor: pointer;
 }
 .upload-file__lable {
+  cursor: pointer;
   position: absolute;
   top: 0;
-  left: 2.5vw;
-  cursor: pointer;
-  width: 15vw;
+  left: 0;
   border: 1px dashed #fff;
+  width: 100%;
   height: 4vw;
   border-radius: 10px;
   transition: 0.2s ease-in;
   box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  flex-wrap: wrap;
   &:hover {
     transition: 0.1s ease-in;
     background: #ffffff3f;
@@ -285,8 +330,7 @@ const saveToZIP = async () => {
 }
 
 .upload-file__span {
-  position: absolute;
-  font-size: 1.2vw;
+  font-size: 1.1vw;
   top: 1.4vw;
   left: 2.5vw;
   width: 15vw;
@@ -296,16 +340,15 @@ const saveToZIP = async () => {
 }
 .upload-file__button {
   box-sizing: border-box;
-  width: 15vw;
-  height: 1.5vw;
-  position: absolute;
-  left: 2.5vw;
+  margin-top: 10px;
+  width: 100%;
+  height: 1.85vw;
   border: none;
   background: #ffffff83;
   border-radius: 5px;
+  position: relative;
   p {
     margin-bottom: 3px;
-    font-size: 1.2vw;
   }
   &:hover {
     transition: 0.1s ease-in;
@@ -315,14 +358,16 @@ const saveToZIP = async () => {
 .upload-file__loading {
   display: block;
   position: absolute;
-  left: 15vw;
+  right: 10px;
+  top: 0.425vw;
   width: 1vw;
   height: 1vw;
-  border: 1px solid #00ddff;
+  border: 2px solid #00ddff;
   border-radius: 50%;
-  border-top: 1px solid #00000000;
+  border-top: 1px solid #dff2ff;
   animation: rotate 1s linear infinite;
   box-shadow: 0px 0px 10px #00ddff;
+  box-sizing: border-box;
 }
 @keyframes rotate {
   from {
@@ -330,25 +375,25 @@ const saveToZIP = async () => {
   }
 }
 .list {
-  width: 15vw;
-  margin-left: 2.5vw;
+  width: 100%;
   height: fit-content;
   max-height: 60%;
-  margin-bottom: 20px;
+  margin: 20px 0px;
 }
 .export-button {
-  margin-left: 2.5vw;
   box-sizing: border-box;
-  width: 15vw;
-  height: 1.5vw;
+  width: 100%;
+  height: auto;
   border: none;
+  padding: 5px 0px;
   margin-top: 5px;
   background: #ffffff83;
   border-radius: 5px;
   font-family: WixMadeforDisplay-Regular;
+  transition: 0.2s;
 
   &:hover {
-    transition: 0.1s ease-in;
+    transition: 0.2s ease-in;
     background: #ffffffeb;
   }
 }
@@ -358,14 +403,17 @@ const saveToZIP = async () => {
   font-family: WixMadeforDisplay-Regular;
   color: #fff;
   padding-bottom: 6px;
-  border-bottom: 1px dashed #1e7a5a;
+  border-bottom: 1px dashed #17b07b;
   input {
     margin-right: 10px;
   }
   .input-label {
     cursor: pointer;
+    transition: 0.2s;
+
     &:hover {
       color: #b3d0dd;
+      transition: 0.2s;
     }
   }
 }
