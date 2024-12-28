@@ -1,9 +1,11 @@
 <template>
   <SchemeMaker />
+  <Preloader />
 </template>
 
 <script setup>
 import SchemeMaker from "./components/SchemeMaker.vue"
+import Preloader from "./components/PreLoader.vue"
 document.addEventListener(
   "wheel",
   (event) => {
