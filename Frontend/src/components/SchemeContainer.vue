@@ -7,7 +7,7 @@
       }"
       ref="pages__wrapper"
     >
-      <div v-for="(item, index) in groupedItems" class="page" ref="page" :key="index">
+      <div v-for="(item, index) in groupedItems" class="page" ref="page" :key="'group' + index">
         <div class="top-frame">
           <Scheme :outputDevicesData="item" :listIndex="index + 1" />
           <CircuitScheme :pageData="item" :listIndex="index + 1" />
@@ -21,7 +21,7 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref, computed, watch, reactive, onMounted } from "vue"
+import { defineComponent, ref, computed, watch, reactive } from "vue"
 import { useSchemeDataStore } from "../stores/SchemeData"
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
@@ -53,23 +53,22 @@ export default defineComponent({
     const outputDevicesData = reactive([])
 
     let totalPages = ref(0)
-    const itemsPerComponent = 11
+
     const groupedItems = computed(() => {
       if (!props.schemeDataChunk["Группы"]) {
         return []
       }
-
       const groupsCopy = [...props.schemeDataChunk["Группы"]]
       return schemeDataStore.splitInputAndOutputGroups(groupsCopy)
     })
 
-    // watch(
-    //   groupedItems,
-    //   (newGroups) => {
-    //     totalPages.value = newGroups.length
-    //   },
-    //   { immediate: true }
-    // ) // 'immediate: true' сразу вызовет watch при инициализации
+    watch(
+      groupedItems,
+      (newGroups) => {
+        totalPages.value = newGroups.length
+      },
+      { immediate: true }
+    ) // 'immediate: true' сразу вызовет watch при инициализации
 
     // Обработчик событий колесика
     const onWheelHandler = (event) => {
