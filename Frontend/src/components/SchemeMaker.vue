@@ -49,11 +49,15 @@
       <button
         class="export-button"
         @click="exportToPDF('Select')"
-        v-if="schemeData.length !== 0 && selectedSchemes.length !== 0 && schemeData.length !== selectedSchemes.length"
+        v-if="
+          schemeDataStore.schemeData.length !== 0 &&
+          selectedSchemes.length !== 0 &&
+          schemeDataStore.schemeData.length !== selectedSchemes.length
+        "
       >
         Экспортировать элементов: {{ selectedSchemes.length }}
       </button>
-      <button class="export-button" @click="exportToPDF('All')" v-if="schemeData.length !== 0">
+      <button class="export-button" @click="exportToPDF('All')" v-if="schemeDataStore.schemeData.length !== 0">
         Экспортировать всё
       </button>
     </div>
