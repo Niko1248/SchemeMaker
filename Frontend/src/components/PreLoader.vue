@@ -24,6 +24,20 @@ const currentAnimationData = ref(Preloader)
   height: 100svh;
   z-index: 999;
   background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(57, 113, 110, 1) 100%);
+  animation: exit 1s ease-in forwards;
+  animation-delay: 5s;
+}
+@keyframes exit {
+  0% {
+    opacity: 1;
+  }
+  99% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
 }
 .lottie-animation-container {
   width: 100vw !important;

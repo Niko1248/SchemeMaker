@@ -276,7 +276,7 @@ const saveToZIP = async () => {
 }
 @keyframes rotate {
   from {
-    transform: rotate(360deg);
+    transform: rotate(-360deg);
   }
 }
 .list {
