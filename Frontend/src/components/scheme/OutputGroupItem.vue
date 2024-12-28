@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="props.linePE !== -1" class="node-connection">
+    <div v-if="schemeDataStore.checkLinePE(itemData) !== -1" class="node-connection">
       <img class="connection" src="../../assets/img/connection+PE.svg" alt="" />
     </div>
     <div v-else class="node-connection">
@@ -8,7 +8,7 @@
     </div>
     <div class="node-el-connection-line">
       <img
-        v-if="props.linePE !== -1"
+        v-if="schemeDataStore.checkLinePE(itemData) !== -1"
         style="width: 8px; object-position: 0px 14px"
         class="connection-line-PE_node"
         src="../../assets/img/connection-line+PE.svg"
@@ -18,82 +18,18 @@
           style="width: 18px"
           src="../../assets/img/connection-line.svg"
           :style="{
-            objectPosition: props.linePE !== -1 ? '0px 8px' : '0px 3px',
+            objectPosition: schemeDataStore.checkLinePE(itemData) !== -1 ? '0px 8px' : '0px 3px',
           }"
         />
       </div>
     </div>
 
-    <!-- Первый объект (УЗО или линия) -->
-    <div class="node-el node-el-1">
-      <div v-if="props.firstObject['Тип'] === 'QD'">
-        <img class="node-el-1-Q" src="../../assets/img/QD.svg" alt="" />
-        <img
-          v-if="props.linePE !== -1"
-          src="../../assets/img/connection-line+PE.svg"
-          style="transform: translateX(-8px)"
-        />
-        <DeviceInfo :textData="firstObject" />
-      </div>
-      <div v-else-if="props.firstObject['Тип'] === 'QF'">
-        <img class="node-el-1-Q" src="../../assets/img/QF-1.svg" alt="" />
-        <img
-          v-if="props.linePE !== -1"
-          src="../../assets/img/connection-line+PE.svg"
-          style="transform: translateX(-8px)"
-        />
-        <DeviceInfo :textData="firstObject" />
-      </div>
-      <div v-else-if="props.firstObject['Тип'] === 'QFD'">
-        <img class="node-el-1-Q" src="../../assets/img/QFD.svg" alt="" />
-        <img
-          v-if="props.linePE !== -1"
-          src="../../assets/img/connection-line+PE.svg"
-          style="transform: translateX(-8px)"
-        />
-        <DeviceInfo :textData="firstObject" />
-      </div>
-      <div v-else>
-        <img src="../../assets/img/connection-line.svg" alt="" />
-        <img
-          v-if="props.linePE !== -1"
-          class="connection-line-PE_node"
-          style="width: 8px"
-          src="../../assets/img/connection-line+PE.svg"
-        />
-      </div>
-    </div>
-    <!-- Второй объект (автомат, дифавтомат или линия) -->
-    <div class="node-el node-el-2">
-      <div v-if="props.secondObject?.['Тип'] === 'QD'">
-        <img src="../../assets/img/QD.svg" alt="" />
-        <DeviceInfo :textData="secondObject" class="secondObjInfo" />
-      </div>
-      <div v-else-if="props.secondObject?.['Тип'] === 'QF'">
-        <img src="../../assets/img/QF.svg" alt="" />
-        <DeviceInfo :textData="secondObject" class="secondObjInfo" />
-      </div>
-      <div v-else-if="props.secondObject?.['Тип'] === 'QFD'">
-        <img src="../../assets/img/QFD.svg" alt="" />
-        <DeviceInfo :textData="secondObject" class="secondObjInfo" />
-      </div>
-      <img v-else src="../../assets/img/kura.svg" alt="" />
-      <img
-        v-if="props.linePE !== -1 && props.secondObject?.['Тип'] === 'QF'"
-        class="connection-line-PE_Q"
-        src="../../assets/img/connection-line+PE-Q.svg"
-      />
-      <img
-        v-else-if="props.linePE !== -1 && props.secondObject?.['Тип'] === undefined"
-        class="connection-line-PE_Q"
-        src="../../assets/img/connection-line+PE-Q.svg"
-      />
-      <img
-        v-if="(props.linePE !== -1 && props.secondObject?.['Тип'] === 'QFD') || props.secondObject?.['Тип'] === 'QD'"
-        class="connection-line-PE_Q"
-        src="../../assets/img/connection-line+PE-QFD.svg"
-      />
-    </div>
+    <!-- Первый объект  -->
+    <FirstObjectOutput :data="itemData" />
+
+    <!-- Второй объект -->
+    <SecondObjectOutput :data="itemData" />
+
     <!-- Стрелка + кабель -->
     <div class="node-el node-arrow">
       <img src="../../assets/img/arrow2.svg" />
@@ -114,11 +50,12 @@
   </div>
 </template>
 <script setup>
-import DeviceInfo from "./DeviceInfo.vue"
+import { useSchemeDataStore } from "../../stores/SchemeData"
+import FirstObjectOutput from "./FirstObjectOutput.vue"
+import SecondObjectOutput from "./SecondObjectOutput.vue"
+
+const schemeDataStore = useSchemeDataStore()
 const props = defineProps({
-  linePE: { type: Number },
-  firstObject: { type: Object },
-  secondObject: { type: Object },
   itemData: { type: Object },
 })
 

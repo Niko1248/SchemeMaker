@@ -8,17 +8,13 @@
 
 <script setup>
 import { computed } from "vue"
-
+import { useSchemeDataStore } from "../../stores/SchemeData.js"
 const props = defineProps({
-  tableData: {
-    type: Object,
-    default: () => ({}),
-  },
   listIndex: { type: Number },
   totalPages: { type: Number },
   pageData: { type: Array },
 })
-
+const schemeDataStore = useSchemeDataStore()
 const contentMap = computed(() => ({
   7: (data) => data["Артикул"] || "",
   27: (data) => `<p>Объект: ${data["Объект"]}</p><p>Заказчик: ${data["Заказчик"]}</p> ` || "",
@@ -48,7 +44,7 @@ const contentMap = computed(() => ({
 // Метод для разрешения контента
 const resolveContent = (key) => {
   const resolver = contentMap.value[key]
-  return typeof resolver === "function" ? resolver(props.tableData) : ""
+  return typeof resolver === "function" ? resolver(schemeDataStore.tableData) : ""
 }
 </script>
 

@@ -1,61 +1,19 @@
 <template>
   <div class="input-Q">
-    <div v-if="props.linePE !== -1" class="input-q-wrapp">
+    <div v-if="schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1" class="input-q-wrapp">
       <img class="" src="../../assets/img/input+PE.svg" />
     </div>
     <div v-else class="input-q-wrapp PE--transformX">
       <img class="input-Q-img" src="../../assets/img/input.svg" />
     </div>
-    <!-- Первый объект (УЗО или линия) -->
-    <div>
-      <div>
-        <div v-if="props.firstObject['Тип'] === 'QD'" class="node">
-          <img src="../../assets/img/QD.svg" />
-          <DeviceInfo :textData="props.inputDeviceData?.['Данные']?.[0]" />
-        </div>
-        <div v-else-if="props.firstObject['Тип'] === 'QF'" class="node">
-          <img src="../../assets/img/QF-1.svg" />
-          <DeviceInfo :textData="props.inputDeviceData?.['Данные']?.[0]" />
-        </div>
-        <div v-else-if="props.firstObject['Тип'] === 'QFD'" class="node">
-          <img src="../../assets/img/QFD.svg" />
-          <DeviceInfo :textData="props.inputDeviceData?.['Данные']?.[0]" />
-        </div>
-        <img
-          v-else
-          src="../../assets/img/connection-line.svg"
-          :style="{ marginLeft: props.linePE !== -1 ? '8px' : '0px' }"
-        />
-        <div v-if="props.linePE !== -1">
-          <img src="../../assets/img/connection-line+PE.svg" />
-        </div>
-      </div>
-    </div>
-    <!-- Второй объект (автомат, дифавтомат или линия) -->
-    <div>
-      <div class="node" v-if="props.secondObject?.['Тип'] === 'QF'">
-        <img src="../../assets/img/QF-1.svg" />
-        <DeviceInfo :textData="props.inputDeviceData?.['Данные']?.[1]" />
-      </div>
-      <div class="node" v-else-if="props.secondObject?.['Тип'] === 'QD'">
-        <DeviceInfo :textData="props.inputDeviceData?.['Данные']?.[1]" />
-        <img src="../../assets/img/QD.svg" alt="" />
-      </div>
-      <div class="node" v-else-if="props.secondObject?.['Тип'] === 'QFD'">
-        <DeviceInfo :textData="props.inputDeviceData?.['Данные']?.[1]" />
-        <img src="../../assets/img/QFD.svg" alt="" />
-      </div>
-      <img
-        v-else
-        :style="{ marginLeft: props.linePE !== -1 ? '8px' : '0px' }"
-        src="../../assets/img/connection-line.svg"
-      />
-      <div v-if="props.linePE !== -1">
-        <img src="../../assets/img/connection-line+PE.svg" alt="" />
-      </div>
-    </div>
 
-    <div v-if="props.linePE !== -1">
+    <!-- Первый объект  -->
+    <FirstObjectInput :data="schemeDataStore.inputDeviceData" />
+
+    <!-- Второй объект  -->
+    <SecondObjectInput :data="schemeDataStore.inputDeviceData" />
+
+    <div v-if="schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1">
       <img class="connection" src="../../assets/img/connection+PE.svg" alt="" />
     </div>
     <div v-else>
@@ -81,24 +39,24 @@
 
 <script setup>
 import { computed } from "vue"
-import DeviceInfo from "./DeviceInfo.vue"
+import { useSchemeDataStore } from "../../stores/SchemeData"
+import FirstObjectInput from "./FirstObjectInput.vue"
+import SecondObjectInput from "./SecondObjectInput.vue"
+
+const schemeDataStore = useSchemeDataStore()
 const props = defineProps({
-  linePE: { type: Number },
-  firstObject: { type: Object },
-  secondObject: { type: Object },
-  inputDeviceData: { type: Object },
   inputPhase: { type: Object },
 })
 const checkInputCableMarka = computed(() => {
-  return props.inputDeviceData?.["Данные"].find((obj) => obj["Марка кабеля"])?.["Марка кабеля"] || ""
+  return schemeDataStore.inputDeviceData?.["Данные"].find((obj) => obj["Марка кабеля"])?.["Марка кабеля"] || ""
 })
 
 const checkInputCableSize = computed(() => {
-  return props.inputDeviceData?.["Данные"].find((obj) => obj["Сечение кабеля"])?.["Сечение кабеля"] || ""
+  return schemeDataStore.inputDeviceData?.["Данные"].find((obj) => obj["Сечение кабеля"])?.["Сечение кабеля"] || ""
 })
 
 const checkInputName = computed(() => {
-  return props.inputDeviceData?.["Данные"].find((obj) => obj["Наименование потребителя"])
+  return schemeDataStore.inputDeviceData?.["Данные"].find((obj) => obj["Наименование потребителя"])
 })
 </script>
 <style lang="scss" scoped>

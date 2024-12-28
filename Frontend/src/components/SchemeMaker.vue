@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
     <SchemeContainer
-      v-for="(doc, index) in filteredSchemeData"
+      v-for="(doc, index) in schemeDataStore.filteredSchemeData(checkDoc)"
       :key="'Щит' + index"
       :tableData="tableData"
       :schemeDataChunk="doc"
@@ -62,13 +62,14 @@
 
 <script setup>
 import { reactive, ref, computed, nextTick } from "vue"
+import { useSchemeDataStore } from "../stores/SchemeData.js"
 import axios from "axios"
 import JSZip from "jszip"
 import { saveAs } from "file-saver"
 import SchemeContainer from "./SchemeContainer.vue"
 
-/* const file = ref(null)
- */ const loading = ref(false)
+const schemeDataStore = useSchemeDataStore()
+const loading = ref(false)
 const success = ref(false)
 const error = ref("")
 const checkDoc = ref("")
@@ -106,14 +107,16 @@ const uploadFile = async () => {
   success.value = false
   // http://138.124.31.181:3000/upload
   try {
-    const response = await axios.post("http://138.124.31.181:3000/upload", formData, {
+    const response = await axios.post("http://localhost:3000/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
     success.value = true
-    let indexTable
+
     const excelData = response.data.result
 
+    let indexTable
     indexTable = excelData.findIndex((el) => el["Вводной щит"] === "Таблица")
+    schemeDataStore.splitTableAndSchemeData(excelData, indexTable)
     Object.assign(tableData, excelData[indexTable]["Группы"][0]["Данные"][0])
     schemeData.splice(0, schemeData.length, ...excelData.filter((_, index) => index !== indexTable))
     checkDoc.value = schemeData[0]["Вводной щит"] || null
@@ -125,11 +128,6 @@ const uploadFile = async () => {
     loading.value = false
   }
 }
-
-const filteredSchemeData = computed(() => {
-  if (!checkDoc.value) return []
-  return schemeData.filter((doc) => doc?.["Вводной щит"] == checkDoc.value)
-})
 
 const exportToPDF = async (type) => {
   collectedFiles.splice(0, collectedFiles.length)

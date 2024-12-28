@@ -9,15 +9,10 @@
     >
       <div v-for="(item, index) in groupedItems" class="page" ref="page" :key="index">
         <div class="top-frame">
-          <Scheme :inputDeviceData="inputDeviceData" :outputDevicesData="item" :listIndex="index + 1" />
+          <Scheme :outputDevicesData="item" :listIndex="index + 1" />
           <CircuitScheme :pageData="item" :listIndex="index + 1" />
           <SchemeOutsideLeftTables />
-          <SchemeInsideRightTable
-            :tableData="tableData"
-            :listIndex="index + 1"
-            :totalPages="totalPages"
-            :pageData="item"
-          />
+          <SchemeInsideRightTable :listIndex="index + 1" :totalPages="totalPages" :pageData="item" />
           <ConsumerTable :pageData="item" />
           <ContinueNote v-if="totalPages !== 1" :listIndex="index + 1" :totalPages="totalPages" />
         </div>
@@ -27,6 +22,7 @@
 </template>
 <script>
 import { defineComponent, ref, computed, watch, reactive, onMounted } from "vue"
+import { useSchemeDataStore } from "../stores/SchemeData"
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
 import ContinueNote from "../components/ContinueNote.vue"
@@ -45,6 +41,7 @@ export default defineComponent({
   },
 
   setup(props, { expose }) {
+    const schemeDataStore = useSchemeDataStore()
     const scale = ref(1) // Начальный масштаб для элемента
     const positionX = ref(0) // Позиция по оси X
     const positionY = ref(0) // Позиция по оси Y
@@ -61,36 +58,18 @@ export default defineComponent({
       if (!props.schemeDataChunk["Группы"]) {
         return []
       }
-      // Создаем копию, чтобы не изменять оригинальный массив
+
       const groupsCopy = [...props.schemeDataChunk["Группы"]]
-
-      let indexInputDevice = groupsCopy.findIndex((el) => el["Группа"] == -1)
-
-      // Добавляем найденный элемент, но из копии
-      Object.assign(inputDeviceData, groupsCopy[indexInputDevice])
-
-      // Удаляем только из копии
-      groupsCopy.splice(indexInputDevice, 1)
-
-      // Перезаписываем outputDevicesData
-      outputDevicesData.splice(0, outputDevicesData.length, ...groupsCopy)
-
-      const groups = []
-      if (outputDevicesData.length !== 0) {
-        for (let i = 0; i < outputDevicesData.length; i += itemsPerComponent) {
-          groups.push(outputDevicesData.slice(i, i + itemsPerComponent))
-        }
-      }
-      return groups
+      return schemeDataStore.splitInputAndOutputGroups(groupsCopy)
     })
 
-    watch(
-      groupedItems,
-      (newGroups) => {
-        totalPages.value = newGroups.length
-      },
-      { immediate: true }
-    ) // 'immediate: true' сразу вызовет watch при инициализации
+    // watch(
+    //   groupedItems,
+    //   (newGroups) => {
+    //     totalPages.value = newGroups.length
+    //   },
+    //   { immediate: true }
+    // ) // 'immediate: true' сразу вызовет watch при инициализации
 
     // Обработчик событий колесика
     const onWheelHandler = (event) => {

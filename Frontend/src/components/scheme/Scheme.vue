@@ -2,24 +2,13 @@
   <div class="scheme">
     <div class="scheme__wrapp">
       <div class="input__wrapp" :style="listIndex > 1 ? 'visibility: hidden;' : ''">
-        <InputGroup
-          :linePE="checkLinePE"
-          :firstObject="firstObject(props.inputDeviceData)"
-          :secondObject="secondObject(props.inputDeviceData)"
-          :inputDeviceData="inputDeviceData"
-          :inputPhase="checkInputPhase(props.inputDeviceData)"
-        />
+        <InputGroup :inputPhase="checkInputPhase(schemeDataStore.inputDeviceData)" />
       </div>
       <div class="power__wrapp">
-        <PowerLine :linePE="checkLinePE" :inputPhase="checkInputPhase(props.inputDeviceData)" />
+        <PowerLine :inputPhase="checkInputPhase(schemeDataStore.inputDeviceData)" />
         <div class="power-nodes__wrapp">
           <div class="power-node-item" v-for="(item, index) in props.outputDevicesData" :key="'outputLine-' + index">
-            <OutputGroupItem
-              :linePE="checkLinePE"
-              :firstObject="firstObject(item)"
-              :secondObject="secondObject(item)"
-              :itemData="item"
-            />
+            <OutputGroupItem :itemData="item" />
           </div>
         </div>
       </div>
@@ -28,27 +17,17 @@
 </template>
 <script setup>
 import { computed } from "vue"
+import { useSchemeDataStore } from "../../stores/SchemeData"
 import PowerLine from "./PowerLine.vue"
 import InputGroup from "./InputGroup.vue"
 import OutputGroupItem from "./OutputGroupItem.vue"
 
+const schemeDataStore = useSchemeDataStore()
 const props = defineProps({
-  inputDeviceData: { type: Object },
   outputDevicesData: { type: Array },
   listIndex: { type: Number },
 })
-//Нахожу 1 объект (УЗО)
-const firstObject = (data) => {
-  return data["Данные"][0]
-}
-//Нахожу 2 объект (автомат, дифавтомат)
-const secondObject = (data) => {
-  return data["Данные"][1]
-}
-//Проверка наличия линии PE
-const checkLinePE = computed(() => {
-  return props.outputDevicesData.findIndex((obj) => obj?.["Данные"][0]["PE"])
-})
+
 // Фаза входной группы
 const checkInputPhase = (data) => {
   for (const el of data["Данные"]) {

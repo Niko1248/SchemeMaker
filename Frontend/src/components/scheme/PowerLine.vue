@@ -13,7 +13,7 @@
       </div>
       <p>N</p>
     </div>
-    <div v-if="props.linePE !== -1" class="PE">
+    <div v-if="schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1" class="PE">
       <div class="PE-line">
         <svg width="1000" height="20">
           <line x1="0" y1="8" x2="1000" y2="8" stroke="black" stroke-width="0.5" stroke-dasharray="40, 10" />
@@ -24,8 +24,9 @@
   </div>
 </template>
 <script setup>
+import { useSchemeDataStore } from "../../stores/SchemeData"
+const schemeDataStore = useSchemeDataStore()
 const props = defineProps({
-  linePE: { type: Number },
   inputPhase: { type: Object },
 })
 </script>
