@@ -1,5 +1,5 @@
 <template>
-  <div class="grid">
+  <div class="grid" :style="{ alignItems: success ? 'flex-start' : 'center' }">
     <SchemeContainer
       v-for="(doc, index) in schemeDataStore.filteredSchemeData(checkDoc)"
       :key="'Щит' + index"
@@ -7,6 +7,9 @@
       :schemeDataChunk="doc"
       ref="activeRef"
     />
+    <div class="logo">
+      <img src="./../assets/img/Logo.svg" />
+    </div>
     <div class="service__container">
       <div class="handler-file__wrapper">
         <form @submit.prevent="uploadFile">
@@ -176,6 +179,40 @@ const saveToZIP = async () => {
   overflow: hidden;
   height: 100svh;
 }
+.logo {
+  position: absolute;
+  top: 71vh;
+  left: 18vw;
+  z-index: 1000;
+  opacity: 0;
+  animation: logo 3.3s ease forwards;
+  animation-delay: 3s;
+  img {
+    width: 15vw;
+    height: 3.1vw;
+    max-width: 250px;
+    max-height: 52px;
+    object-fit: cover;
+    filter: drop-shadow(3px 2px 10px black);
+  }
+}
+@keyframes logo {
+  0% {
+    opacity: 0;
+    top: 76vh;
+    left: 15vw;
+  }
+  90% {
+    opacity: 1;
+    top: 76vh;
+    left: 15vw;
+  }
+  100% {
+    opacity: 1;
+    top: 25px;
+    left: 25px;
+  }
+}
 .service__container {
   width: 20vw;
   padding: 1vw 0.1vw;
@@ -185,8 +222,18 @@ const saveToZIP = async () => {
   margin-top: 10px;
   border-radius: 15px;
   backdrop-filter: blur(20px);
-
+  border: 5px solid #fff;
   height: fit-content;
+  animation: borderNone 0.5s ease forwards;
+  animation-delay: 6s;
+}
+@keyframes borderNone {
+  0% {
+    border: 5px solid #fff;
+  }
+  100% {
+    border: 0px solid #ffffff00;
+  }
 }
 .handler-file__wrapper {
   font-family: WixMadeforDisplay-Regular;
@@ -239,7 +286,7 @@ const saveToZIP = async () => {
 
 .upload-file__span {
   position: absolute;
-  font-size: 19px;
+  font-size: 1.2vw;
   top: 1.4vw;
   left: 2.5vw;
   width: 15vw;
@@ -258,6 +305,7 @@ const saveToZIP = async () => {
   border-radius: 5px;
   p {
     margin-bottom: 3px;
+    font-size: 1.2vw;
   }
   &:hover {
     transition: 0.1s ease-in;
