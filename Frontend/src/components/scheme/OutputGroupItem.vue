@@ -35,10 +35,10 @@
       <img src="../../assets/img/arrow2.svg" />
     </div>
     <div class="cable-name">
-      {{ props.itemData?.["Данные"]?.[0]?.["Марка кабеля"] }}
+      {{ checkInputCableMarka }}
     </div>
     <div class="cable-size">
-      {{ props.itemData?.["Данные"]?.[0]?.["Сечение кабеля"] }}
+      {{ checkInputCableSize }}
     </div>
     <!-- Фазы (линии + текст) -->
     <div class="phase-line__wrap">
@@ -50,6 +50,7 @@
   </div>
 </template>
 <script setup>
+import { computed } from "vue"
 import { useSchemeDataStore } from "../../stores/SchemeData"
 import FirstObjectOutput from "./FirstObjectOutput.vue"
 import SecondObjectOutput from "./SecondObjectOutput.vue"
@@ -86,6 +87,14 @@ const swapPhase = (data) => {
       })
   )
 }
+
+const checkInputCableMarka = computed(() => {
+  return props.itemData["Данные"].find((obj) => obj["Марка кабеля"])?.["Марка кабеля"] || ""
+})
+
+const checkInputCableSize = computed(() => {
+  return props.itemData["Данные"].find((obj) => obj["Сечение кабеля"])?.["Сечение кабеля"] || ""
+})
 </script>
 <style lang="scss" scoped>
 .connection {

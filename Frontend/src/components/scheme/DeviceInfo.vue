@@ -18,7 +18,7 @@ const props = defineProps({
 .text__wrap {
   position: absolute;
   max-width: 10mm;
-  left: -33px;
+  left: -37px;
   top: 0;
   display: flex;
   flex-direction: column;
