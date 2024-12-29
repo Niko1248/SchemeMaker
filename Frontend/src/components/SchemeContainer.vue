@@ -12,16 +12,16 @@
           <Scheme :outputDevicesData="item" :listIndex="index + 1" />
           <CircuitScheme :pageData="item" :listIndex="index + 1" />
           <SchemeOutsideLeftTables />
-          <SchemeInsideRightTable :listIndex="index + 1" :totalPages="totalPages" :pageData="item" />
+          <SchemeInsideRightTable :listIndex="index + 1" :pageData="item" />
           <ConsumerTable :pageData="item" />
-          <ContinueNote v-if="totalPages !== 1" :listIndex="index + 1" :totalPages="totalPages" />
+          <ContinueNote v-if="schemeDataStore?.totalPages !== 1" :listIndex="index + 1" />
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { defineComponent, ref, computed, watch, reactive } from "vue"
+import { defineComponent, ref, computed, watch } from "vue"
 import { useSchemeDataStore } from "../stores/SchemeData"
 import html2canvas from "html2canvas"
 import jsPDF from "jspdf"
@@ -36,7 +36,6 @@ export default defineComponent({
   name: "SchemeContainer",
   components: { SchemeOutsideLeftTables, SchemeInsideRightTable, CircuitScheme, ConsumerTable, Scheme, ContinueNote },
   props: {
-    tableData: { type: Object },
     schemeDataChunk: { type: Object },
   },
 
@@ -49,11 +48,7 @@ export default defineComponent({
     const scalableArea = ref(null) // Ссылка на область
     const pages__wrapper = ref(null) // Ссылка на содержимое
 
-    const inputDeviceData = reactive({})
-    const outputDevicesData = reactive([])
-
-    let totalPages = ref(0)
-
+    // Функция для разделения входной и и отходных групп, логика разделения и данные хранятся в сторе
     const groupedItems = computed(() => {
       if (!props.schemeDataChunk["Группы"]) {
         return []
@@ -61,11 +56,11 @@ export default defineComponent({
       const groupsCopy = [...props.schemeDataChunk["Группы"]]
       return schemeDataStore.splitInputAndOutputGroups(groupsCopy)
     })
-
+    // Вотчер для пересчета количества всех листов, при изменении активной страницы
     watch(
       groupedItems,
       (newGroups) => {
-        totalPages.value = newGroups.length
+        schemeDataStore.setTotalPages(newGroups.length)
       },
       { immediate: true }
     ) // 'immediate: true' сразу вызовет watch при инициализации
@@ -161,9 +156,7 @@ export default defineComponent({
       onWheelHandler,
       exportToPDF,
       groupedItems,
-      totalPages,
-      inputDeviceData,
-      outputDevicesData,
+      schemeDataStore,
     }
   },
 })

@@ -31,7 +31,7 @@
     <img src="../../assets/img/input-connection2.svg" alt="" />
     <div class="input-name">{{ "от " + checkInputName["Наименование потребителя"] }}</div>
     <div class="input-phase">
-      <p v-if="props.inputPhase.length > 1" class="powerLine-info">~380/220В</p>
+      <p v-if="schemeDataStore.inputPhase?.length > 1" class="powerLine-info">~380/220В</p>
       <p v-else class="powerLine-info">~220В</p>
     </div>
   </div>
@@ -44,9 +44,7 @@ import FirstObjectInput from "./FirstObjectInput.vue"
 import SecondObjectInput from "./SecondObjectInput.vue"
 
 const schemeDataStore = useSchemeDataStore()
-const props = defineProps({
-  inputPhase: { type: Object },
-})
+
 const checkInputCableMarka = computed(() => {
   return schemeDataStore.inputDeviceData?.["Данные"].find((obj) => obj["Марка кабеля"])?.["Марка кабеля"] || ""
 })

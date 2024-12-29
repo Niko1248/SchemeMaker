@@ -39,17 +39,17 @@ const props = defineProps({
 })
 
 const findAmperage = (data) => {
-  const foundElement = data.find((el) => el["Тип"] !== "QD" && el["Расчетный ток"])
+  const foundElement = data.find((el) => el["Расчетный ток"])
   return foundElement ? foundElement["Расчетный ток"] : null
 }
 
 const findPower = (data) => {
-  const foundElement = data.find((el) => el["Тип"] !== "QD" && el["Установленная мощность"])
+  const foundElement = data.find((el) => el["Установленная мощность"])
   return foundElement ? foundElement["Установленная мощность"] : null
 }
 
 const findConsumerName = (data) => {
-  const foundElement = data.find((el) => el["Тип"] !== "QD" && el["Наименование потребителя"])
+  const foundElement = data.find((el) => el["Наименование потребителя"])
   return foundElement ? foundElement["Наименование потребителя"] : null
 }
 

@@ -3,7 +3,6 @@
     <SchemeContainer
       v-for="(doc, index) in schemeDataStore.filteredSchemeData(checkDoc)"
       :key="'Щит' + index"
-      :tableData="tableData"
       :schemeDataChunk="doc"
       ref="activeRef"
     />
@@ -41,14 +40,14 @@
             for="upload-file__input"
             class="upload-file__lable"
             :style="{
-              border: success ? '1px solid #00ff2f' : error ? '1px solid red' : '1px dashed #fff;',
+              border: success ? '1px solid #00ff2f' : error ? '1px solid red' : '1px dashed #fff',
             }"
             ><span class="upload-file__span" v-if="fileName">{{ fileName }}</span>
             <span class="upload-file__span" v-else> + Добавьте файл Exсel </span></label
           >
           <button class="upload-file__button" type="submit" :disabled="!fileName">
-            <p v-if="loading">идет загрузка</p>
-            <p v-else>загрузить</p>
+            <p v-if="loading">Идет загрузка</p>
+            <p v-else>Загрузить</p>
 
             <p class="upload-file__loading" v-if="loading"></p>
             <p v-if="error">{{ error }}</p>
@@ -91,13 +90,12 @@ import axios from "axios"
 import JSZip from "jszip"
 import { saveAs } from "file-saver"
 import SchemeContainer from "./SchemeContainer.vue"
+
 const schemeDataStore = useSchemeDataStore()
 const loading = ref(false)
 const success = ref(false)
 const error = ref("")
 const checkDoc = ref("")
-const tableData = reactive({})
-const schemeData = reactive([])
 const collectedFiles = reactive([])
 const activeRef = ref(null)
 const selectedSchemes = ref([])
@@ -105,6 +103,7 @@ const fileName = ref(null)
 const fileInput = ref(null)
 const menuOpen = ref(true)
 
+// Функция изменения выбранной схемы
 const changeScheme = (name) => {
   checkDoc.value = name
 }
@@ -119,6 +118,7 @@ const handleFileChange = (event) => {
   const file = event.target.files[0]
   fileName.value = file ? file.name : null // Отображаем имя файла
 }
+// Функция для выбора схем на экспорт
 const toogleCheckbox = (name) => {
   if (selectedSchemes.value.includes(name)) {
     selectedSchemes.value = selectedSchemes.value.filter((item) => item !== name)
@@ -159,7 +159,7 @@ const uploadFile = async () => {
 const exportToPDF = async (type) => {
   collectedFiles.splice(0, collectedFiles.length)
   if (type === "All") {
-    for (const el of schemeData) {
+    for (const el of schemeDataStore.schemeData) {
       if (checkDoc.value !== el["Вводной щит"]) {
         checkDoc.value = el["Вводной щит"]
         await nextTick()

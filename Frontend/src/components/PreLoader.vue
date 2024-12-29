@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue"
+import { ref } from "vue"
 import { Vue3Lottie } from "vue3-lottie"
 import Preloader from "./../assets/animation/Preloader.json"
 

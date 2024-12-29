@@ -1,9 +1,9 @@
 <template>
   <div class="power-line">
-    <p v-if="props.inputPhase.length > 1" class="powerLine-info">~380/220В</p>
+    <p v-if="schemeDataStore.inputPhase?.length > 1" class="powerLine-info">~380/220В</p>
     <p v-else class="powerLine-info">~220В</p>
     <div class="L">
-      <p>{{ "L" + props.inputPhase.data.join() }}</p>
+      <p>{{ "L" + schemeDataStore.inputPhase?.data.join() }}</p>
     </div>
     <div class="N">
       <div class="N-line">
@@ -26,9 +26,6 @@
 <script setup>
 import { useSchemeDataStore } from "../../stores/SchemeData"
 const schemeDataStore = useSchemeDataStore()
-const props = defineProps({
-  inputPhase: { type: Object },
-})
 </script>
 <style lang="scss" scoped>
 .L {

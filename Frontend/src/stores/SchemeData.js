@@ -1,10 +1,12 @@
 import { defineStore } from "pinia"
-import { reactive, computed } from "vue"
+import { watch, reactive, ref } from "vue"
 export const useSchemeDataStore = defineStore("schemeData", () => {
   const tableData = reactive({})
   const schemeData = reactive([])
   const inputDeviceData = reactive({})
   const outputDevicesData = reactive([])
+  const totalPages = ref(0)
+  const inputPhase = ref(undefined)
 
   const splitTableAndSchemeData = (excelData, indexTable) => {
     Object.assign(tableData, excelData[indexTable]["Группы"][0]["Данные"][0])
@@ -15,6 +17,10 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     if (!checkDoc) return []
     const checkScheme = schemeData.filter((doc) => doc?.["Вводной щит"] == checkDoc)
     return checkScheme
+  }
+
+  const setTotalPages = (value) => {
+    totalPages.value = value
   }
 
   const splitInputAndOutputGroups = (data) => {
@@ -43,6 +49,35 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     return isLinePE
   }
 
+  // Расчет фазы входной группы
+  watch(
+    () => inputDeviceData["Данные"],
+    (newData) => {
+      for (const el of newData) {
+        if (!el?.["Фаза"]) continue
+
+        // Разбиваем строку по запятой и убираем пробелы
+        const phaseArr = el["Фаза"].split(",").map((phase) => phase.trim())
+        let arrLength = phaseArr.length
+
+        // Считаем длину массива, уменьшая на 1, если есть "N"
+        if (phaseArr.includes("N")) {
+          arrLength -= 1
+        }
+        // Ограничиваем длину до 3
+        arrLength = Math.min(arrLength, 3)
+        // Если длина больше 0, возвращаем результат
+        if (arrLength > 0) {
+          inputPhase.value = { data: phaseArr, length: arrLength }
+          return
+        }
+      }
+
+      inputPhase.value = undefined // Если ничего не найдено
+    },
+    { deep: true } // Для вложенных изменений
+  )
+
   return {
     tableData,
     schemeData,
@@ -54,5 +89,8 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     splitInputAndOutputGroups,
     filteredSchemeData,
     checkLinePE,
+    setTotalPages,
+    totalPages,
+    inputPhase,
   }
 })

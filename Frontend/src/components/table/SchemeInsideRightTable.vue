@@ -11,7 +11,6 @@ import { computed } from "vue"
 import { useSchemeDataStore } from "../../stores/SchemeData.js"
 const props = defineProps({
   listIndex: { type: Number },
-  totalPages: { type: Number },
   pageData: { type: Array },
 })
 const schemeDataStore = useSchemeDataStore()
@@ -36,7 +35,7 @@ const contentMap = computed(() => ({
   60: () => "Листов",
   68: (data) => data["Стадия"] || "",
   69: () => `${props.listIndex}`,
-  70: () => `${props.totalPages}`,
+  70: () => `${schemeDataStore.totalPages}`,
   87: () => `<p>Однолинейная схема</p><p>${props.pageData?.[0]?.["Данные"]?.[0]?.["Вводной щит"]}</p> ` || "",
   88: (data) => data["Фирма"] || "",
 }))
