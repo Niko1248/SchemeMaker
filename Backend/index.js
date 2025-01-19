@@ -153,6 +153,6 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   }
 })
 
-app.listen(3000, () => {
+app.listen(port, () => {
   console.log(`Сервер запущен, порт:${port}`)
 })

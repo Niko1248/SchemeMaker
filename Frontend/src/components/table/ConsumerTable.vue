@@ -16,7 +16,9 @@
       <div class="item item1">
         <img :src="getLegend(data['Данные'])" alt="" />
       </div>
-      <div class="item item2">{{ data["Данные"]?.[0]?.["Группа"] }}</div>
+      <div class="item item2">
+        <input type="text" v-model="data['Данные'][0]['Группа']" />
+      </div>
       <div class="item item3">{{ findPower(data["Данные"]) }}</div>
       <div class="item item4">{{ findAmperage(data["Данные"]) }}</div>
       <div class="item item5">{{ findConsumerName(data["Данные"]) }}</div>
@@ -114,5 +116,12 @@ const getLegend = (data) => {
   .item5 {
     display: none;
   }
+}
+input {
+  padding: 0;
+  width: 100%;
+  border: 0;
+  background: none;
+  text-align: center;
 }
 </style>

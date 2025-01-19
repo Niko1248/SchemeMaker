@@ -23,7 +23,7 @@ const contentMap = computed(() => ({
   34: () => "№док",
   35: () => "Подп",
   36: () => "Дата",
-  41: (data) => data["Должность 1"] || "",
+  41: (data) => `<input type='text' value='${data["Должность 1"]}' class='table__input'/>`,
   43: (data) => data["ФИО 1"] || "",
   46: (data) => data["Дата"] || "",
   51: (data) => data["Должность 2"] || "",
@@ -47,11 +47,16 @@ const resolveContent = (key) => {
 }
 </script>
 
-<style scoped>
-/* Ваши стили */
-</style>
-
 <style lang="scss" scoped>
+.table__input {
+  width: auto;
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  text-align: center;
+}
 .right-inside-table {
   display: grid;
   align-items: center;
@@ -77,6 +82,7 @@ const resolveContent = (key) => {
   align-items: center;
   text-align: center;
 }
+
 // Настройка таблицы
 /* prettier-ignore */
 .item8,.item9,.item10,.item17,.item18,.item19,.item20,.item28,.item29,.item30,

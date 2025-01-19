@@ -35,10 +35,10 @@
       <img src="../../assets/img/arrow2.svg" />
     </div>
     <div class="cable-name">
-      {{ checkInputCableMarka }}
+      <input type="text" v-model="checkInputCableMarka" />
     </div>
     <div class="cable-size">
-      {{ checkInputCableSize }}
+      <input type="text" v-model="checkInputCableSize" />
     </div>
     <!-- Фазы (линии + текст) -->
     <div class="phase-line__wrap">
@@ -180,5 +180,12 @@ const checkInputCableSize = computed(() => {
 }
 .secondObjInfo {
   top: 5px;
+}
+input {
+  padding: 0;
+  width: 100%;
+  border: 0;
+  background: none;
+  text-align: center;
 }
 </style>
