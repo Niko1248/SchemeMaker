@@ -6,7 +6,7 @@
       v-model="props.textData['Автомат']"
       @input="props.textData['Автомат'] = props.textData['Автомат'].replace(/\s/g, '')"
     />
-    <div style="display: flex; justify-content: center">
+    <div class="text__wrap-class-den">
       <input type="text" v-model="props.textData['Класс']" style="text-transform: lowercase" />
       <input
         type="text"
@@ -33,8 +33,8 @@ const props = defineProps({
 <style lang="scss" scoped>
 .text__wrap {
   position: absolute;
-  max-width: 10mm;
-  left: -38px;
+  max-width: 12mm;
+  left: -49px;
   top: 0;
   display: flex;
   flex-direction: column;
@@ -46,6 +46,34 @@ const props = defineProps({
     text-align: center;
     border: 0;
     background-color: transparent;
+    &:focus {
+      outline: 1px dashed #000000; /* зеленая обводка */
+      transition: 0.5s ease;
+      border-radius: 2px;
+      box-shadow: 0px 0px 20px #000;
+      background: #ffffff00;
+    }
+  }
+}
+.text__wrap-class-den {
+  display: flex;
+  justify-content: center;
+  input {
+    max-width: 5mm;
+    border: none;
+    box-sizing: border-box;
+    &:focus {
+      outline: 1px dashed #000000; /* зеленая обводка */
+      transition: 0.5s ease;
+      border-radius: 2px;
+      box-shadow: 0px 0px 20px #000;
+      background: #ffffff00;
+    }
+    &:first-child {
+      text-align: center;
+      padding-left: 2mm;
+    }
+    text-align: start;
   }
 }
 </style>
