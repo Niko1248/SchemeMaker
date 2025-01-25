@@ -13,6 +13,11 @@
     <!-- Второй объект  -->
     <SecondObjectInput :data="schemeDataStore.inputDeviceData" />
 
+    <!-- Линии фазы -->
+    <div class="phase-line__wrap">
+      <div v-for="index in checkPhase(schemeDataStore.inputDeviceData)" :key="index" class="phase-line"></div>
+    </div>
+
     <div v-if="schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1">
       <img class="connection" src="../../assets/img/connection+PE.svg" alt="" />
     </div>
@@ -45,6 +50,19 @@ import SecondObjectInput from "./SecondObjectInput.vue"
 
 const schemeDataStore = useSchemeDataStore()
 
+const checkPhase = (data) => {
+  const phaseArr = data?.["Данные"]?.[0]?.["Фаза"]
+    .split(",") // Разбиваем строку в массив
+    .map((el) => el.trim()) // Убираем пробелы у каждого элемента
+
+  let arrLength = Math.min(phaseArr.length, 3) // Ограничиваем длину максимум 3.
+
+  if (phaseArr.includes("N")) {
+    arrLength -= 1 // Уменьшаем значение на 1, если есть "N".
+  }
+  return arrLength
+}
+
 const checkInputCableMarka = computed(() => {
   return schemeDataStore.inputDeviceData?.["Данные"].find((obj) => obj["Марка кабеля"])?.["Марка кабеля"] || ""
 })
@@ -75,6 +93,19 @@ const checkInputName = computed(() => {
 .input-Q-img {
   margin-bottom: 0.5mm;
   position: absolute;
+}
+.phase-line__wrap {
+  position: absolute;
+  top: 10px;
+  left: 8px;
+  display: flex;
+  flex-direction: column;
+}
+.phase-line {
+  border-bottom: 1px solid #000;
+  width: 2.5mm;
+  margin-top: 3px;
+  transform: rotate(45deg);
 }
 .input-line {
   width: 100%;

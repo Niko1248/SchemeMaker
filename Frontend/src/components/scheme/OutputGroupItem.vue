@@ -34,11 +34,15 @@
     <div class="node-el node-arrow">
       <img src="../../assets/img/arrow2.svg" />
     </div>
-    <div class="cable-name">
-      <input type="text" v-model="checkInputCableMarka" />
+    <div class="cable-name" v-if="checkInputCableMarka">
+      <input type="text" :value="checkInputCableMarka" />
     </div>
-    <div class="cable-size">
-      <input type="text" v-model="checkInputCableSize" />
+    <div class="cable-size" v-if="checkInputCableSize">
+      <input type="text" :value="checkInputCableSize" />
+    </div>
+    <div class="cable-length" v-if="checkInputCableLength">
+      <p>L=</p>
+      <input type="text" :value="checkInputCableLength + ' м'" />
     </div>
     <!-- Фазы (линии + текст) -->
     <div class="phase-line__wrap">
@@ -91,9 +95,11 @@ const swapPhase = (data) => {
 const checkInputCableMarka = computed(() => {
   return props.itemData["Данные"].find((obj) => obj["Марка кабеля"])?.["Марка кабеля"] || ""
 })
-
 const checkInputCableSize = computed(() => {
   return props.itemData["Данные"].find((obj) => obj["Сечение кабеля"])?.["Сечение кабеля"] || ""
+})
+const checkInputCableLength = computed(() => {
+  return props.itemData["Данные"].find((obj) => obj["Длина кабеля"])?.["Длина кабеля"] || ""
 })
 </script>
 <style lang="scss" scoped>
@@ -160,7 +166,8 @@ const checkInputCableSize = computed(() => {
   }
 }
 .cable-name,
-.cable-size {
+.cable-size,
+.cable-length {
   position: absolute;
   transform: rotate(-90deg);
   width: 100%;
@@ -177,6 +184,11 @@ const checkInputCableSize = computed(() => {
   bottom: 12mm;
   left: -6.5mm;
   text-align: center;
+}
+.cable-length {
+  display: flex;
+  bottom: 25mm;
+  left: -6mm;
 }
 .secondObjInfo {
   top: 5px;

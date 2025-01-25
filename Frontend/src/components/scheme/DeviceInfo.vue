@@ -7,22 +7,18 @@
       @input="props.textData['Автомат'] = props.textData['Автомат'].replace(/\s/g, '')"
     />
     <div class="text__wrap-class-den">
-      <input type="text" v-model="props.textData['Класс']" style="text-transform: lowercase" />
       <input
         type="text"
-        v-model="props.textData['Номинал']"
-        @input="
-          props.textData['Номинал'] = props.textData['Номинал']
-            ? props.textData['Номинал'].replace(/[^0-9]/g, '') + 'А'
-            : ''
-        "
+        v-if="props.textData['Класс']"
+        :value="props.textData['Класс']"
+        style="text-transform: lowercase"
       />
+      <input type="text" v-if="props.textData['Номинал']" :value="props.textData['Номинал'] + 'мА'" />
     </div>
-    <input
-      type="text"
-      v-model="props.textData['Ток утечки УЗО']"
-      @input="props.textData['Ток утечки УЗО'] = props.textData['Ток утечки УЗО'].replace(/[^0-9]/g, '') + 'мА'"
-    />
+    <div class="text__wrap-uzo">
+      <input type="text" v-if="props.textData['Тип УЗО']" :value="props.textData['Тип УЗО']" />
+      <input type="text" v-if="props.textData['Ток утечки УЗО']" :value="props.textData['Ток утечки УЗО'] + 'мА'" />
+    </div>
   </div>
 </template>
 <script setup>
@@ -75,5 +71,8 @@ const props = defineProps({
     }
     text-align: start;
   }
+}
+.text__wrap-uzo {
+  display: flex;
 }
 </style>

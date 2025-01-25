@@ -1,6 +1,21 @@
 <template>
   <div class="right-inside-table">
     <div class="item" :class="`item${n}`" v-for="n in 100" :key="n">
+      <input type="text" v-if="n === 7" :value="schemeDataStore.tableData['Артикул']" />
+      <input type="text" v-if="n === 27" :value="schemeDataStore.tableData['Поле 1']" />
+      <input type="text" v-if="n === 41" :value="schemeDataStore.tableData['Должность 1']" />
+      <input type="text" v-if="n === 43" :value="schemeDataStore.tableData['ФИО 1']" />
+      <input type="text" v-if="n === 46" :value="schemeDataStore.tableData['Дата']" />
+      <input type="text" v-if="n === 51" :value="schemeDataStore.tableData['Должность 2']" />
+      <input type="text" v-if="n === 53" :value="schemeDataStore.tableData['ФИО 2']" />
+      <input type="text" v-if="n === 56" :value="schemeDataStore.tableData['Дата']" />
+      <input type="text" v-if="n === 57" :value="schemeDataStore.tableData['Поле 2']" />
+      <input type="text" v-if="n === 68" :value="schemeDataStore.tableData['Стадия']" />
+      <div v-if="n === 87">
+        <p>Однолинейная схема</p>
+        <p>{{ props.pageData?.[0]?.["Данные"]?.[0]?.["Вводной щит"] }}</p>
+      </div>
+      <input type="text" v-if="n === 88" :value="schemeDataStore.tableData['Фирма']" />
       <div v-if="contentMap[n]" v-html="resolveContent(n)" :class="`item${n}-text`"></div>
     </div>
   </div>
@@ -15,29 +30,17 @@ const props = defineProps({
 })
 const schemeDataStore = useSchemeDataStore()
 const contentMap = computed(() => ({
-  7: (data) => data["Артикул"] || "",
-  27: (data) => `<p>Объект: ${data["Объект"]}</p><p>Заказчик: ${data["Заказчик"]}</p> ` || "",
   31: () => "Изм",
   32: () => "Кол",
   33: () => "Лист",
   34: () => "№док",
   35: () => "Подп",
   36: () => "Дата",
-  41: (data) => `<input type='text' value='${data["Должность 1"]}' class='table__input'/>`,
-  43: (data) => data["ФИО 1"] || "",
-  46: (data) => data["Дата"] || "",
-  51: (data) => data["Должность 2"] || "",
-  53: (data) => data["ФИО 2"] || "",
-  56: (data) => data["Дата"] || "",
-  57: (data) => "Адрес: " + data["Адрес"] || "",
   58: () => "Стадия",
   59: () => "Лист",
   60: () => "Листов",
-  68: (data) => data["Стадия"] || "",
   69: () => `${props.listIndex}`,
   70: () => `${schemeDataStore.totalPages}`,
-  87: () => `<p>Однолинейная схема</p><p>${props.pageData?.[0]?.["Данные"]?.[0]?.["Вводной щит"]}</p> ` || "",
-  88: (data) => data["Фирма"] || "",
 }))
 
 // Метод для разрешения контента
@@ -48,13 +51,12 @@ const resolveContent = (key) => {
 </script>
 
 <style lang="scss" scoped>
-.table__input {
+input {
   width: auto;
   border: 0;
   background: none;
   padding: 0;
   margin: 0;
-  outline: none;
   text-align: center;
 }
 .right-inside-table {
