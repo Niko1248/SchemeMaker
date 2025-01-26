@@ -206,6 +206,8 @@ input,
 optgroup,
 select,
 textarea {
+  width: auto;
+  height: auto;
   font-family: inherit;
   /* 1 */
   font-size: 100%;

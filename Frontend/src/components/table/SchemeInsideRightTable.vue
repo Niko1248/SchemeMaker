@@ -2,7 +2,13 @@
   <div class="right-inside-table">
     <div class="item" :class="`item${n}`" v-for="n in 100" :key="n">
       <input type="text" v-if="n === 7" :value="schemeDataStore.tableData['Артикул']" />
-      <input type="text" v-if="n === 27" :value="schemeDataStore.tableData['Поле 1']" />
+      <textarea
+        @input="adjustPadding"
+        :style="{ paddingTop: padding + 'px' }"
+        type="text"
+        v-if="n === 27"
+        :value="schemeDataStore.tableData['Поле 1']"
+      />
       <input type="text" v-if="n === 41" :value="schemeDataStore.tableData['Должность 1']" />
       <input type="text" v-if="n === 43" :value="schemeDataStore.tableData['ФИО 1']" />
       <input type="text" v-if="n === 46" :value="schemeDataStore.tableData['Дата']" />
@@ -22,8 +28,9 @@
 </template>
 
 <script setup>
-import { computed } from "vue"
+import { computed, defineProps } from "vue"
 import { useSchemeDataStore } from "../../stores/SchemeData.js"
+
 const props = defineProps({
   listIndex: { type: Number },
   pageData: { type: Array },
@@ -100,22 +107,123 @@ input {
 .item27 {
   grid-row: 3/6;
   grid-column: 7/11;
+  width: 100%;
+  font-size: 5mm;
+  overflow: visible;
+  textarea {
+    box-sizing: border-box;
+    word-break: break-all;
+    overflow-y: hidden;
+    resize: none;
+    text-align: center;
+    border: 0;
+    line-height: 0.8;
+    background-color: transparent;
+    width: 119mm !important;
+    height: 14mm;
+    &:focus {
+      outline: 1px dashed #000000; /* зеленая обводка */
+      transition: 0.5s ease;
+      border-radius: 2px;
+      box-shadow: 0px 2px 20px #000;
+      background: #ffffff00;
+    }
+  }
 }
 .item41,
 .item51 {
   grid-column: 1/3;
+  overflow: visible;
+  input {
+    text-align: center;
+    border: 0;
+    background-color: transparent;
+    width: 20mm;
+    height: 5mm;
+    &:focus {
+      outline: 1px dashed #000000; /* зеленая обводка */
+      transition: 0.5s ease;
+      border-radius: 2px;
+      box-shadow: 0px 2px 20px #000;
+      background: #ffffff00;
+    }
+  }
+}
+.item46,
+.item56 {
+  overflow: visible;
+  input {
+    text-align: center;
+    border: 0;
+    background-color: transparent;
+    width: 10mm;
+    height: 5mm;
+    &:focus {
+      outline: 1px dashed #000000; /* зеленая обводка */
+      transition: 0.5s ease;
+      border-radius: 2px;
+      box-shadow: 0px 2px 20px #000;
+      background: #ffffff00;
+    }
+  }
 }
 .item43,
 .item53 {
   grid-column: 3/5;
+  overflow: visible;
+  input {
+    text-align: center;
+    border: 0;
+    background-color: transparent;
+    width: 20mm;
+    height: 5mm;
+    &:focus {
+      outline: 1px dashed #000000; /* зеленая обводка */
+      transition: 0.5s ease;
+      border-radius: 2px;
+      box-shadow: 0px 2px 20px #000;
+      background: #ffffff00;
+    }
+  }
 }
+
 .item57 {
   grid-row: 6/9;
   grid-column: 7;
+  overflow: visible;
+  input {
+    text-align: center;
+    border: 0;
+    background-color: transparent;
+    width: 70mm;
+    height: 15mm;
+    &:focus {
+      outline: 1px dashed #000000; /* зеленая обводка */
+      transition: 0.5s ease;
+      border-radius: 2px;
+      box-shadow: 0px 2px 20px #000;
+      background: #ffffff00;
+    }
+  }
 }
 .item68 {
   grid-row: 7/9;
   grid-column: 8;
+  overflow: visible;
+  input {
+    text-align: center;
+    border: 0;
+    background-color: transparent;
+    width: 15mm;
+    height: 10mm;
+    &:focus {
+      outline: 1px dashed #000000; /* зеленая обводка */
+      transition: 0.5s ease;
+      border-radius: 2px;
+      box-shadow: 0px 2px 20px #000;
+      background: #ffffff00;
+    }
+  }
 }
 .item69 {
   grid-row: 7/9;
@@ -132,6 +240,21 @@ input {
 .item88 {
   grid-row: 9/11;
   grid-column: 8/11;
+  overflow: visible;
+  input {
+    text-align: center;
+    border: 0;
+    background-color: transparent;
+    width: 50mm;
+    height: 15mm;
+    &:focus {
+      outline: 1px dashed #000000; /* зеленая обводка */
+      transition: 0.5s ease;
+      border-radius: 2px;
+      box-shadow: 0px 2px 20px #000;
+      background: #ffffff00;
+    }
+  }
 }
 .item7,
 .item27,
@@ -145,13 +268,24 @@ input {
 
 // Артикул
 .item7 {
+  overflow: visible;
   font-size: 7mm;
+  input {
+    text-align: center;
+    border: 0;
+    background-color: transparent;
+    width: 120mm;
+    height: 10mm;
+    &:focus {
+      outline: 1px dashed #000000; /* зеленая обводка */
+      transition: 0.5s ease;
+      border-radius: 2px;
+      box-shadow: 0px 2px 20px #000;
+      background: #ffffff00;
+    }
+  }
 }
 // Объект и заказчик
-.item27 {
-  width: 100%;
-  font-size: 5mm;
-}
 
 // Должность 1
 .item41 {

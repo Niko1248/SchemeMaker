@@ -63,6 +63,7 @@ const deviceImage = computed(() => (deviceType.value ? deviceImages[deviceType.v
 }
 .secondObjInfo {
   top: 5px;
+  left: -41px;
 }
 .connection-line-PE_Q {
   position: absolute;

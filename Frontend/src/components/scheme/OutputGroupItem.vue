@@ -37,13 +37,16 @@
     <div class="cable-name" v-if="checkInputCableMarka">
       <input type="text" :value="checkInputCableMarka" />
     </div>
-    <div class="cable-size" v-if="checkInputCableSize">
-      <input type="text" :value="checkInputCableSize" />
+    <div class="cable-param">
+      <div class="cable-size" v-if="checkInputCableSize">
+        <input type="text" :value="checkInputCableSize" />
+      </div>
+      <div class="cable-length" v-if="checkInputCableLength">
+        <p>L=</p>
+        <input type="text" :value="checkInputCableLength + 'м'" />
+      </div>
     </div>
-    <div class="cable-length" v-if="checkInputCableLength">
-      <p>L=</p>
-      <input type="text" :value="checkInputCableLength + ' м'" />
-    </div>
+
     <!-- Фазы (линии + текст) -->
     <div class="phase-line__wrap">
       <div v-for="index in checkPhase(props.itemData)" :key="index" class="phase-line"></div>
@@ -169,26 +172,45 @@ const checkInputCableLength = computed(() => {
 .cable-size,
 .cable-length {
   position: absolute;
-  transform: rotate(-90deg);
   width: 100%;
   font-size: 11px;
 }
 .cable-name {
   bottom: 13mm;
+  transform: rotate(-90deg);
+
   text-align: center;
   left: -10mm;
   max-width: 70px;
   word-break: break-word;
 }
-.cable-size {
+.cable-param {
+  position: absolute;
   bottom: 12mm;
-  left: -6.5mm;
+  left: -8mm;
+  transform: rotate(-90deg);
+  display: flex;
+  justify-content: center;
+  input {
+    max-width: 10mm;
+  }
+}
+.cable-size {
+  position: relative;
   text-align: center;
+  input {
+    text-align: end;
+    margin-right: 5px;
+  }
 }
 .cable-length {
+  position: relative;
   display: flex;
-  bottom: 25mm;
-  left: -6mm;
+  margin-bottom: 2px;
+  input {
+    text-align: start;
+    margin-left: 2px;
+  }
 }
 .secondObjInfo {
   top: 5px;

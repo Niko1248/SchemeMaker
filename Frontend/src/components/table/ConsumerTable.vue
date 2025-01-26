@@ -118,10 +118,16 @@ const getLegend = (data) => {
   }
 }
 input {
-  padding: 0;
-  width: 100%;
-  border: 0;
-  background: none;
   text-align: center;
+  border: 0;
+  background-color: transparent;
+  width: 19mm;
+  &:focus {
+    outline: 1px dashed #000000; /* зеленая обводка */
+    transition: 0.5s ease;
+    border-radius: 2px;
+    box-shadow: 0px 0px 20px #000;
+    background: #ffffff00;
+  }
 }
 </style>

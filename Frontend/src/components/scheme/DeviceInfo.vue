@@ -10,15 +10,17 @@
       <input
         type="text"
         v-if="props.textData['Класс']"
-        :value="props.textData['Класс']"
+        :value="props.textData['Класс'] + ' ' + props.textData['Номинал'] + 'мА'"
         style="text-transform: lowercase"
       />
-      <input type="text" v-if="props.textData['Номинал']" :value="props.textData['Номинал'] + 'мА'" />
+
+      <input
+        type="text"
+        v-if="props.textData['Тип УЗО']"
+        :value="props.textData['Тип УЗО'] + ' ' + props.textData['Ток утечки УЗО'] + 'мА'"
+      />
     </div>
-    <div class="text__wrap-uzo">
-      <input type="text" v-if="props.textData['Тип УЗО']" :value="props.textData['Тип УЗО']" />
-      <input type="text" v-if="props.textData['Ток утечки УЗО']" :value="props.textData['Ток утечки УЗО'] + 'мА'" />
-    </div>
+    <div class="text__wrap-uzo"></div>
   </div>
 </template>
 <script setup>
@@ -54,8 +56,9 @@ const props = defineProps({
 .text__wrap-class-den {
   display: flex;
   justify-content: center;
+  max-width: 20mm;
   input {
-    max-width: 5mm;
+    max-width: 10mm;
     border: none;
     box-sizing: border-box;
     &:focus {
@@ -65,14 +68,6 @@ const props = defineProps({
       box-shadow: 0px 0px 20px #000;
       background: #ffffff00;
     }
-    &:first-child {
-      text-align: center;
-      padding-left: 2mm;
-    }
-    text-align: start;
   }
-}
-.text__wrap-uzo {
-  display: flex;
 }
 </style>
