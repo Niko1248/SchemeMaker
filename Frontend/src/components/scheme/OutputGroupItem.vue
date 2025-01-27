@@ -37,14 +37,12 @@
     <div class="cable-name" v-if="checkInputCableMarka">
       <input type="text" :value="checkInputCableMarka" />
     </div>
-    <div class="cable-param">
-      <div class="cable-size" v-if="checkInputCableSize">
-        <input type="text" :value="checkInputCableSize" />
-      </div>
-      <div class="cable-length" v-if="checkInputCableLength">
-        <p>L=</p>
-        <input type="text" :value="checkInputCableLength + 'м'" />
-      </div>
+
+    <div class="cable-size" v-if="checkInputCableSize">
+      <input type="text" :value="checkInputCableSize" />
+    </div>
+    <div class="cable-length" v-if="checkInputCableLength">
+      <input type="text" :value="'L=' + checkInputCableLength + 'м'" />
     </div>
 
     <!-- Фазы (линии + текст) -->
@@ -176,18 +174,17 @@ const checkInputCableLength = computed(() => {
   font-size: 11px;
 }
 .cable-name {
-  bottom: 13mm;
+  bottom: 12mm;
   transform: rotate(-90deg);
-
   text-align: center;
   left: -10mm;
   max-width: 70px;
   word-break: break-word;
 }
-.cable-param {
+.cable-size {
   position: absolute;
-  bottom: 12mm;
-  left: -8mm;
+  bottom: 11mm;
+  left: -7mm;
   transform: rotate(-90deg);
   display: flex;
   justify-content: center;
@@ -195,21 +192,17 @@ const checkInputCableLength = computed(() => {
     max-width: 10mm;
   }
 }
-.cable-size {
-  position: relative;
-  text-align: center;
-  input {
-    text-align: end;
-    margin-right: 5px;
-  }
-}
 .cable-length {
-  position: relative;
+  position: absolute;
+  bottom: 21mm;
+  left: -7mm;
+  transform: rotate(-90deg);
   display: flex;
-  margin-bottom: 2px;
+  justify-content: center;
+  align-items: center;
   input {
+    max-width: 10mm;
     text-align: start;
-    margin-left: 2px;
   }
 }
 .secondObjInfo {
@@ -221,6 +214,7 @@ input {
   border: 0;
   background: none;
   text-align: center;
+  height: 15px;
   &:focus {
     outline: 1px dashed #000000; /* зеленая обводка */
     transition: 0.5s ease;

@@ -1,27 +1,26 @@
 <template>
   <div class="right-inside-table">
     <div class="item" :class="`item${n}`" v-for="n in 100" :key="n">
-      <input type="text" v-if="n === 7" :value="schemeDataStore.tableData['Артикул']" />
-      <textarea
-        @input="adjustPadding"
-        :style="{ paddingTop: padding + 'px' }"
-        type="text"
-        v-if="n === 27"
-        :value="schemeDataStore.tableData['Поле 1']"
-      />
+      <!-- <input type="text" v-if="n === 7" :value="schemeDataStore.tableData['Артикул']" /> -->
+      <p v-if="n === 7">{{ schemeDataStore.tableData["Артикул"] }}</p>
+      <!-- <input type="text" v-if="n === 27" :value="schemeDataStore.tableData['Поле 1']" /> -->
+      <p v-if="n === 27">{{ schemeDataStore.tableData["Поле 1"] }}</p>
       <input type="text" v-if="n === 41" :value="schemeDataStore.tableData['Должность 1']" />
       <input type="text" v-if="n === 43" :value="schemeDataStore.tableData['ФИО 1']" />
       <input type="text" v-if="n === 46" :value="schemeDataStore.tableData['Дата']" />
       <input type="text" v-if="n === 51" :value="schemeDataStore.tableData['Должность 2']" />
       <input type="text" v-if="n === 53" :value="schemeDataStore.tableData['ФИО 2']" />
       <input type="text" v-if="n === 56" :value="schemeDataStore.tableData['Дата']" />
-      <input type="text" v-if="n === 57" :value="schemeDataStore.tableData['Поле 2']" />
-      <input type="text" v-if="n === 68" :value="schemeDataStore.tableData['Стадия']" />
+      <!-- <input type="text" v-if="n === 57" :value="schemeDataStore.tableData['Поле 2']" /> -->
+      <p v-if="n === 57">{{ schemeDataStore.tableData["Поле 2"] }}</p>
+      <!-- <input type="text" v-if="n === 68" :value="schemeDataStore.tableData['Стадия']" /> -->
+      <p v-if="n === 68">{{ schemeDataStore.tableData["Стадия"] }}</p>
       <div v-if="n === 87">
         <p>Однолинейная схема</p>
         <p>{{ props.pageData?.[0]?.["Данные"]?.[0]?.["Вводной щит"] }}</p>
       </div>
-      <input type="text" v-if="n === 88" :value="schemeDataStore.tableData['Фирма']" />
+      <p v-if="n === 88">{{ schemeDataStore.tableData["Фирма"] }}</p>
+      <!-- <input type="text" v-if="n === 88" :value="schemeDataStore.tableData['Фирма']" /> -->
       <div v-if="contentMap[n]" v-html="resolveContent(n)" :class="`item${n}-text`"></div>
     </div>
   </div>
@@ -270,6 +269,9 @@ input {
 .item7 {
   overflow: visible;
   font-size: 7mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   input {
     text-align: center;
     border: 0;

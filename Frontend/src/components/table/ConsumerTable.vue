@@ -17,7 +17,7 @@
         <img :src="getLegend(data['Данные'])" alt="" />
       </div>
       <div class="item item2">
-        <input type="text" v-model="data['Данные'][0]['Группа']" />
+        {{ findGroupInPlan(data["Данные"]) }}
       </div>
       <div class="item item3">{{ findPower(data["Данные"]) }}</div>
       <div class="item item4">{{ findAmperage(data["Данные"]) }}</div>
@@ -39,6 +39,10 @@ const legendObj = reactive({
 const props = defineProps({
   pageData: { type: Array, required: true },
 })
+const findGroupInPlan = (data) => {
+  const foundElement = data.find((el) => el["Номер по плану"])
+  return foundElement ? foundElement["Номер по плану"] : null
+}
 
 const findAmperage = (data) => {
   const foundElement = data.find((el) => el["Расчетный ток"])

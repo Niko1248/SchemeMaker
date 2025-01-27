@@ -7,6 +7,7 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
   const outputDevicesData = reactive([])
   const totalPages = ref(0)
   const inputPhase = ref(undefined)
+  const fontSizeMod = ref(false)
 
   const splitTableAndSchemeData = (excelData, indexTable) => {
     Object.assign(tableData, excelData[indexTable]["Группы"][0]["Данные"][0])
@@ -21,6 +22,10 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
 
   const setTotalPages = (value) => {
     totalPages.value = value
+  }
+
+  const fontSizeModToggle = (value) => {
+    fontSizeMod.value = value
   }
 
   const splitInputAndOutputGroups = (data) => {
@@ -92,5 +97,7 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     setTotalPages,
     totalPages,
     inputPhase,
+    fontSizeMod,
+    fontSizeModToggle,
   }
 })

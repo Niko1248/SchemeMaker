@@ -65,6 +65,17 @@
           <div class="input-label" @click.prevent="changeScheme(item['Вводной щит'])">{{ item["Вводной щит"] }}</div>
         </div>
       </div>
+      <div class="fontSizeMod" v-if="schemeDataStore.schemeData.length !== 0">
+        <input
+          v-model="fontSizeMod"
+          type="checkbox"
+          name="fontSizeMod"
+          id="fontSizeMod"
+          @change="schemeDataStore.fontSizeModToggle(fontSizeMod)"
+        />
+        <label for="fontSizeMod">Режим редактирования шрифта</label>
+      </div>
+
       <button
         class="export-button"
         @click="exportToPDF('Select')"
@@ -102,6 +113,7 @@ const selectedSchemes = ref([])
 const fileName = ref(null)
 const fileInput = ref(null)
 const menuOpen = ref(true)
+const fontSizeMod = ref(false)
 
 // Функция изменения выбранной схемы
 const changeScheme = (name) => {
