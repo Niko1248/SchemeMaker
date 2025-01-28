@@ -1,26 +1,31 @@
 <template>
   <div class="right-inside-table">
     <div class="item" :class="`item${n}`" v-for="n in 100" :key="n">
-      <!-- <input type="text" v-if="n === 7" :value="schemeDataStore.tableData['Артикул']" /> -->
-      <p v-if="n === 7">{{ schemeDataStore.tableData["Артикул"] }}</p>
-      <!-- <input type="text" v-if="n === 27" :value="schemeDataStore.tableData['Поле 1']" /> -->
-      <p v-if="n === 27">{{ schemeDataStore.tableData["Поле 1"] }}</p>
+      <div contenteditable="true" class="contenteditable" v-if="n === 7">
+        {{ schemeDataStore.tableData["Артикул"] }}
+      </div>
+      <div contenteditable="true" class="contenteditable" v-if="n === 27">
+        {{ schemeDataStore.tableData["Поле 1"] }}
+      </div>
       <input type="text" v-if="n === 41" :value="schemeDataStore.tableData['Должность 1']" />
       <input type="text" v-if="n === 43" :value="schemeDataStore.tableData['ФИО 1']" />
       <input type="text" v-if="n === 46" :value="schemeDataStore.tableData['Дата']" />
       <input type="text" v-if="n === 51" :value="schemeDataStore.tableData['Должность 2']" />
       <input type="text" v-if="n === 53" :value="schemeDataStore.tableData['ФИО 2']" />
       <input type="text" v-if="n === 56" :value="schemeDataStore.tableData['Дата']" />
-      <!-- <input type="text" v-if="n === 57" :value="schemeDataStore.tableData['Поле 2']" /> -->
-      <p v-if="n === 57">{{ schemeDataStore.tableData["Поле 2"] }}</p>
-      <!-- <input type="text" v-if="n === 68" :value="schemeDataStore.tableData['Стадия']" /> -->
-      <p v-if="n === 68">{{ schemeDataStore.tableData["Стадия"] }}</p>
+      <div contenteditable="true" class="contenteditable" v-if="n === 57">
+        {{ schemeDataStore.tableData["Поле 2"] }}
+      </div>
+      <div contenteditable="true" class="contenteditable" v-if="n === 68">
+        {{ schemeDataStore.tableData["Стадия"] }}
+      </div>
       <div v-if="n === 87">
         <p>Однолинейная схема</p>
         <p>{{ props.pageData?.[0]?.["Данные"]?.[0]?.["Вводной щит"] }}</p>
       </div>
-      <p v-if="n === 88">{{ schemeDataStore.tableData["Фирма"] }}</p>
-      <!-- <input type="text" v-if="n === 88" :value="schemeDataStore.tableData['Фирма']" /> -->
+      <div contenteditable="true" class="contenteditable" v-if="n === 88">
+        {{ schemeDataStore.tableData["Фирма"] }}
+      </div>
       <div v-if="contentMap[n]" v-html="resolveContent(n)" :class="`item${n}-text`"></div>
     </div>
   </div>
@@ -90,7 +95,25 @@ input {
   align-items: center;
   text-align: center;
 }
+.contenteditable {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  word-break: break-all;
+  border: 0;
+  line-height: 0.9;
+  background-color: transparent;
+  padding: 0 5px;
 
+  &:focus {
+    outline: 1px solid #00000000; /* зеленая обводка */
+    transition: 0.5s ease;
+    border-radius: 2px;
+    box-shadow: 0px 2px 20px #000;
+    background: #ffffff00;
+  }
+}
 // Настройка таблицы
 /* prettier-ignore */
 .item8,.item9,.item10,.item17,.item18,.item19,.item20,.item28,.item29,.item30,
@@ -99,9 +122,16 @@ input {
 .item97, .item98, .item99,.item100{
   display: none;
 }
+
 .item7 {
   grid-row: 1/3;
   grid-column: 7/11;
+  overflow: visible;
+  font-size: 7mm;
+  .contenteditable {
+    width: 120mm;
+    height: 10mm;
+  }
 }
 .item27 {
   grid-row: 3/6;
@@ -109,24 +139,9 @@ input {
   width: 100%;
   font-size: 5mm;
   overflow: visible;
-  textarea {
-    box-sizing: border-box;
-    word-break: break-all;
-    overflow-y: hidden;
-    resize: none;
-    text-align: center;
-    border: 0;
-    line-height: 0.8;
-    background-color: transparent;
-    width: 119mm !important;
-    height: 14mm;
-    &:focus {
-      outline: 1px dashed #000000; /* зеленая обводка */
-      transition: 0.5s ease;
-      border-radius: 2px;
-      box-shadow: 0px 2px 20px #000;
-      background: #ffffff00;
-    }
+  .contenteditable {
+    width: 120mm;
+    height: 15mm;
   }
 }
 .item41,
@@ -190,38 +205,18 @@ input {
   grid-row: 6/9;
   grid-column: 7;
   overflow: visible;
-  input {
-    text-align: center;
-    border: 0;
-    background-color: transparent;
+  .contenteditable {
     width: 70mm;
     height: 15mm;
-    &:focus {
-      outline: 1px dashed #000000; /* зеленая обводка */
-      transition: 0.5s ease;
-      border-radius: 2px;
-      box-shadow: 0px 2px 20px #000;
-      background: #ffffff00;
-    }
   }
 }
 .item68 {
   grid-row: 7/9;
   grid-column: 8;
   overflow: visible;
-  input {
-    text-align: center;
-    border: 0;
-    background-color: transparent;
+  .contenteditable {
     width: 15mm;
     height: 10mm;
-    &:focus {
-      outline: 1px dashed #000000; /* зеленая обводка */
-      transition: 0.5s ease;
-      border-radius: 2px;
-      box-shadow: 0px 2px 20px #000;
-      background: #ffffff00;
-    }
   }
 }
 .item69 {
@@ -240,19 +235,12 @@ input {
   grid-row: 9/11;
   grid-column: 8/11;
   overflow: visible;
-  input {
-    text-align: center;
-    border: 0;
-    background-color: transparent;
-    width: 50mm;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 5mm;
+  .contenteditable {
+    width: 70mm;
     height: 15mm;
-    &:focus {
-      outline: 1px dashed #000000; /* зеленая обводка */
-      transition: 0.5s ease;
-      border-radius: 2px;
-      box-shadow: 0px 2px 20px #000;
-      background: #ffffff00;
-    }
   }
 }
 .item7,
@@ -265,28 +253,6 @@ input {
 }
 // Стили отдельных элементов
 
-// Артикул
-.item7 {
-  overflow: visible;
-  font-size: 7mm;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  input {
-    text-align: center;
-    border: 0;
-    background-color: transparent;
-    width: 120mm;
-    height: 10mm;
-    &:focus {
-      outline: 1px dashed #000000; /* зеленая обводка */
-      transition: 0.5s ease;
-      border-radius: 2px;
-      box-shadow: 0px 2px 20px #000;
-      background: #ffffff00;
-    }
-  }
-}
 // Объект и заказчик
 
 // Должность 1
@@ -311,12 +277,6 @@ input {
 }
 // Название схемы
 .item87 {
-  font-size: 5mm;
-}
-// Название фирмы
-.item88 {
-  text-transform: uppercase;
-  font-weight: 700;
   font-size: 5mm;
 }
 </style>
