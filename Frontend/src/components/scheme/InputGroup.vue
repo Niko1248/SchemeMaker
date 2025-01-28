@@ -34,31 +34,103 @@
   </div>
   <div class="input-node">
     <img src="../../assets/img/input-connection2.svg" alt="" />
-    <div class="input-name">{{ "от " + checkInputName["Наименование потребителя"] }}</div>
+
+    <div
+      contenteditable="true"
+      :style="{ fontSize: fontSizes['Ввод'] + 'px' }"
+      @click="handleFontSizeInput('Ввод')"
+      class="input-name scheme_contenteditable"
+      @click.stop="openFontSizePopup"
+    >
+      {{ "от " + checkInputName["Наименование потребителя"] }}
+    </div>
     <div class="input-phase">
-      <p v-if="schemeDataStore.inputPhase?.length > 1" class="powerLine-info">~380/220В</p>
+      <p class="powerLine-info" v-if="schemeDataStore.inputPhase?.length > 1">~380/220В</p>
       <p v-else class="powerLine-info">~220В</p>
+    </div>
+    <!--     <div class="font-size__popup" @click.stop v-if="fontSizePopup && schemeDataStore.fontSizeMod">
+      <div class="font-size__popup--wrapp">
+        <span
+          >A
+          <p>A</p></span
+        >
+        <input type="number" min="1" max="11" v-model="activeFontSize" @change="updateFontSize" />
+      </div>
+    </div> -->
+    <div class="font-size__popup" v-if="fontSizePopupVisible" @click.stop>
+      <div class="font-size__popup--wrapp">
+        <span
+          >A
+          <p>A</p></span
+        >
+        <input type="number" min="1" max="11" v-model="activeFontSize" @change="updateFontSize" />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from "vue"
+import { ref, reactive, computed, onMounted, onUnmounted } from "vue"
 import { useSchemeDataStore } from "../../stores/SchemeData"
 import FirstObjectInput from "./FirstObjectInput.vue"
 import SecondObjectInput from "./SecondObjectInput.vue"
 
 const schemeDataStore = useSchemeDataStore()
+const fontSizePopup = ref(false)
+const activeElement = ref(null)
+const fontSizePopupVisible = ref(false)
+const activeFontSize = ref(12)
+const fontSizes = reactive({
+  Ввод: 12,
+})
+/* const fontSizePopupRef = ref(null) // Ссылка на элемент попапа
+ */
+// Методы
+const openFontSizePopup = () => {
+  fontSizePopupVisible.value = true
+}
+
+const closeFontSizePopup = () => {
+  fontSizePopupVisible.value = false
+}
+const handleOutsideClick = (event) => {
+  if (!event.target.closest(".font-size__popup") && fontSizePopupVisible.value) {
+    closeFontSizePopup()
+  }
+}
+
+onMounted(() => {
+  document.addEventListener("click", handleOutsideClick)
+})
+
+onUnmounted(() => {
+  document.removeEventListener("click", handleOutsideClick)
+})
+const updateFontSize = () => {
+  if (activeElement.value && activeFontSize.value >= 1 && activeFontSize.value <= 20) {
+    fontSizes[activeElement.value] = activeFontSize.value
+  }
+}
+
+const handleFontSizeInput = (element) => {
+  activeElement.value = element
+  activeFontSize.value = fontSizes[element]
+  fontSizePopup.value = true
+}
+
+/* const handleClickOutside = (event) => {
+  if (fontSizePopupRef.value && !fontSizePopupRef.value.contains(event.target)) {
+    fontSizePopup.value = false
+  }
+} */
 
 const checkPhase = (data) => {
-  const phaseArr = data?.["Данные"]?.[0]?.["Фаза"]
-    .split(",") // Разбиваем строку в массив
-    .map((el) => el.trim()) // Убираем пробелы у каждого элемента
+  const phaseArr = data?.["Данные"]?.[0]?.["Фаза"].split(",").map((el) => el.trim())
 
-  let arrLength = Math.min(phaseArr.length, 3) // Ограничиваем длину максимум 3.
+  let arrLength = Math.min(phaseArr.length, 3)
 
   if (phaseArr.includes("N")) {
-    arrLength -= 1 // Уменьшаем значение на 1, если есть "N".
+    arrLength -= 1
   }
   return arrLength
 }
@@ -76,6 +148,29 @@ const checkInputName = computed(() => {
 })
 </script>
 <style lang="scss" scoped>
+.scheme_contenteditable {
+  margin: 0;
+  padding: 5px 5px 5px 25px;
+  box-sizing: border-box;
+  line-height: 100%;
+  text-align: center;
+  background: none;
+  border: 0;
+  height: 13mm;
+  max-height: 13mm;
+  width: 38mm;
+  box-sizing: border-box;
+  outline: none;
+  background-color: transparent;
+  transition: 0.2s;
+  &:focus {
+    outline: 1px solid #00000000; /* зеленая обводка */
+    transition: 0.5s ease;
+    border-radius: 2px;
+    box-shadow: 0px 0px 20px #000;
+    background: #ffffff00;
+  }
+}
 .input-Q {
   position: relative;
   display: flex;

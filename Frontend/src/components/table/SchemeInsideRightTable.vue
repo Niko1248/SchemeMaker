@@ -105,7 +105,7 @@ input {
   line-height: 0.9;
   background-color: transparent;
   padding: 0 5px;
-
+  cursor: url(../../../public/cursor-edit.png), auto;
   &:focus {
     outline: 1px solid #00000000; /* зеленая обводка */
     transition: 0.5s ease;

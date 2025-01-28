@@ -1,51 +1,69 @@
 <template>
   <div class="text__wrap">
-    <input
-      type="text"
-      v-model="props.textData['Производитель']"
+    <div
+      contenteditable="true"
+      class="scheme_contenteditable"
       :style="{ fontSize: fontSizes['Производитель'] + 'px' }"
       @click="handleFontSizeInput('Производитель')"
-    />
-    <input
-      type="text"
-      v-model="props.textData['Автомат']"
+      @click.stop="openFontSizePopup"
+    >
+      {{ props.textData["Производитель"] }}
+    </div>
+    <div
+      contenteditable="true"
+      class="scheme_contenteditable"
       @input="props.textData['Автомат'] = props.textData['Автомат'].replace(/\s/g, '')"
       :style="{ fontSize: fontSizes['Автомат'] + 'px' }"
       @click="handleFontSizeInput('Автомат')"
-    />
+      @click.stop="openFontSizePopup"
+    >
+      {{ props.textData["Автомат"] }}
+    </div>
+
     <div class="text__wrap-class-den">
-      <input
-        type="text"
-        v-model="nominalInputValue"
+      <div
+        style="text-transform: lowercase"
+        contenteditable="true"
+        class="scheme_contenteditable"
         :style="{ fontSize: fontSizes['Номинал'] + 'px' }"
         @click="handleFontSizeInput('Номинал')"
-        style="text-transform: lowercase"
-      />
+        @click.stop="openFontSizePopup"
+      >
+        {{ nominalInputValue }}
+      </div>
     </div>
     <div class="text__wrap-uzo">
-      <input
-        type="text"
-        v-model="uzolInputValue"
+      <div
+        contenteditable="true"
+        class="scheme_contenteditable"
         :style="{ fontSize: fontSizes['Тип УЗО'] + 'px' }"
         @click="handleFontSizeInput('Тип УЗО')"
-      />
+        @click.stop="openFontSizePopup"
+      >
+        {{ uzolInputValue }}
+      </div>
     </div>
-    <div class="font-size__popup" @click.stop v-if="fontSizePopup && schemeDataStore.fontSizeMod">
-      <label>Размер шрифта:</label>
-      <input type="number" min="1" max="11" v-model="activeFontSize" @change="updateFontSize" />
-      <button @click.prevent="closeFontSizePopup">ok</button>
+    <div class="font-size__popup" v-if="fontSizePopupVisible" @click.stop>
+      <div class="font-size__popup--wrapp">
+        <span
+          >A
+          <p>A</p></span
+        >
+        <input type="number" min="1" max="11" v-model="activeFontSize" @change="updateFontSize" />
+      </div>
     </div>
   </div>
 </template>
 <script setup>
-import { ref, reactive, computed } from "vue"
+import { ref, reactive, computed, onMounted, onUnmounted } from "vue"
+
 import { useSchemeDataStore } from "../../stores/SchemeData"
 
 const props = defineProps({
   textData: { type: Object },
 })
 const schemeDataStore = useSchemeDataStore()
-
+const fontSizePopupVisible = ref(false)
 const fontSizePopup = ref(false)
 const activeElement = ref(null)
 const activeFontSize = ref(10)
@@ -56,11 +74,32 @@ const fontSizes = reactive({
   Номинал: 10,
   "Тип УЗО": 10,
   "Ток утечки УЗО": 10,
+  Ввод: 12,
 })
 
-const closeFontSizePopup = () => {
+/* const closeFontSizePopup = () => {
   fontSizePopup.value = false
+} */
+// Методы
+const openFontSizePopup = () => {
+  fontSizePopupVisible.value = true
 }
+
+const closeFontSizePopup = () => {
+  fontSizePopupVisible.value = false
+}
+const handleOutsideClick = (event) => {
+  if (!event.target.closest(".font-size__popup") && fontSizePopupVisible.value) {
+    closeFontSizePopup()
+  }
+}
+onMounted(() => {
+  document.addEventListener("click", handleOutsideClick)
+})
+
+onUnmounted(() => {
+  document.removeEventListener("click", handleOutsideClick)
+})
 const updateFontSize = () => {
   if (activeElement.value && activeFontSize.value >= 1 && activeFontSize.value <= 20) {
     fontSizes[activeElement.value] = activeFontSize.value
@@ -94,12 +133,12 @@ const uzolInputValue = computed(() => {
 <style lang="scss" scoped>
 .text__wrap {
   position: absolute;
-  max-width: 12mm;
-  left: -49px;
+  width: 46px;
+  right: 80px;
   top: 0;
   display: flex;
   flex-direction: column;
-  input {
+  .scheme_contenteditable {
     margin: 0;
     padding: 0;
     line-height: 100%;
@@ -120,48 +159,22 @@ const uzolInputValue = computed(() => {
     }
   }
 }
+
 .text__wrap-class-den {
   display: flex;
   justify-content: center;
   max-width: 20mm;
-  input {
+  .scheme_contenteditable {
     max-width: 10mm;
     border: none;
     box-sizing: border-box;
-    &:focus {
-      outline: 1px dashed #000000; /* зеленая обводка */
-      transition: 0.5s ease;
-      border-radius: 2px;
-      box-shadow: 0px 0px 20px #000;
-      background: #ffffff00;
-    }
   }
 }
 .text__wrap-uzo {
   display: flex;
   justify-content: center;
-  input {
+  .scheme_contenteditable {
     max-width: 10mm;
-  }
-}
-.font-size__popup {
-  position: absolute;
-  top: 110%;
-  left: 0;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 10px;
-  z-index: 999;
-  font-size: 13px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: spa;
-  input {
-    font-size: 13px;
-  }
-  button {
-    width: 100%;
   }
 }
 </style>

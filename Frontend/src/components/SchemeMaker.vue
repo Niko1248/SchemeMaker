@@ -65,7 +65,7 @@
           <div class="input-label" @click.prevent="changeScheme(item['Вводной щит'])">{{ item["Вводной щит"] }}</div>
         </div>
       </div>
-      <div class="fontSizeMod" v-if="schemeDataStore.schemeData.length !== 0">
+      <!-- <div class="fontSizeMod" v-if="schemeDataStore.schemeData.length !== 0">
         <input
           v-model="fontSizeMod"
           type="checkbox"
@@ -74,7 +74,7 @@
           @change="schemeDataStore.fontSizeModToggle(fontSizeMod)"
         />
         <label for="fontSizeMod">Режим редактирования шрифта</label>
-      </div>
+      </div> -->
 
       <button
         class="export-button"
@@ -146,9 +146,10 @@ const uploadFile = async () => {
   loading.value = true
   error.value = null
   success.value = false
-  // http://138.124.31.181:3000/upload
+  // http://138.124.31.181:7777/upload
+  // http://localhost:3000/upload
   try {
-    const response = await axios.post("http://localhost:3000/upload", formData, {
+    const response = await axios.post("http://138.124.31.181:7777/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
     success.value = true
@@ -252,7 +253,7 @@ const saveToZIP = async () => {
 }
 .close-ico {
   position: absolute;
-  cursor: pointer;
+  cursor: url(../../public/cursor-pointer.png), auto;
   left: 5px;
   top: calc(50% - 10px);
   transition: 0.3s;
@@ -347,10 +348,10 @@ const saveToZIP = async () => {
 .upload-file__input {
   z-index: 999;
   visibility: hidden;
-  cursor: pointer;
+  cursor: url(../../public/cursor-pointer.png), auto;
 }
 .upload-file__lable {
-  cursor: pointer;
+  cursor: url(../../public/cursor-pointer.png), auto;
   position: absolute;
   top: 0;
   left: 0;
@@ -383,6 +384,7 @@ const saveToZIP = async () => {
 }
 .upload-file__button {
   box-sizing: border-box;
+  cursor: url(../../public/cursor-pointer.png), auto;
   margin-top: 10px;
   width: 100%;
   height: 1.85vw;
@@ -425,6 +427,7 @@ const saveToZIP = async () => {
 }
 .export-button {
   box-sizing: border-box;
+  cursor: url(../../public/cursor-pointer.png), auto;
   width: 100%;
   height: auto;
   border: none;
@@ -451,7 +454,7 @@ const saveToZIP = async () => {
     margin-right: 10px;
   }
   .input-label {
-    cursor: pointer;
+    cursor: url(../../public/cursor-pointer.png), auto;
     transition: 0.2s;
 
     &:hover {

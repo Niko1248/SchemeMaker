@@ -183,7 +183,7 @@ const checkInputCableLength = computed(() => {
 }
 .cable-size {
   position: absolute;
-  bottom: 11mm;
+  bottom: 8mm;
   left: -7mm;
   transform: rotate(-90deg);
   display: flex;
@@ -194,7 +194,7 @@ const checkInputCableLength = computed(() => {
 }
 .cable-length {
   position: absolute;
-  bottom: 21mm;
+  bottom: 18mm;
   left: -7mm;
   transform: rotate(-90deg);
   display: flex;
