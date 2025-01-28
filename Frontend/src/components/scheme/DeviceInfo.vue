@@ -2,14 +2,14 @@
   <div class="text__wrap">
     <input
       type="text"
-      v-model="localTextData['Производитель']"
+      v-model="props.textData['Производитель']"
       :style="{ fontSize: fontSizes['Производитель'] + 'px' }"
       @click="handleFontSizeInput('Производитель')"
     />
     <input
       type="text"
-      v-model="localTextData['Автомат']"
-      @input="localTextData['Автомат'] = localTextData['Автомат'].replace(/\s/g, '')"
+      v-model="props.textData['Автомат']"
+      @input="props.textData['Автомат'] = props.textData['Автомат'].replace(/\s/g, '')"
       :style="{ fontSize: fontSizes['Автомат'] + 'px' }"
       @click="handleFontSizeInput('Автомат')"
     />
@@ -32,7 +32,7 @@
     </div>
     <div class="font-size__popup" @click.stop v-if="fontSizePopup && schemeDataStore.fontSizeMod">
       <label>Размер шрифта:</label>
-      <input type="number" min="1" max="20" v-model="activeFontSize" @change="updateFontSize" />
+      <input type="number" min="1" max="11" v-model="activeFontSize" @change="updateFontSize" />
       <button @click.prevent="closeFontSizePopup">ok</button>
     </div>
   </div>
@@ -45,7 +45,6 @@ const props = defineProps({
   textData: { type: Object },
 })
 const schemeDataStore = useSchemeDataStore()
-const localTextData = reactive({ ...props.textData })
 
 const fontSizePopup = ref(false)
 const activeElement = ref(null)
@@ -73,8 +72,8 @@ const handleFontSizeInput = (element) => {
   fontSizePopup.value = true
 }
 const nominalInputValue = computed(() => {
-  const classValue = localTextData["Класс"] || ""
-  const nominalValue = localTextData["Номинал"]
+  const classValue = props.textData["Класс"] || ""
+  const nominalValue = props.textData["Номинал"]
   let result = classValue
   if (nominalValue) {
     result += `${nominalValue}мА`
@@ -82,8 +81,8 @@ const nominalInputValue = computed(() => {
   return result.trim()
 })
 const uzolInputValue = computed(() => {
-  const classValue = localTextData["Тип УЗО"] || ""
-  const nominalValue = localTextData["Ток утечки УЗО"]
+  const classValue = props.textData["Тип УЗО"] || ""
+  const nominalValue = props.textData["Ток утечки УЗО"]
   let result = classValue
   if (nominalValue) {
     result += `${nominalValue}мА`
