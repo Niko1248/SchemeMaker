@@ -115,7 +115,7 @@ const nominalInputValue = computed(() => {
   const nominalValue = props.textData["Номинал"]
   let result = classValue
   if (nominalValue) {
-    result += `${nominalValue}мА`
+    result += `${nominalValue}`
   }
   return result.trim()
 })

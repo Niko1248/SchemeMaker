@@ -54,17 +54,20 @@
           </button>
         </form>
       </div>
-      <div class="list">
-        <div class="list__item" v-for="(item, index) in schemeDataStore.schemeData" :key="`item-${index}`">
-          <input
-            type="checkbox"
-            :id="`checkbox-${index}`"
-            :value="item['Вводной щит']"
-            @change="toogleCheckbox(item['Вводной щит'])"
-          />
-          <div class="input-label" @click.prevent="changeScheme(item['Вводной щит'])">{{ item["Вводной щит"] }}</div>
+      <div class="wrapp-list">
+        <div class="list">
+          <div class="list__item" v-for="(item, index) in schemeDataStore.schemeData" :key="`item-${index}`">
+            <input
+              type="checkbox"
+              :id="`checkbox-${index}`"
+              :value="item['Вводной щит']"
+              @change="toogleCheckbox(item['Вводной щит'])"
+            />
+            <div class="input-label" @click.prevent="changeScheme(item['Вводной щит'])">{{ item["Вводной щит"] }}</div>
+          </div>
         </div>
       </div>
+
       <!-- <div class="fontSizeMod" v-if="schemeDataStore.schemeData.length !== 0">
         <input
           v-model="fontSizeMod"
@@ -419,11 +422,19 @@ const saveToZIP = async () => {
     transform: rotate(-360deg);
   }
 }
+.wrapp-list {
+  overflow: hidden;
+  width: calc(100% - 20px);
+  max-height: 40svh;
+}
 .list {
-  width: 100%;
+  width: calc(100% + 20px);
   height: fit-content;
   max-height: 60%;
   margin: 20px 0px;
+  overflow-y: scroll;
+  max-height: 35svh;
+  margin-bottom: 20px;
 }
 .export-button {
   box-sizing: border-box;
