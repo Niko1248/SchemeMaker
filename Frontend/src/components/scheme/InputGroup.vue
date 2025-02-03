@@ -118,12 +118,6 @@ const handleFontSizeInput = (element) => {
   fontSizePopup.value = true
 }
 
-/* const handleClickOutside = (event) => {
-  if (fontSizePopupRef.value && !fontSizePopupRef.value.contains(event.target)) {
-    fontSizePopup.value = false
-  }
-} */
-
 const checkPhase = (data) => {
   const phaseArr = data?.["Данные"]?.[0]?.["Фаза"].split(",").map((el) => el.trim())
 

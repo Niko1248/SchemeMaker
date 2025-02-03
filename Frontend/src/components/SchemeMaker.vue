@@ -54,6 +54,7 @@
           </button>
         </form>
       </div>
+
       <div class="wrapp-list">
         <div class="list">
           <div class="list__item" v-for="(item, index) in schemeDataStore.schemeData" :key="`item-${index}`">
@@ -65,6 +66,16 @@
             />
             <div class="input-label" @click.prevent="changeScheme(item['Вводной щит'])">{{ item["Вводной щит"] }}</div>
           </div>
+        </div>
+      </div>
+      <div v-if="checkDoc" class="format">
+        <p class="format-title">Формат схемы</p>
+        <div class="format-wrapper">
+          <p>A3</p>
+          <div ref="checkBall" class="check-ball">
+            <div class="ball"></div>
+          </div>
+          <p>A4</p>
         </div>
       </div>
 
@@ -116,13 +127,13 @@ const selectedSchemes = ref([])
 const fileName = ref(null)
 const fileInput = ref(null)
 const menuOpen = ref(true)
-const fontSizeMod = ref(false)
-
 // Функция изменения выбранной схемы
 const changeScheme = (name) => {
   checkDoc.value = name
 }
-
+const changeFormat = (name) => {
+  checkDoc.value = name
+}
 // Функция открытия / закрытия меню
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value
@@ -152,7 +163,7 @@ const uploadFile = async () => {
   // http://138.124.31.181:7777/upload
   // http://localhost:3000/upload
   try {
-    const response = await axios.post("http://138.124.31.181:7777/upload", formData, {
+    const response = await axios.post("http://localhost:3000/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
     success.value = true
@@ -431,9 +442,9 @@ const saveToZIP = async () => {
   width: calc(100% + 20px);
   height: fit-content;
   max-height: 60%;
-  margin: 20px 0px;
+  margin: 10px 0px;
   overflow-y: scroll;
-  max-height: 35svh;
+  max-height: 38svh;
   margin-bottom: 20px;
 }
 .export-button {

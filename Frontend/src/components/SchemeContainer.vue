@@ -7,7 +7,7 @@
       }"
       ref="pages__wrapper"
     >
-      <div v-for="(item, index) in groupedItems" class="page" ref="page" :key="'group' + index">
+      <div v-for="(item, index) in groupedItems" class="page A3" ref="page" :key="'group' + index">
         <div class="top-frame">
           <Scheme :outputDevicesData="item" :listIndex="index + 1" />
           <CircuitScheme :pageData="item" :listIndex="index + 1" />
@@ -179,10 +179,6 @@ export default defineComponent({
   box-sizing: border-box;
 }
 .page {
-  height: size.$height;
-  width: size.$width;
-  min-height: size.$height;
-  min-width: size.$width;
   background: #fff;
   filter: drop-shadow(5px 5px 10px #00000018);
   transform-origin: center; /* Центр для изменения масштаба */

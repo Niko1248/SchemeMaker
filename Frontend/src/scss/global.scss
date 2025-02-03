@@ -12,6 +12,66 @@ html {
   height: 100svh;
 }
 
+.A3 {
+  width: 420mm;
+  height: 297mm;
+  min-width: 420mm;
+  min-height: 297mm;
+}
+
+.A4 {
+  width: 297mm;
+  height: 210mm;
+  min-width: 297mm;
+  min-height: 210mm;
+}
+
+.format {
+  font-family: WixMadeforDisplay-Regular;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.format-title {
+  margin-bottom: 5px;
+}
+
+.format-wrapper {
+  display: flex;
+  font-family: WixMadeforDisplay-Regular;
+
+}
+
+.check-ball {
+  width: 33px;
+  height: 17px;
+  background: #07e89d7f;
+  border-radius: 5px;
+  display: flex;
+  padding: 0px 3px;
+  justify-content: start;
+  align-items: center;
+  margin: 0px 10px;
+  cursor: url(/public/cursor-pointer.png), auto;
+  transition: 0.3s;
+
+  &:hover {
+    background: #07e299e7;
+    transition: 0.3s;
+  }
+}
+
+.ball {
+  width: 13px;
+  height: 13px;
+  border-radius: 5px;
+  background: #00000081;
+  box-shadow: 2px 0px 5px #00000043;
+}
+
 .font-size__popup {
   position: absolute;
   top: -5mm;
