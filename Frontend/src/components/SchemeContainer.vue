@@ -7,7 +7,13 @@
       }"
       ref="pages__wrapper"
     >
-      <div v-for="(item, index) in groupedItems" class="page A3" ref="page" :key="'group' + index">
+      <div
+        v-for="(item, index) in groupedItems"
+        class="page"
+        :class="schemeDataStore.listFormat === 'A3' ? 'A3' : 'A4'"
+        ref="page"
+        :key="'group' + index"
+      >
         <div class="top-frame">
           <Scheme :outputDevicesData="item" :listIndex="index + 1" />
           <CircuitScheme :pageData="item" :listIndex="index + 1" />
@@ -48,7 +54,7 @@ export default defineComponent({
     const scalableArea = ref(null) // Ссылка на область
     const pages__wrapper = ref(null) // Ссылка на содержимое
 
-    // Функция для разделения входной и и отходных групп, логика разделения и данные хранятся в сторе
+    // Функция для разделения входной и отходных групп, логика разделения и данные хранятся в сторе
     const groupedItems = computed(() => {
       if (!props.schemeDataChunk["Группы"]) {
         return []
@@ -110,7 +116,7 @@ export default defineComponent({
           const pdf = new jsPDF({
             orientation: "landscape",
             unit: "mm",
-            format: "a4",
+            format: schemeDataStore.listFormat === "A4" ? "a4" : "a3",
           })
           const pageElements = document.querySelectorAll(".page")
 
@@ -157,6 +163,7 @@ export default defineComponent({
       exportToPDF,
       groupedItems,
       schemeDataStore,
+      props,
     }
   },
 })
@@ -164,8 +171,6 @@ export default defineComponent({
 <style lang="scss">
 @use "./../scss/size.scss" as size;
 .scheme__container {
-  /*   background: #d9d9d9;
- */
   width: 80vw;
   height: 100svh;
   display: flex;

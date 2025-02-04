@@ -7,7 +7,11 @@
       <div class="power__wrapp">
         <PowerLine />
         <div class="power-nodes__wrapp">
-          <div class="power-node-item" v-for="(item, index) in props.outputDevicesData" :key="'outputLine-' + index">
+          <div
+            class="power-node-item"
+            v-for="(item, index) in props.outputDevicesData"
+            :key="item['Данные']?.[0]?.['Вводной щит'] + 'outputLine-' + index"
+          >
             <OutputGroupItem :itemData="item" />
           </div>
         </div>
@@ -28,8 +32,8 @@ const props = defineProps({
 <style lang="scss" scoped>
 .scheme {
   position: absolute;
-  left: 55mm; //     Позицианирование относительно левой таблицы  "Данные питающей сети"
-  top: 8mm; //     Позицианирование относительно левой таблицы  "Данные питающей сети"
+  left: 55mm; //     Позиционирование относительно левой таблицы  "Данные питающей сети"
+  top: 8mm; //     Позиционирование относительно левой таблицы  "Данные питающей сети"
 }
 .input__wrapp {
   margin-bottom: 0mm;

@@ -6,9 +6,8 @@
       :schemeDataChunk="doc"
       ref="activeRef"
     />
-    <div class="logo">
-      <img src="./../assets/img/Logo.svg" />
-    </div>
+    <Logo />
+
     <div
       :class="checkDoc ? 'service__container--success' : 'service__container'"
       :style="{
@@ -46,9 +45,7 @@
             <span class="upload-file__span" v-else> + Добавьте файл Exсel </span></label
           >
           <button class="upload-file__button" type="submit" :disabled="!fileName">
-            <p v-if="loading">Идет загрузка</p>
-            <p v-else>Загрузить</p>
-
+            <p>{{ loading ? "Идет загрузка" : "Загрузить" }}</p>
             <p class="upload-file__loading" v-if="loading"></p>
             <p v-if="error">{{ error }}</p>
           </button>
@@ -71,69 +68,54 @@
       <div v-if="checkDoc" class="format">
         <p class="format-title">Формат схемы</p>
         <div class="format-wrapper">
-          <p>A3</p>
-          <div ref="checkBall" class="check-ball">
-            <div class="ball"></div>
+          <div class="format__item item-1">
+            <label :style="{ backgroundColor: schemeDataStore.listFormat === 'A3' ? '#ffc5c5' : '' }">
+              <input type="radio" v-model="schemeDataStore.listFormat" value="A3" checked />
+              A3
+            </label>
           </div>
-          <p>A4</p>
+          <div class="format__item item-2">
+            <label :style="{ backgroundColor: schemeDataStore.listFormat === 'A4' ? '#bbffbb' : '' }">
+              <input type="radio" v-model="schemeDataStore.listFormat" value="A4" />
+              A4
+            </label>
+          </div>
         </div>
       </div>
-
-      <!-- <div class="fontSizeMod" v-if="schemeDataStore.schemeData.length !== 0">
-        <input
-          v-model="fontSizeMod"
-          type="checkbox"
-          name="fontSizeMod"
-          id="fontSizeMod"
-          @change="schemeDataStore.fontSizeModToggle(fontSizeMod)"
-        />
-        <label for="fontSizeMod">Режим редактирования шрифта</label>
-      </div> -->
-
-      <button
-        class="export-button"
-        @click="exportToPDF('Select')"
-        v-if="
-          schemeDataStore.schemeData.length !== 0 &&
-          selectedSchemes.length !== 0 &&
-          schemeDataStore.schemeData.length !== selectedSchemes.length
-        "
-      >
-        Экспортировать элементов: {{ selectedSchemes.length }}
-      </button>
-      <button class="export-button" @click="exportToPDF('All')" v-if="schemeDataStore.schemeData.length !== 0">
-        Экспортировать всё
-      </button>
+      <ExportButtons
+        :selectedSchemes="selectedSchemes"
+        :checkDoc="checkDoc"
+        :activeRef="activeRef"
+        v-model:childCheckDoc="checkDoc"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref, nextTick } from "vue"
+import SchemeContainer from "./SchemeContainer.vue"
+import ExportButtons from "./ExportButtons.vue"
+import Logo from "./Logo.vue"
+import { ref } from "vue"
 import { useSchemeDataStore } from "../stores/SchemeData.js"
 import axios from "axios"
-import JSZip from "jszip"
-import { saveAs } from "file-saver"
-import SchemeContainer from "./SchemeContainer.vue"
 
 const schemeDataStore = useSchemeDataStore()
 const loading = ref(false)
 const success = ref(false)
 const error = ref("")
 const checkDoc = ref("")
-const collectedFiles = reactive([])
 const activeRef = ref(null)
 const selectedSchemes = ref([])
 const fileName = ref(null)
 const fileInput = ref(null)
 const menuOpen = ref(true)
+
 // Функция изменения выбранной схемы
 const changeScheme = (name) => {
   checkDoc.value = name
 }
-const changeFormat = (name) => {
-  checkDoc.value = name
-}
+
 // Функция открытия / закрытия меню
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value
@@ -144,6 +126,7 @@ const handleFileChange = (event) => {
   const file = event.target.files[0]
   fileName.value = file ? file.name : null // Отображаем имя файла
 }
+
 // Функция для выбора схем на экспорт
 const toogleCheckbox = (name) => {
   if (selectedSchemes.value.includes(name)) {
@@ -182,43 +165,6 @@ const uploadFile = async () => {
     loading.value = false
   }
 }
-
-const exportToPDF = async (type) => {
-  collectedFiles.splice(0, collectedFiles.length)
-  if (type === "All") {
-    for (const el of schemeDataStore.schemeData) {
-      if (checkDoc.value !== el["Вводной щит"]) {
-        checkDoc.value = el["Вводной щит"]
-        await nextTick()
-      }
-      const result = await activeRef.value[0].exportToPDF()
-      collectedFiles.push(result)
-    }
-  } else if (type === "Select") {
-    for (const el of selectedSchemes.value) {
-      if (checkDoc.value !== el) {
-        checkDoc.value = el
-        await nextTick()
-      }
-      const result = await activeRef.value[0].exportToPDF()
-      collectedFiles.push(result)
-    }
-  }
-  saveToZIP()
-}
-
-const saveToZIP = async () => {
-  const zip = new JSZip()
-  collectedFiles.forEach(({ file, name }) => {
-    zip.file(name, file)
-  })
-  try {
-    const zipBlob = await zip.generateAsync({ type: "blob" })
-    saveAs(zipBlob, "Schemes.zip")
-  } catch (err) {
-    console.error("Ошибка создания ZIP:", err)
-  }
-}
 </script>
 
 <style lang="scss">
@@ -229,42 +175,7 @@ const saveToZIP = async () => {
   height: 100svh;
   justify-content: space-between;
 }
-.logo {
-  position: absolute;
-  top: 71vh;
-  left: 18vw;
-  z-index: 1000;
-  opacity: 0;
-  animation: logo 3.3s ease forwards;
-  animation-delay: 3s;
-  will-change: transform;
 
-  img {
-    width: 15vw;
-    height: 3.1vw;
-    max-width: 250px;
-    max-height: 52px;
-    object-fit: cover;
-    filter: drop-shadow(3px 2px 10px black);
-  }
-}
-@keyframes logo {
-  0% {
-    opacity: 0;
-    top: 76vh;
-    left: 15vw;
-  }
-  90% {
-    opacity: 1;
-    top: 76vh;
-    left: 15vw;
-  }
-  100% {
-    opacity: 1;
-    top: 25px;
-    left: 25px;
-  }
-}
 .close-ico {
   position: absolute;
   cursor: url(../../public/cursor-pointer.png), auto;
@@ -447,24 +358,7 @@ const saveToZIP = async () => {
   max-height: 38svh;
   margin-bottom: 20px;
 }
-.export-button {
-  box-sizing: border-box;
-  cursor: url(../../public/cursor-pointer.png), auto;
-  width: 100%;
-  height: auto;
-  border: none;
-  padding: 5px 0px;
-  margin-top: 5px;
-  background: #ffffff83;
-  border-radius: 5px;
-  font-family: WixMadeforDisplay-Regular;
-  transition: 0.2s;
 
-  &:hover {
-    transition: 0.2s ease-in;
-    background: #ffffffeb;
-  }
-}
 .list__item {
   margin-bottom: 5px;
   display: flex;
@@ -484,5 +378,39 @@ const saveToZIP = async () => {
       transition: 0.2s;
     }
   }
+}
+.format-wrapper {
+  display: inline-block;
+  overflow: hidden;
+  font-family: WixMadeforDisplay-Regular;
+}
+.format__item {
+  display: inline-block;
+  position: relative;
+}
+
+.format__item input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.format__item label {
+  display: inline-block;
+  padding: 0px 15px;
+  line-height: 34px;
+  border: 1px solid #999;
+  border-right: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.format-wrapper .item-1 label {
+  border-radius: 6px 0 0 6px;
+}
+
+.format-wrapper .item-2 label {
+  border-radius: 0 6px 6px 0;
+  border-right: 1px solid #999;
 }
 </style>

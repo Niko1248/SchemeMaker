@@ -8,7 +8,8 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
   const totalPages = ref(0)
   const inputPhase = ref(undefined)
   const fontSizeMod = ref(false)
-
+  const listFormat = ref("A3")
+  const fontSizesArray = reactive({})
   const splitTableAndSchemeData = (excelData, indexTable) => {
     Object.assign(tableData, excelData[indexTable]["Группы"][0]["Данные"][0])
     schemeData.splice(0, schemeData.length, ...excelData.filter((_, index) => index !== indexTable))
@@ -29,7 +30,13 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
   }
 
   const splitInputAndOutputGroups = (data) => {
-    const itemsPerComponent = 11
+    let itemsPerComponent
+    if (listFormat.value === "A4") {
+      itemsPerComponent = 11
+    } else {
+      itemsPerComponent = 17
+    }
+
     let indexInputDevice = data.findIndex((el) => el["Группа"] == -1)
     // Добавляем найденный элемент
     Object.assign(inputDeviceData, data[indexInputDevice])
@@ -82,7 +89,15 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     },
     { deep: true } // Для вложенных изменений
   )
-
+  const setFontSize = (id, key, value) => {
+    if (!fontSizesArray[id]) {
+      fontSizesArray[id] = {}
+    }
+    fontSizesArray[id][key] = value
+  }
+  const getFontSize = (id) => {
+    return fontSizesArray[id] || {}
+  }
   return {
     tableData,
     schemeData,
@@ -99,5 +114,9 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     inputPhase,
     fontSizeMod,
     fontSizeModToggle,
+    listFormat,
+    setFontSize,
+    getFontSize,
+    fontSizesArray,
   }
 })

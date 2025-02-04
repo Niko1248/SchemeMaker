@@ -12,16 +12,16 @@
       <div class="item item9">Расчетный ток, А</div>
       <div class="item item10">Наименование потребителя</div>
     </div>
-    <div class="table__data" :class="`column${index + 1}`" v-for="(data, index) in pageData" :key="index">
+    <div class="table__data" :class="`column${index + 1}`" v-for="(data, index) in props.pageData" :key="index">
       <div class="item item1">
         <img :src="getLegend(data['Данные'])" alt="" />
       </div>
-      <div class="item item2">
+      <div class="item item2" contenteditable="true">
         {{ findGroupInPlan(data["Данные"]) }}
       </div>
-      <div class="item item3">{{ findPower(data["Данные"]) }}</div>
-      <div class="item item4">{{ findAmperage(data["Данные"]) }}</div>
-      <div class="item item5">{{ findConsumerName(data["Данные"]) }}</div>
+      <div class="item item3" contenteditable="true">{{ findPower(data["Данные"]) }}</div>
+      <div class="item item4" contenteditable="true">{{ findAmperage(data["Данные"]) }}</div>
+      <div class="item item5" contenteditable="true">{{ findConsumerName(data["Данные"]) }}</div>
     </div>
   </div>
 </template>
@@ -39,26 +39,16 @@ const legendObj = reactive({
 const props = defineProps({
   pageData: { type: Array, required: true },
 })
-const findGroupInPlan = (data) => {
-  const foundElement = data.find((el) => el["Номер по плану"])
-  return foundElement ? foundElement["Номер по плану"] : null
+
+const findPropertyValue = (data, property) => {
+  const foundElement = data.find((el) => el[property])
+  return foundElement ? foundElement[property] : null
 }
 
-const findAmperage = (data) => {
-  const foundElement = data.find((el) => el["Расчетный ток"])
-  return foundElement ? foundElement["Расчетный ток"] : null
-}
-
-const findPower = (data) => {
-  const foundElement = data.find((el) => el["Установленная мощность"])
-  return foundElement ? foundElement["Установленная мощность"] : null
-}
-
-const findConsumerName = (data) => {
-  const foundElement = data.find((el) => el["Наименование потребителя"])
-  return foundElement ? foundElement["Наименование потребителя"] : null
-}
-
+const findGroupInPlan = (data) => findPropertyValue(data, "Номер по плану")
+const findAmperage = (data) => findPropertyValue(data, "Расчетный ток")
+const findPower = (data) => findPropertyValue(data, "Установленная мощность")
+const findConsumerName = (data) => findPropertyValue(data, "Наименование потребителя")
 const getLegend = (data) => {
   const foundElement = data.find((el) => el["Условное обозначение"])
   return foundElement ? legendObj[foundElement["Условное обозначение"]] : null

@@ -4,7 +4,4 @@
   </div>
 </template>
 <script setup></script>
-<style lang="scss" scoped>
-.QF-1__wrapper {
-}
-</style>
+<style lang="scss" scoped></style>

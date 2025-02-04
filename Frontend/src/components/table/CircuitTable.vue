@@ -40,7 +40,6 @@
 </template>
 <script setup>
 import SchemeName from "./SchemeName.vue"
-
 const props = defineProps({
   pageData: { type: Array },
   listIndex: { type: Number },

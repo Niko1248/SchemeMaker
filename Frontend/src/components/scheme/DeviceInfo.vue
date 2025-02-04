@@ -3,7 +3,7 @@
     <div
       contenteditable="true"
       class="scheme_contenteditable"
-      :style="{ fontSize: fontSizes['Производитель'] + 'px' }"
+      :style="{ fontSize: schemeDataStore.getFontSize(uniqueID)['Производитель'] + 'px' }"
       @click="handleFontSizeInput('Производитель')"
       @click.stop="openFontSizePopup"
     >
@@ -13,7 +13,7 @@
       contenteditable="true"
       class="scheme_contenteditable"
       @input="props.textData['Автомат'] = props.textData['Автомат'].replace(/\s/g, '')"
-      :style="{ fontSize: fontSizes['Автомат'] + 'px' }"
+      :style="{ fontSize: schemeDataStore.getFontSize(uniqueID)['Автомат'] + 'px' }"
       @click="handleFontSizeInput('Автомат')"
       @click.stop="openFontSizePopup"
     >
@@ -25,7 +25,7 @@
         style="text-transform: lowercase"
         contenteditable="true"
         class="scheme_contenteditable"
-        :style="{ fontSize: fontSizes['Номинал'] + 'px' }"
+        :style="{ fontSize: schemeDataStore.getFontSize(uniqueID)['Номинал'] + 'px' }"
         @click="handleFontSizeInput('Номинал')"
         @click.stop="openFontSizePopup"
       >
@@ -36,7 +36,7 @@
       <div
         contenteditable="true"
         class="scheme_contenteditable"
-        :style="{ fontSize: fontSizes['Тип УЗО'] + 'px' }"
+        :style="{ fontSize: schemeDataStore.getFontSize(uniqueID)['Тип УЗО'] + 'px' }"
         @click="handleFontSizeInput('Тип УЗО')"
         @click.stop="openFontSizePopup"
       >
@@ -55,7 +55,7 @@
   </div>
 </template>
 <script setup>
-import { ref, reactive, computed, onMounted, onUnmounted } from "vue"
+import { ref, computed, onMounted, onUnmounted } from "vue"
 
 import { useSchemeDataStore } from "../../stores/SchemeData"
 
@@ -63,23 +63,11 @@ const props = defineProps({
   textData: { type: Object },
 })
 const schemeDataStore = useSchemeDataStore()
+const uniqueID = ref("outputLine" + props.textData["Вводной щит"] + props.textData["Группа"])
 const fontSizePopupVisible = ref(false)
-const fontSizePopup = ref(false)
 const activeElement = ref(null)
-const activeFontSize = ref(10)
-const fontSizes = reactive({
-  Производитель: 10,
-  Автомат: 10,
-  Класс: 10,
-  Номинал: 10,
-  "Тип УЗО": 10,
-  "Ток утечки УЗО": 10,
-  Ввод: 12,
-})
+const activeFontSize = ref()
 
-/* const closeFontSizePopup = () => {
-  fontSizePopup.value = false
-} */
 // Методы
 const openFontSizePopup = () => {
   fontSizePopupVisible.value = true
@@ -102,13 +90,12 @@ onUnmounted(() => {
 })
 const updateFontSize = () => {
   if (activeElement.value && activeFontSize.value >= 1 && activeFontSize.value <= 20) {
-    fontSizes[activeElement.value] = activeFontSize.value
+    schemeDataStore.setFontSize(uniqueID.value, activeElement.value, activeFontSize.value)
   }
 }
 const handleFontSizeInput = (element) => {
   activeElement.value = element
-  activeFontSize.value = fontSizes[element]
-  fontSizePopup.value = true
+  activeFontSize.value = schemeDataStore.getFontSize(uniqueID.value)[element] || 10
 }
 const nominalInputValue = computed(() => {
   const classValue = props.textData["Класс"] || ""

@@ -1,30 +1,12 @@
 <template>
   <div class="right-inside-table">
-    <div class="item" :class="`item${n}`" v-for="n in 100" :key="n">
-      <div contenteditable="true" class="contenteditable" v-if="n === 7">
-        {{ schemeDataStore.tableData["Артикул"] }}
-      </div>
-      <div contenteditable="true" class="contenteditable" v-if="n === 27">
-        {{ schemeDataStore.tableData["Поле 1"] }}
-      </div>
-      <input type="text" v-if="n === 41" :value="schemeDataStore.tableData['Должность 1']" />
-      <input type="text" v-if="n === 43" :value="schemeDataStore.tableData['ФИО 1']" />
-      <input type="text" v-if="n === 46" :value="schemeDataStore.tableData['Дата']" />
-      <input type="text" v-if="n === 51" :value="schemeDataStore.tableData['Должность 2']" />
-      <input type="text" v-if="n === 53" :value="schemeDataStore.tableData['ФИО 2']" />
-      <input type="text" v-if="n === 56" :value="schemeDataStore.tableData['Дата']" />
-      <div contenteditable="true" class="contenteditable" v-if="n === 57">
-        {{ schemeDataStore.tableData["Поле 2"] }}
-      </div>
-      <div contenteditable="true" class="contenteditable" v-if="n === 68">
-        {{ schemeDataStore.tableData["Стадия"] }}
+    <div class="item" v-for="n in 100" :key="n" :class="`item${n}`">
+      <div v-if="editableFields[n]" contenteditable="true" class="contenteditable">
+        {{ schemeDataStore.tableData[editableFields[n]] }}
       </div>
       <div v-if="n === 87">
         <p>Однолинейная схема</p>
         <p>{{ props.pageData?.[0]?.["Данные"]?.[0]?.["Вводной щит"] }}</p>
-      </div>
-      <div contenteditable="true" class="contenteditable" v-if="n === 88">
-        {{ schemeDataStore.tableData["Фирма"] }}
       </div>
       <div v-if="contentMap[n]" v-html="resolveContent(n)" :class="`item${n}-text`"></div>
     </div>
@@ -39,7 +21,23 @@ const props = defineProps({
   listIndex: { type: Number },
   pageData: { type: Array },
 })
+
 const schemeDataStore = useSchemeDataStore()
+
+const editableFields = {
+  7: "Артикул",
+  27: "Поле 1",
+  41: "Должность 1",
+  43: "ФИО 1",
+  46: "Дата",
+  51: "Должность 2",
+  53: "ФИО 2",
+  56: "Дата",
+  57: "Поле 2",
+  68: "Стадия",
+  88: "Фирма",
+}
+
 const contentMap = computed(() => ({
   31: () => "Изм",
   32: () => "Кол",
@@ -50,26 +48,17 @@ const contentMap = computed(() => ({
   58: () => "Стадия",
   59: () => "Лист",
   60: () => "Листов",
-  69: () => `${props.listIndex}`,
-  70: () => `${schemeDataStore.totalPages}`,
+  69: () => props.listIndex,
+  70: () => schemeDataStore.totalPages,
 }))
 
-// Метод для разрешения контента
 const resolveContent = (key) => {
   const resolver = contentMap.value[key]
-  return typeof resolver === "function" ? resolver(schemeDataStore.tableData) : ""
+  return typeof resolver === "function" ? resolver() : ""
 }
 </script>
 
 <style lang="scss" scoped>
-input {
-  width: auto;
-  border: 0;
-  background: none;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-}
 .right-inside-table {
   display: grid;
   align-items: center;
@@ -148,57 +137,15 @@ input {
 .item51 {
   grid-column: 1/3;
   overflow: visible;
-  input {
-    text-align: center;
-    border: 0;
-    background-color: transparent;
-    width: 20mm;
-    height: 5mm;
-    &:focus {
-      outline: 1px dashed #000000; /* зеленая обводка */
-      transition: 0.5s ease;
-      border-radius: 2px;
-      box-shadow: 0px 2px 20px #000;
-      background: #ffffff00;
-    }
-  }
 }
 .item46,
 .item56 {
   overflow: visible;
-  input {
-    text-align: center;
-    border: 0;
-    background-color: transparent;
-    width: 10mm;
-    height: 5mm;
-    &:focus {
-      outline: 1px dashed #000000; /* зеленая обводка */
-      transition: 0.5s ease;
-      border-radius: 2px;
-      box-shadow: 0px 2px 20px #000;
-      background: #ffffff00;
-    }
-  }
 }
 .item43,
 .item53 {
   grid-column: 3/5;
   overflow: visible;
-  input {
-    text-align: center;
-    border: 0;
-    background-color: transparent;
-    width: 20mm;
-    height: 5mm;
-    &:focus {
-      outline: 1px dashed #000000; /* зеленая обводка */
-      transition: 0.5s ease;
-      border-radius: 2px;
-      box-shadow: 0px 2px 20px #000;
-      background: #ffffff00;
-    }
-  }
 }
 
 .item57 {
