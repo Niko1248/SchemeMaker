@@ -24,6 +24,9 @@
         </div>
       </div>
     </div>
+    <div v-if="isLoading" class="loading-overlay">
+      <div class="loading-spinner"></div>
+    </div>
   </div>
 </template>
 <script>
@@ -37,10 +40,19 @@ import SchemeInsideRightTable from "./table/SchemeInsideRightTable.vue"
 import CircuitScheme from "./table/CircuitTable.vue"
 import ConsumerTable from "./table/ConsumerTable.vue"
 import Scheme from "./scheme/Scheme.vue"
+import VueLoadingSpinner from "vue-spinners"
 
 export default defineComponent({
   name: "SchemeContainer",
-  components: { SchemeOutsideLeftTables, SchemeInsideRightTable, CircuitScheme, ConsumerTable, Scheme, ContinueNote },
+  components: {
+    SchemeOutsideLeftTables,
+    SchemeInsideRightTable,
+    CircuitScheme,
+    ConsumerTable,
+    Scheme,
+    ContinueNote,
+    VueLoadingSpinner,
+  },
   props: {
     schemeDataChunk: { type: Object },
   },
@@ -53,6 +65,7 @@ export default defineComponent({
 
     const scalableArea = ref(null) // Ссылка на область
     const pages__wrapper = ref(null) // Ссылка на содержимое
+    const isLoading = ref(false)
 
     // Функция для разделения входной и отходных групп, логика разделения и данные хранятся в сторе
     const groupedItems = computed(() => {
@@ -108,9 +121,12 @@ export default defineComponent({
     // Метод для экспорта в PDF
 
     const exportToPDF = async () => {
+      isLoading.value = true // Включаем анимацию загрузки
+
       const schemeData = props.schemeDataChunk
       scale.value = 1
       await new Promise((resolve) => setTimeout(resolve, 2000))
+
       if (pages__wrapper.value) {
         try {
           const pdf = new jsPDF({
@@ -140,12 +156,15 @@ export default defineComponent({
 
           const fileName = `Схема-${schemeData["Вводной щит"]}.pdf`
 
+          isLoading.value = false // Выключаем анимацию загрузки
+
           return {
             file: pdf.output("blob"),
             name: fileName,
           }
         } catch (err) {
           console.error("Ошибка при экспорте PDF:", err)
+          isLoading.value = false // Выключаем анимацию загрузки в случае ошибки
         }
       }
     }
@@ -160,6 +179,7 @@ export default defineComponent({
       scalableArea,
       pages__wrapper,
       onWheelHandler,
+      isLoading,
       exportToPDF,
       groupedItems,
       schemeDataStore,
@@ -170,6 +190,39 @@ export default defineComponent({
 </script>
 <style lang="scss">
 @use "./../scss/size.scss" as size;
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(1, 26, 24, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  transition: 0.2s ease;
+}
+
+.loading-spinner {
+  border: 4px solid #1be9b2;
+  border-top: 4px solid #00050700;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .scheme__container {
   width: 80vw;
   height: 100svh;
