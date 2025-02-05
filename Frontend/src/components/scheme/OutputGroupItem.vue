@@ -35,7 +35,7 @@
       <img src="../../assets/img/arrow2.svg" />
     </div> -->
     <div class="node-el node-arrow">
-      <img :src="schemeDataStore.listFormat === 'A4' ? 'public/arrow2.svg' : 'public/arrowA3.svg'" />
+      <img :src="schemeDataStore.listFormat === 'A4' ? arrow2 : arrowA3" />
     </div>
     <div
       class="cable-name"
@@ -67,7 +67,8 @@ import { computed } from "vue"
 import { useSchemeDataStore } from "../../stores/SchemeData"
 import FirstObjectOutput from "./FirstObjectOutput.vue"
 import SecondObjectOutput from "./SecondObjectOutput.vue"
-
+import arrow2 from "../../assets/img/arrow2.svg"
+import arrowA3 from "../../assets/img/arrowA3.svg"
 const schemeDataStore = useSchemeDataStore()
 const props = defineProps({
   itemData: { type: Object },
