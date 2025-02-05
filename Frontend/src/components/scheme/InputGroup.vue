@@ -33,6 +33,9 @@
     </p>
   </div>
   <div class="input-node">
+    <svg width="155" height="55" style="border: 1px solid transparent; position: absolute; top: 0; left: 0">
+      <rect x="1" y="1" width="153" height="53" fill="none" stroke="black" stroke-width="1" stroke-dasharray="10 8" />
+    </svg>
     <img src="../../assets/img/input-connection2.svg" alt="" />
 
     <div
@@ -150,8 +153,7 @@ const checkInputName = computed(() => {
   text-align: center;
   background: none;
   border: 0;
-  height: 13mm;
-  max-height: 13mm;
+  height: 9mm;
   width: 38mm;
   box-sizing: border-box;
   outline: none;
@@ -207,9 +209,8 @@ const checkInputName = computed(() => {
 }
 
 .input-node {
-  width: 52mm;
-  height: 13mm;
-  background: url("../../assets/img/input-border.svg");
+  width: 155px;
+  height: 55px;
   background-size: contain;
   background-repeat: no-repeat;
   transform: translateY(-7mm);

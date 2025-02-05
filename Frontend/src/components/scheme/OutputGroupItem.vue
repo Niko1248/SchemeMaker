@@ -31,13 +31,20 @@
     <SecondObjectOutput :data="itemData" />
 
     <!-- Стрелка + кабель -->
-    <div class="node-el node-arrow">
+    <!--  <div class="node-el node-arrow">
       <img src="../../assets/img/arrow2.svg" />
+    </div> -->
+    <div class="node-el node-arrow">
+      <img :src="schemeDataStore.listFormat === 'A4' ? 'public/arrow2.svg' : 'public/arrowA3.svg'" />
     </div>
-    <div class="cable-name" v-if="checkInputCableMarka">
+    <div
+      class="cable-name"
+      :style="{ bottom: schemeDataStore.listFormat === 'A3' ? '34mm' : '12mm' }"
+      v-if="checkInputCableMarka"
+    >
       <input type="text" :value="checkInputCableMarka" />
     </div>
-    <div class="cable-pref">
+    <div class="cable-pref" :style="{ bottom: schemeDataStore.listFormat === 'A3' ? '128px' : '45px' }">
       <div class="cable-size" v-if="checkInputCableSize">
         <input type="text" :value="checkInputCableSize" />
       </div>

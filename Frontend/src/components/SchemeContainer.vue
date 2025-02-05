@@ -187,7 +187,7 @@ export default defineComponent({
   background: #fff;
   filter: drop-shadow(5px 5px 10px #00000018);
   transform-origin: center; /* Центр для изменения масштаба */
-  transition: transform 0.1s ease; /* Гладкая анимация */
+  transition: 0.1s ease; /* Гладкая анимация */
   padding: 5mm 5mm 5mm 20mm;
   box-sizing: border-box;
   margin-bottom: 1vw;

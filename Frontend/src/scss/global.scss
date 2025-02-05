@@ -3,6 +3,24 @@ html {
   background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(57, 113, 110, 1) 100%);
 }
 
+/* Для вебкит-браузеров (Chrome, Safari, Edge) */
+.list::-webkit-scrollbar {
+  display: none;
+  /* Скрывает скроллбар */
+}
+
+/* Для Firefox */
+.list {
+  scrollbar-width: none;
+  /* Скрывает скроллбар */
+}
+
+/* Для IE и Edge */
+.list {
+  -ms-overflow-style: none;
+  /* Скрывает скроллбар */
+}
+
 .node {
   position: relative;
   height: 44px;
@@ -38,6 +56,7 @@ html {
 .format-title {
   margin-bottom: 5px;
 }
+
 
 
 
