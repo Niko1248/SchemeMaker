@@ -1,5 +1,8 @@
 <template lang="">
-  <div class="circuit-scheme">
+  <div
+    class="circuit-scheme"
+    :style="{ gridTemplateRows: schemeDataStore.listFormat === 'A3' ? '6mm 30mm 50mm 70mm' : '6mm 30mm 50mm 15mm' }"
+  >
     <div class="circuit-scheme-item1">Данные питающей сети</div>
     <div class="circuit-scheme-item2"><p>ЩИТ РАСПРЕДЕЛИТЕЛЬНЫЙ, НОМЕР ПО ПЛАНУ, ТИП</p></div>
     <div class="circuit-scheme-item3">
@@ -31,15 +34,19 @@
       <p>ном. дифференциальный ток</p>
       <p>Фазность</p>
     </div>
-    <div class="circuit-scheme-item6">
-      Марка и сечение провода (кабеля), <span>мм.</span> Длина участка сети, м.<br />
-      Способ прокладки
+    <div class="circuit-scheme-item6" :style="{ display: schemeDataStore.listFormat === 'A3' ? 'flex' : 'block' }">
+      <div>
+        Марка и сечение провода (кабеля), <span>мм.</span> Длина участка сети, м.<br />
+        Способ прокладки
+      </div>
     </div>
     <SchemeName :schemeName="props.pageData?.[0]?.['Данные']?.[0]?.['Вводной щит']" />
   </div>
 </template>
 <script setup>
 import SchemeName from "./SchemeName.vue"
+import { useSchemeDataStore } from "../../stores/SchemeData"
+const schemeDataStore = useSchemeDataStore()
 const props = defineProps({
   pageData: { type: Array },
   listIndex: { type: Number },
@@ -156,6 +163,8 @@ const props = defineProps({
   border-top: 0.5mm solid #000;
   font-size: 2.4mm;
   line-height: 1.4;
+  display: block;
+  align-items: center;
   span {
     position: relative;
     &::after {

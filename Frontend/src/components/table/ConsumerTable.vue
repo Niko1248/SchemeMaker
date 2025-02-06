@@ -71,6 +71,7 @@ const getLegend = (data) => {
   grid-template-columns: repeat(1, 20mm);
   grid-auto-flow: column;
   text-align: center;
+  line-height: 0.9;
   .item {
     display: flex;
     align-items: center;

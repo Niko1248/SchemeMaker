@@ -4,7 +4,7 @@
       <div class="input__wrapp" :style="listIndex > 1 ? 'visibility: hidden;' : ''">
         <InputGroup />
       </div>
-      <div class="power__wrapp">
+      <div class="power__wrapp" :style="{ maxWidth: schemeDataStore.listFormat === 'A3' ? '335mm' : '215mm' }">
         <PowerLine />
         <div class="power-nodes__wrapp">
           <div
@@ -23,6 +23,8 @@
 import PowerLine from "./PowerLine.vue"
 import InputGroup from "./InputGroup.vue"
 import OutputGroupItem from "./OutputGroupItem.vue"
+import { useSchemeDataStore } from "../../stores/SchemeData"
+const schemeDataStore = useSchemeDataStore()
 
 const props = defineProps({
   outputDevicesData: { type: Array },

@@ -8,7 +8,7 @@
     <div class="N">
       <div class="N-line">
         <svg width="1000" height="14">
-          <line x1="0" y1="2" x2="1000" y2="2" stroke="black" stroke-width="1" />
+          <line x1="0" y1="2" x2="2000" y2="2" stroke="black" stroke-width="1" />
         </svg>
       </div>
       <p>N</p>
@@ -16,7 +16,7 @@
     <div v-if="schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1" class="PE">
       <div class="PE-line">
         <svg width="1000" height="20">
-          <line x1="0" y1="8" x2="1000" y2="8" stroke="black" stroke-width="0.5" stroke-dasharray="40, 10" />
+          <line x1="0" y1="8" x2="2000" y2="8" stroke="black" stroke-width="0.5" stroke-dasharray="40, 10" />
         </svg>
         <p>PE</p>
       </div>

@@ -31,13 +31,20 @@
     <SecondObjectOutput :data="itemData" />
 
     <!-- Стрелка + кабель -->
-    <div class="node-el node-arrow">
+    <!--  <div class="node-el node-arrow">
       <img src="../../assets/img/arrow2.svg" />
+    </div> -->
+    <div class="node-el node-arrow">
+      <img :src="schemeDataStore.listFormat === 'A4' ? arrow2 : arrowA3" />
     </div>
-    <div class="cable-name" v-if="checkInputCableMarka">
+    <div
+      class="cable-name"
+      :style="{ bottom: schemeDataStore.listFormat === 'A3' ? '34mm' : '12mm' }"
+      v-if="checkInputCableMarka"
+    >
       <input type="text" :value="checkInputCableMarka" />
     </div>
-    <div class="cable-pref">
+    <div class="cable-pref" :style="{ bottom: schemeDataStore.listFormat === 'A3' ? '128px' : '45px' }">
       <div class="cable-size" v-if="checkInputCableSize">
         <input type="text" :value="checkInputCableSize" />
       </div>
@@ -60,7 +67,8 @@ import { computed } from "vue"
 import { useSchemeDataStore } from "../../stores/SchemeData"
 import FirstObjectOutput from "./FirstObjectOutput.vue"
 import SecondObjectOutput from "./SecondObjectOutput.vue"
-
+import arrow2 from "../../assets/img/arrow2.svg"
+import arrowA3 from "../../assets/img/arrowA3.svg"
 const schemeDataStore = useSchemeDataStore()
 const props = defineProps({
   itemData: { type: Object },

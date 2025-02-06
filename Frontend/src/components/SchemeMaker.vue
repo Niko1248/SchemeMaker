@@ -22,7 +22,7 @@
           transform: menuOpen ? 'scale(-1,1)' : 'scale(1,1)',
         }"
       >
-        <img src="./../assets/img/Close.svg" alt="" />
+        <img src="../../public/close.svg" alt="" />
       </div>
       <div class="handler-file__wrapper">
         <form @submit.prevent="uploadFile">
@@ -54,7 +54,13 @@
 
       <div class="wrapp-list">
         <div class="list">
-          <div class="list__item" v-for="(item, index) in schemeDataStore.schemeData" :key="`item-${index}`">
+          <div
+            class="list__item"
+            v-for="(item, index) in schemeDataStore.schemeData"
+            :key="`item-${index}`"
+            :class="{ selected: selectedItem === item['Вводной щит'] }"
+            @click="selectItem(item['Вводной щит'])"
+          >
             <input
               type="checkbox"
               :id="`checkbox-${index}`"
@@ -69,13 +75,23 @@
         <p class="format-title">Формат схемы</p>
         <div class="format-wrapper">
           <div class="format__item item-1">
-            <label :style="{ backgroundColor: schemeDataStore.listFormat === 'A3' ? '#ffc5c5' : '' }">
+            <label
+              :style="{
+                backgroundColor: schemeDataStore.listFormat === 'A3' ? 'rgba(255, 255, 255, 0.5137254902)' : '',
+                color: schemeDataStore.listFormat === 'A3' ? '#000' : '',
+              }"
+            >
               <input type="radio" v-model="schemeDataStore.listFormat" value="A3" checked />
               A3
             </label>
           </div>
           <div class="format__item item-2">
-            <label :style="{ backgroundColor: schemeDataStore.listFormat === 'A4' ? '#bbffbb' : '' }">
+            <label
+              :style="{
+                backgroundColor: schemeDataStore.listFormat === 'A4' ? 'rgba(255, 255, 255, 0.5137254902)' : '',
+                color: schemeDataStore.listFormat === 'A4' ? '#000' : '',
+              }"
+            >
               <input type="radio" v-model="schemeDataStore.listFormat" value="A4" />
               A4
             </label>
@@ -110,7 +126,11 @@ const selectedSchemes = ref([])
 const fileName = ref(null)
 const fileInput = ref(null)
 const menuOpen = ref(true)
+const selectedItem = ref(null)
 
+const selectItem = (item) => {
+  selectedItem.value = item
+}
 // Функция изменения выбранной схемы
 const changeScheme = (name) => {
   checkDoc.value = name
@@ -146,7 +166,7 @@ const uploadFile = async () => {
   // http://138.124.31.181:7777/upload
   // http://localhost:3000/upload
   try {
-    const response = await axios.post("http://localhost:3000/upload", formData, {
+    const response = await axios.post("http://138.124.31.181:7777/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
     success.value = true
@@ -184,8 +204,8 @@ const uploadFile = async () => {
   transition: 0.3s;
   transform: scale(-1, 1);
   img {
-    width: 20px;
-    height: 20px;
+    width: 14px;
+    height: 14px;
   }
   &:hover {
     filter: drop-shadow(0px 0px 5px #fff);
@@ -346,11 +366,9 @@ const uploadFile = async () => {
 }
 .wrapp-list {
   overflow: hidden;
-  width: calc(100% - 20px);
   max-height: 40svh;
 }
 .list {
-  width: calc(100% + 20px);
   height: fit-content;
   max-height: 60%;
   margin: 10px 0px;
@@ -360,11 +378,13 @@ const uploadFile = async () => {
 }
 
 .list__item {
-  margin-bottom: 5px;
+  padding-top: 4px;
   display: flex;
+  border-radius: 5px;
+
   font-family: WixMadeforDisplay-Regular;
   color: #fff;
-  padding-bottom: 6px;
+  padding-bottom: 4px;
   border-bottom: 1px dashed #17b07b;
   input {
     margin-right: 10px;
@@ -379,38 +399,49 @@ const uploadFile = async () => {
     }
   }
 }
+.list__item.selected {
+  color: rgb(0, 0, 0);
+
+  background-color: rgba(255, 255, 255, 0.514);
+  cursor: url(/public/cursor-pointer.png), auto;
+}
 .format-wrapper {
   display: inline-block;
-  overflow: hidden;
   font-family: WixMadeforDisplay-Regular;
+  width: 100%;
 }
 .format__item {
   display: inline-block;
+  box-sizing: border-box;
+  width: 50%;
   position: relative;
-}
 
-.format__item input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.format__item label {
-  display: inline-block;
-  padding: 0px 15px;
-  line-height: 34px;
-  border: 1px solid #999;
-  border-right: none;
-  cursor: pointer;
-  user-select: none;
-}
-
-.format-wrapper .item-1 label {
-  border-radius: 6px 0 0 6px;
-}
-
-.format-wrapper .item-2 label {
-  border-radius: 0 6px 6px 0;
-  border-right: 1px solid #999;
+  label {
+    box-sizing: border-box;
+    width: 100%;
+    text-align: center;
+    transition: 0.3s ease;
+    display: inline-block;
+    line-height: 26px;
+    border: 1px solid rgb(0, 255, 47);
+    border-radius: 5px 0px 0px 5px;
+    border-right: none;
+    user-select: none;
+    cursor: url(/public/cursor-pointer.png), auto;
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2470588235);
+    }
+  }
+  &:nth-child(2) {
+    label {
+      border-radius: 0px 5px 5px 0px;
+      border-left: none;
+      border-right: 1px solid rgb(0, 255, 47);
+    }
+  }
+  input {
+    position: absolute;
+    opacity: 0;
+  }
 }
 </style>
