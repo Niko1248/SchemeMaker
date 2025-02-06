@@ -110,7 +110,7 @@ export default defineComponent({
     const exportToPDF = async () => {
       const schemeData = props.schemeDataChunk
       scale.value = 1
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      await new Promise((resolve) => setTimeout(resolve, 700))
       if (pages__wrapper.value) {
         try {
           const pdf = new jsPDF({
