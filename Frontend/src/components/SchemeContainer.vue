@@ -26,6 +26,8 @@
     </div>
     <div v-if="isLoading" class="loading-overlay">
       <div class="loading-spinner"></div>
+      <p>Рисую схему {{ props.schemeDataChunk["Вводной щит"] }}</p>
+      <p>{{ "Нарисовано: " + schemeDataStore.amountReadyScheme + " из " + schemeDataStore.amountExportScheme }}</p>
     </div>
   </div>
 </template>
@@ -154,7 +156,7 @@ export default defineComponent({
           }
 
           const fileName = `Схема-${schemeData["Вводной щит"]}.pdf`
-
+          schemeDataStore.amountReadyScheme++
           isLoading.value = false // Выключаем анимацию загрузки
 
           return {
@@ -198,6 +200,8 @@ export default defineComponent({
   height: 100%;
   background: rgba(1, 26, 24, 0.8);
   display: flex;
+  flex-direction: column;
+  color: #fff;
   justify-content: center;
   align-items: center;
   backdrop-filter: blur(2px);

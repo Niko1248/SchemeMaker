@@ -34,7 +34,9 @@ const collectedFiles = reactive([])
 
 const exportToPDF = async (type) => {
   collectedFiles.splice(0, collectedFiles.length)
+  schemeDataStore.amountReadyScheme = 0
   if (type === "All") {
+    schemeDataStore.setAmountExportScheme(schemeDataStore.schemeData.length)
     for (const el of schemeDataStore.schemeData) {
       if (props.childCheckDoc !== el["Вводной щит"]) {
         emit("update:childCheckDoc", el["Вводной щит"])
@@ -44,6 +46,7 @@ const exportToPDF = async (type) => {
       collectedFiles.push(result)
     }
   } else if (type === "Select") {
+    schemeDataStore.setAmountExportScheme(props.selectedSchemes.length)
     for (const el of props.selectedSchemes) {
       if (props.childCheckDoc !== el) {
         emit("update:childCheckDoc", el)

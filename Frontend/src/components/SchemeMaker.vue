@@ -98,12 +98,7 @@
           </div>
         </div>
       </div>
-      <ExportButtons
-        :selectedSchemes="selectedSchemes"
-        :checkDoc="checkDoc"
-        :activeRef="activeRef"
-        v-model:childCheckDoc="checkDoc"
-      />
+      <ExportButtons :selectedSchemes="selectedSchemes" :activeRef="activeRef" v-model:childCheckDoc="checkDoc" />
     </div>
   </div>
 </template>

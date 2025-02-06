@@ -9,7 +9,14 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
   const inputPhase = ref(undefined)
   const fontSizeMod = ref(false)
   const listFormat = ref("A3")
+  const amountReadyScheme = ref(0)
+  const amountExportScheme = ref(0)
   const fontSizesArray = reactive({})
+
+  const setAmountExportScheme = (value) => {
+    amountExportScheme.value = value
+  }
+
   const splitTableAndSchemeData = (excelData, indexTable) => {
     Object.assign(tableData, excelData[indexTable]["Группы"][0]["Данные"][0])
     schemeData.splice(0, schemeData.length, ...excelData.filter((_, index) => index !== indexTable))
@@ -118,5 +125,8 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     setFontSize,
     getFontSize,
     fontSizesArray,
+    amountExportScheme,
+    setAmountExportScheme,
+    amountReadyScheme,
   }
 })
