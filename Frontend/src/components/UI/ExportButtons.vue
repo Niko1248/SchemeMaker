@@ -20,7 +20,7 @@
 import JSZip from "jszip"
 import { saveAs } from "file-saver"
 import { reactive, nextTick } from "vue"
-import { useSchemeDataStore } from "../stores/SchemeData"
+import { useSchemeDataStore } from "../../stores/SchemeData"
 
 const props = defineProps({
   selectedSchemes: Array,
@@ -75,7 +75,7 @@ const saveToZIP = async () => {
 <style lang="scss" scoped>
 .export-button {
   box-sizing: border-box;
-  cursor: url(../../public/cursor-pointer.png), auto;
+  cursor: url(../../cursor.png), auto;
   width: 100%;
   height: auto;
   border: none;

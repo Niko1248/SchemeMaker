@@ -5,7 +5,7 @@
   </div>
 </template>
 <script setup>
-import { useSchemeDataStore } from "../stores/SchemeData"
+import { useSchemeDataStore } from "../../stores/SchemeData"
 
 const schemeDataStore = useSchemeDataStore()
 const props = defineProps({

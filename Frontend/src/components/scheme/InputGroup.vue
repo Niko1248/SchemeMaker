@@ -15,7 +15,11 @@
 
     <!-- Линии фазы -->
     <div class="phase-line__wrap">
-      <div v-for="index in checkPhase(schemeDataStore.inputDeviceData)" :key="index" class="phase-line"></div>
+      <div
+        v-for="index in schemeDataStore.checkPhase(schemeDataStore.inputDeviceData).phaseLength"
+        :key="index"
+        class="phase-line"
+      ></div>
     </div>
 
     <div v-if="schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1">
@@ -28,118 +32,47 @@
   <!-- Линия и ввод -->
   <div class="input-line"></div>
   <div class="input-cable">
-    <p>
-      {{ checkInputCableMarka + checkInputCableSize }}
-    </p>
+    <CableInfo :data="schemeDataStore.inputDeviceData" />
   </div>
   <div class="input-node">
     <svg width="155" height="55" style="border: 1px solid transparent; position: absolute; top: 0; left: 0">
       <rect x="1" y="1" width="153" height="53" fill="none" stroke="black" stroke-width="1" stroke-dasharray="10 8" />
     </svg>
     <img src="../../assets/img/input-connection2.svg" alt="" />
-
-    <div
-      contenteditable="true"
-      :style="{ fontSize: fontSizes['Ввод'] + 'px' }"
-      @click="handleFontSizeInput('Ввод')"
+    <TextEditable
       class="input-name scheme_contenteditable"
-      @click.stop="openFontSizePopup"
+      element="Наименование потребителя"
+      :uniqueID="uniqueID"
+      v-model:elementValue="checkInputName"
     >
       {{ "от " + checkInputName["Наименование потребителя"] }}
-    </div>
+    </TextEditable>
+
     <div class="input-phase">
-      <p class="powerLine-info" v-if="schemeDataStore.inputPhase?.length > 1">~380/220В</p>
+      <p class="powerLine-info" v-if="schemeDataStore.checkPhase(schemeDataStore.inputDeviceData).phaseLength > 1">
+        ~380/220В
+      </p>
       <p v-else class="powerLine-info">~220В</p>
-    </div>
-    <!--     <div class="font-size__popup" @click.stop v-if="fontSizePopup && schemeDataStore.fontSizeMod">
-      <div class="font-size__popup--wrapp">
-        <span
-          >A
-          <p>A</p></span
-        >
-        <input type="number" min="1" max="11" v-model="activeFontSize" @change="updateFontSize" />
-      </div>
-    </div> -->
-    <div class="font-size__popup" v-if="fontSizePopupVisible" @click.stop>
-      <div class="font-size__popup--wrapp">
-        <span
-          >A
-          <p>A</p></span
-        >
-        <input type="number" min="1" max="11" v-model="activeFontSize" @change="updateFontSize" />
-      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, onUnmounted } from "vue"
+import { computed } from "vue"
 import { useSchemeDataStore } from "../../stores/SchemeData"
 import FirstObjectInput from "./FirstObjectInput.vue"
 import SecondObjectInput from "./SecondObjectInput.vue"
+import TextEditable from "../UI/TextEditable.vue"
+import CableInfo from "./CableInfo.vue"
 
 const schemeDataStore = useSchemeDataStore()
-const fontSizePopup = ref(false)
-const activeElement = ref(null)
-const fontSizePopupVisible = ref(false)
-const activeFontSize = ref(12)
-const fontSizes = reactive({
-  Ввод: 12,
+const uniqueID = computed(() => {
+  return (
+    "inputLine" +
+    schemeDataStore.inputDeviceData["Данные"]?.[0]?.["Вводной щит"] +
+    schemeDataStore.inputDeviceData["Группа"]
+  )
 })
-/* const fontSizePopupRef = ref(null) // Ссылка на элемент попапа
- */
-// Методы
-const openFontSizePopup = () => {
-  fontSizePopupVisible.value = true
-}
-
-const closeFontSizePopup = () => {
-  fontSizePopupVisible.value = false
-}
-const handleOutsideClick = (event) => {
-  if (!event.target.closest(".font-size__popup") && fontSizePopupVisible.value) {
-    closeFontSizePopup()
-  }
-}
-
-onMounted(() => {
-  document.addEventListener("click", handleOutsideClick)
-})
-
-onUnmounted(() => {
-  document.removeEventListener("click", handleOutsideClick)
-})
-const updateFontSize = () => {
-  if (activeElement.value && activeFontSize.value >= 1 && activeFontSize.value <= 20) {
-    fontSizes[activeElement.value] = activeFontSize.value
-  }
-}
-
-const handleFontSizeInput = (element) => {
-  activeElement.value = element
-  activeFontSize.value = fontSizes[element]
-  fontSizePopup.value = true
-}
-
-const checkPhase = (data) => {
-  const phaseArr = data?.["Данные"]?.[0]?.["Фаза"].split(",").map((el) => el.trim())
-
-  let arrLength = Math.min(phaseArr.length, 3)
-
-  if (phaseArr.includes("N")) {
-    arrLength -= 1
-  }
-  return arrLength
-}
-
-const checkInputCableMarka = computed(() => {
-  return schemeDataStore.inputDeviceData?.["Данные"].find((obj) => obj["Марка кабеля"])?.["Марка кабеля"] || ""
-})
-
-const checkInputCableSize = computed(() => {
-  return schemeDataStore.inputDeviceData?.["Данные"].find((obj) => obj["Сечение кабеля"])?.["Сечение кабеля"] || ""
-})
-
 const checkInputName = computed(() => {
   return schemeDataStore.inputDeviceData?.["Данные"].find((obj) => obj["Наименование потребителя"])
 })
@@ -205,7 +138,7 @@ const checkInputName = computed(() => {
 .input-cable {
   position: absolute;
   right: 8cm;
-  top: -5mm;
+  top: 4cm;
 }
 
 .input-node {

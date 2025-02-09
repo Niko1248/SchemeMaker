@@ -7,7 +7,7 @@
 <script setup>
 import { ref } from "vue"
 import { Vue3Lottie } from "vue3-lottie"
-import Preloader from "./../assets/animation/Preloader.json"
+import Preloader from "../../assets/animation/Preloader.json"
 
 const currentAnimationData = ref(Preloader)
 </script>

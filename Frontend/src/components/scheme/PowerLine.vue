@@ -1,9 +1,11 @@
 <template>
   <div class="power-line">
-    <p v-if="schemeDataStore.inputPhase?.length > 1" class="powerLine-info">~380/220В</p>
+    <p v-if="schemeDataStore.checkPhase(schemeDataStore.inputDeviceData).phaseLength > 1" class="powerLine-info">
+      ~380/220В
+    </p>
     <p v-else class="powerLine-info">~220В</p>
     <div class="L">
-      <p>{{ "L" + schemeDataStore.inputPhase?.data.join() }}</p>
+      <p>{{ "L" + schemeDataStore.checkPhase(schemeDataStore.inputDeviceData).data.join() }}</p>
     </div>
     <div class="N">
       <div class="N-line">

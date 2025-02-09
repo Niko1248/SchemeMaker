@@ -31,31 +31,18 @@
     <SecondObjectOutput :data="itemData" />
 
     <!-- Стрелка + кабель -->
-    <!--  <div class="node-el node-arrow">
-      <img src="../../assets/img/arrow2.svg" />
-    </div> -->
     <div class="node-el node-arrow">
       <img :src="schemeDataStore.listFormat === 'A4' ? arrow2 : arrowA3" />
     </div>
-    <div
-      class="cable-name"
-      :style="{ bottom: schemeDataStore.listFormat === 'A3' ? '34mm' : '12mm' }"
-      v-if="checkInputCableMarka"
-    >
-      <input type="text" :value="checkInputCableMarka" />
-    </div>
-    <div class="cable-pref" :style="{ bottom: schemeDataStore.listFormat === 'A3' ? '128px' : '45px' }">
-      <div class="cable-size" v-if="checkInputCableSize">
-        <input type="text" :value="checkInputCableSize" />
-      </div>
-      <div class="cable-length" v-if="checkInputCableLength">
-        <input type="text" :value="'L=' + checkInputCableLength + 'м'" />
-      </div>
-    </div>
+    <CableInfo :data="itemData" />
 
     <!-- Фазы (линии + текст) -->
     <div class="phase-line__wrap">
-      <div v-for="index in checkPhase(props.itemData)" :key="index" class="phase-line"></div>
+      <div
+        v-for="index in schemeDataStore.checkPhase(props.itemData).phaseLength"
+        :key="index"
+        class="phase-line"
+      ></div>
     </div>
     <div class="phase-text">
       {{ swapPhase(props.itemData) }}
@@ -69,23 +56,13 @@ import FirstObjectOutput from "./FirstObjectOutput.vue"
 import SecondObjectOutput from "./SecondObjectOutput.vue"
 import arrow2 from "../../assets/img/arrow2.svg"
 import arrowA3 from "../../assets/img/arrowA3.svg"
+import CableInfo from "./CableInfo.vue"
 const schemeDataStore = useSchemeDataStore()
+
 const props = defineProps({
   itemData: { type: Object },
 })
 
-const checkPhase = (data) => {
-  const phaseArr = data?.["Данные"]?.[0]?.["Фаза"]
-    .split(",") // Разбиваем строку в массив
-    .map((el) => el.trim()) // Убираем пробелы у каждого элемента
-
-  let arrLength = Math.min(phaseArr.length, 3) // Ограничиваем длину максимум 3.
-
-  if (phaseArr.includes("N")) {
-    arrLength -= 1 // Уменьшаем значение на 1, если есть "N".
-  }
-  return arrLength
-}
 const swapPhase = (data) => {
   return String(
     data?.["Данные"]?.[0]?.["Фаза"]
@@ -193,7 +170,7 @@ const checkInputCableLength = computed(() => {
 .cable-pref {
   position: absolute;
   bottom: 45px;
-  left: -25px;
+  left: -20px;
   width: 75px;
   height: 15px;
   display: flex;
@@ -204,34 +181,15 @@ const checkInputCableLength = computed(() => {
 .cable-size {
   width: 49%;
   position: unset;
-  input {
-    max-width: 10mm;
-  }
+  max-width: 10mm;
 }
 .cable-length {
   width: 49%;
   position: unset;
-  input {
-    max-width: 10mm;
-    text-align: start;
-  }
+  max-width: 10mm;
+  text-align: start;
 }
 .secondObjInfo {
   top: 5px;
-}
-input {
-  padding: 0;
-  width: 100%;
-  border: 0;
-  background: none;
-  text-align: center;
-  height: 15px;
-  &:focus {
-    outline: 1px dashed #000000; /* зеленая обводка */
-    transition: 0.5s ease;
-    border-radius: 2px;
-    box-shadow: 0px 0px 20px #000;
-    background: #ffffff00;
-  }
 }
 </style>

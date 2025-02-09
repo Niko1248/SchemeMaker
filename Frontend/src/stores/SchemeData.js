@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { watch, reactive, ref } from "vue"
+import { reactive, ref } from "vue"
 export const useSchemeDataStore = defineStore("schemeData", () => {
   const tableData = reactive({})
   const schemeData = reactive([])
@@ -67,35 +67,19 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     const isLinePE = data["Данные"].findIndex((obj) => obj?.["PE"])
     return isLinePE
   }
+  const checkPhase = (data) => {
+    const phaseArr = data?.["Данные"]?.[0]?.["Фаза"]
+      .split(",") // Разбиваем строку в массив
+      .map((el) => el.trim()) // Убираем пробелы у каждого элемента
 
-  // Расчет фазы входной группы
-  watch(
-    () => inputDeviceData["Данные"],
-    (newData) => {
-      for (const el of newData) {
-        if (!el?.["Фаза"]) continue
+    let arrLength = Math.min(phaseArr.length, 3) // Ограничиваем длину максимум 3.
 
-        // Разбиваем строку по запятой и убираем пробелы
-        const phaseArr = el["Фаза"].split(",").map((phase) => phase.trim())
-        let arrLength = phaseArr.length
+    if (phaseArr.includes("N")) {
+      arrLength -= 1 // Уменьшаем значение на 1, если есть "N".
+    }
+    return { data: phaseArr, phaseLength: arrLength }
+  }
 
-        // Считаем длину массива, уменьшая на 1, если есть "N"
-        if (phaseArr.includes("N")) {
-          arrLength -= 1
-        }
-        // Ограничиваем длину до 3
-        arrLength = Math.min(arrLength, 3)
-        // Если длина больше 0, возвращаем результат
-        if (arrLength > 0) {
-          inputPhase.value = { data: phaseArr, length: arrLength }
-          return
-        }
-      }
-
-      inputPhase.value = undefined // Если ничего не найдено
-    },
-    { deep: true } // Для вложенных изменений
-  )
   const setFontSize = (id, key, value) => {
     if (!fontSizesArray[id]) {
       fontSizesArray[id] = {}
@@ -128,5 +112,6 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     amountExportScheme,
     setAmountExportScheme,
     amountReadyScheme,
+    checkPhase,
   }
 })

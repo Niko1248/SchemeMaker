@@ -22,7 +22,7 @@
           transform: menuOpen ? 'scale(-1,1)' : 'scale(1,1)',
         }"
       >
-        <img src="../../public/close.svg" alt="" />
+        <img src="/close.svg" alt="" />
       </div>
       <div class="handler-file__wrapper">
         <form @submit.prevent="uploadFile">
@@ -105,8 +105,8 @@
 
 <script setup>
 import SchemeContainer from "./SchemeContainer.vue"
-import ExportButtons from "./ExportButtons.vue"
-import Logo from "./Logo.vue"
+import ExportButtons from "./UI/ExportButtons.vue"
+import Logo from "./UI/Logo.vue"
 import { ref } from "vue"
 import { useSchemeDataStore } from "../stores/SchemeData.js"
 import axios from "axios"
@@ -161,7 +161,7 @@ const uploadFile = async () => {
   // http://138.124.31.181:7777/upload
   // http://localhost:3000/upload
   try {
-    const response = await axios.post("http://138.124.31.181:7777/upload", formData, {
+    const response = await axios.post("http://localhost:3000/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
     success.value = true
@@ -193,7 +193,7 @@ const uploadFile = async () => {
 
 .close-ico {
   position: absolute;
-  cursor: url(../../public/cursor-pointer.png), auto;
+  cursor: url(../../cursor.png), auto;
   left: 5px;
   top: calc(50% - 10px);
   transition: 0.3s;
@@ -288,10 +288,10 @@ const uploadFile = async () => {
 .upload-file__input {
   z-index: 999;
   visibility: hidden;
-  cursor: url(../../public/cursor-pointer.png), auto;
+  cursor: url(../../cursor.png), auto;
 }
 .upload-file__lable {
-  cursor: url(../../public/cursor-pointer.png), auto;
+  cursor: url(../../cursor.png), auto;
   position: absolute;
   top: 0;
   left: 0;
@@ -324,7 +324,7 @@ const uploadFile = async () => {
 }
 .upload-file__button {
   box-sizing: border-box;
-  cursor: url(../../public/cursor-pointer.png), auto;
+  cursor: url(../../cursor.png), auto;
   margin-top: 10px;
   width: 100%;
   height: 1.85vw;
@@ -385,7 +385,7 @@ const uploadFile = async () => {
     margin-right: 10px;
   }
   .input-label {
-    cursor: url(../../public/cursor-pointer.png), auto;
+    cursor: url(../../cursor.png), auto;
     transition: 0.2s;
 
     &:hover {
@@ -398,7 +398,7 @@ const uploadFile = async () => {
   color: rgb(0, 0, 0);
 
   background-color: rgba(255, 255, 255, 0.514);
-  cursor: url(/public/cursor-pointer.png), auto;
+  cursor: url(/cursor.png), auto;
 }
 .format-wrapper {
   display: inline-block;
@@ -422,7 +422,7 @@ const uploadFile = async () => {
     border-radius: 5px 0px 0px 5px;
     border-right: none;
     user-select: none;
-    cursor: url(/public/cursor-pointer.png), auto;
+    cursor: url(/cursor.png), auto;
     &:hover {
       background-color: rgba(255, 255, 255, 0.2470588235);
     }

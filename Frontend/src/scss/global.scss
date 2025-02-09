@@ -70,7 +70,7 @@ html {
   justify-content: start;
   align-items: center;
   margin: 0px 10px;
-  cursor: url(/public/cursor-pointer.png), auto;
+  cursor: url(/cursor.png), auto;
   transition: 0.3s;
 
   &:hover {
@@ -161,7 +161,7 @@ body {
   /* Поддержка для IE */
   overscroll-behavior: none;
   /* Избегаем накладывания эффектов прокрутки */
-  cursor: url(../../public/cursor.png), auto;
+  cursor: url(/cursor.png), auto;
 }
 
 body {

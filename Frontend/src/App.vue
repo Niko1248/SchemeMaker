@@ -5,7 +5,7 @@
 
 <script setup>
 import SchemeMaker from "./components/SchemeMaker.vue"
-import Preloader from "./components/PreLoader.vue"
+import Preloader from "./components/UI/PreLoader.vue"
 document.addEventListener(
   "wheel",
   (event) => {
