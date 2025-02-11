@@ -1,10 +1,11 @@
 <template>
   <div class="grid" :style="{ alignItems: checkDoc ? 'flex-start' : 'center' }">
+    <!-- Используем массив ref для хранения ссылок на дочерние компоненты -->
     <SchemeContainer
       v-for="(doc, index) in schemeDataStore.filteredSchemeData(checkDoc)"
       :key="'Щит' + index"
       :schemeDataChunk="doc"
-      ref="activeRef"
+      :ref="(el) => setActiveRef(el, index)"
     />
     <Logo />
 
@@ -59,7 +60,7 @@
             v-for="(item, index) in schemeDataStore.schemeData"
             :key="`item-${index}`"
             :class="{ selected: selectedItem === item['Вводной щит'] }"
-            @click="selectItem(item['Вводной щит']), changeScheme(item['Вводной щит']), resetPosition()"
+            @click="resetPosition(), selectItem(item['Вводной щит']), changeScheme(item['Вводной щит'])"
           >
             <input
               type="checkbox"
@@ -98,7 +99,7 @@
           </div>
         </div>
       </div>
-      <ExportButtons :selectedSchemes="selectedSchemes" :activeRef="activeRef" v-model:childCheckDoc="checkDoc" />
+      <ExportButtons :selectedSchemes="selectedSchemes" :activeRef="activeRefs" v-model:childCheckDoc="checkDoc" />
     </div>
   </div>
 </template>
@@ -116,36 +117,47 @@ const loading = ref(false)
 const success = ref(false)
 const error = ref("")
 const checkDoc = ref("")
-const activeRef = ref(null)
+const activeRefs = ref([]) // Массив для хранения ссылок на дочерние компоненты
 const selectedSchemes = ref([])
 const fileName = ref(null)
 const fileInput = ref(null)
 const menuOpen = ref(true)
 const selectedItem = ref(null)
 
+// Функция для установки ссылок на дочерние компоненты
+const setActiveRef = (el, index) => {
+  if (el) {
+    activeRefs.value[index] = el
+  }
+}
+
 const selectItem = (item) => {
   selectedItem.value = item
 }
-// Функция изменения выбранной схемы
+
 const changeScheme = (name) => {
   checkDoc.value = name
 }
+
 // Функция сброса позиции страницы при перелистывании
 const resetPosition = () => {
-  activeRef[0].value.resetPositionStyles()
+  activeRefs.value.forEach((ref) => {
+    if (ref && ref.resetPositionStyles) {
+      ref.resetPositionStyles()
+      console.log("scs")
+    }
+  })
 }
-// Функция открытия / закрытия меню
+
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value
 }
 
-// Функция обработки выбора файла
 const handleFileChange = (event) => {
   const file = event.target.files[0]
-  fileName.value = file ? file.name : null // Отображаем имя файла
+  fileName.value = file ? file.name : null
 }
 
-// Функция для выбора схем на экспорт
 const toogleCheckbox = (name) => {
   if (selectedSchemes.value.includes(name)) {
     selectedSchemes.value = selectedSchemes.value.filter((item) => item !== name)
@@ -161,8 +173,7 @@ const uploadFile = async () => {
   loading.value = true
   error.value = null
   success.value = false
-  // http://138.124.31.181:7777/upload
-  // http://localhost:3000/upload
+
   try {
     const response = await axios.post("http://localhost:3000/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -184,7 +195,6 @@ const uploadFile = async () => {
   }
 }
 </script>
-
 <style lang="scss">
 .grid {
   display: flex;

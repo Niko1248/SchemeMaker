@@ -178,6 +178,7 @@ const checkInputCableLength = computed(() => {
   align-items: center;
   transform: rotate(-90deg);
 }
+
 .cable-size {
   width: 49%;
   position: unset;

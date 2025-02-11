@@ -32,7 +32,7 @@
   <!-- Линия и ввод -->
   <div class="input-line"></div>
   <div class="input-cable">
-    <CableInfo :data="schemeDataStore.inputDeviceData" />
+    <div class="--input"><CableInfo :data="schemeDataStore.inputDeviceData" /></div>
   </div>
   <div class="input-node">
     <svg width="155" height="55" style="border: 1px solid transparent; position: absolute; top: 0; left: 0">

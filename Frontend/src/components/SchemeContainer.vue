@@ -71,7 +71,9 @@ export default defineComponent({
     // Метод для изменения стилей
     const resetPositionStyles = () => {
       if (pages__wrapper.value) {
-        pages__wrapper.value.style.transform = "translate(10px, 10px) scale(1)"
+        positionX.value = 150
+        positionY.value = 25
+        scale.value = 1
       }
     }
     // Функция для разделения входной и отходных групп, логика разделения и данные хранятся в сторе
@@ -239,7 +241,7 @@ export default defineComponent({
   height: 100svh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   font-family: type-A;
 }
 .pages__wrapper {
