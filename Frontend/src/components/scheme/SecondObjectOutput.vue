@@ -60,7 +60,6 @@ const deviceImage = computed(() => (deviceType.value ? deviceImages[deviceType.v
 .node-el-2 {
   position: relative;
   transform: translateX(-8px);
-  z-index: 9;
 }
 .secondObjInfo {
   top: 5px;
