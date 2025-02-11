@@ -85,4 +85,22 @@ const uzolInputValue = computed(() => {
     max-width: 10mm;
   }
 }
+
+.text__wrap-class-den {
+  display: flex;
+  justify-content: center;
+  max-width: 20mm;
+  .scheme_contenteditable {
+    max-width: 10mm;
+    border: none;
+    box-sizing: border-box;
+  }
+}
+.text__wrap-uzo {
+  display: flex;
+  justify-content: center;
+  .scheme_contenteditable {
+    max-width: 10mm;
+  }
+}
 </style>
