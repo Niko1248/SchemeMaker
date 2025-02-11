@@ -132,7 +132,7 @@ const changeScheme = (name) => {
 }
 // Функция сброса позиции страницы при перелистывании
 const resetPosition = () => {
-  activeRef[0].value.resetPositionStyles()
+  activeRef.value[0].resetPositionStyles()
 }
 // Функция открытия / закрытия меню
 const toggleMenu = () => {
