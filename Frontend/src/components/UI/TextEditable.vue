@@ -3,19 +3,23 @@
     <div
       contenteditable="true"
       class="scheme_contenteditable"
-      :style="{ fontSize: dataFontSize + 'px' }"
+      :style="{ fontSize: dataFontSize + 'px', lineHeight: dataLineHeight }"
       @click="handleFontSizeInput"
       @click.stop="openFontSizePopup"
     >
       <slot></slot>
     </div>
     <div class="font-size__popup" v-if="fontSizePopupVisible" @click.stop>
-      <div class="font-size__popup--wrapp">
+      <div class="popup--wrapp">
         <span
           >A
           <p>A</p></span
         >
         <input type="number" min="1" max="20" v-model="activeFontSize" @change="updateFontSize" />
+      </div>
+      <div class="popup--wrapp">
+        <p class="--lh">↨</p>
+        <input type="number" step="0.1" min="0" max="3" v-model="activeLineHeight" @change="updateLineHeight" />
       </div>
     </div>
   </div>
@@ -34,11 +38,16 @@ const props = defineProps({
 const schemeDataStore = useSchemeDataStore()
 const fontSizePopupVisible = ref(false)
 const activeFontSize = ref()
+const activeLineHeight = ref()
 
 const dataFontSize = computed(() => schemeDataStore.getFontSize(props.uniqueID)[props.element] || 10)
+const dataLineHeight = computed(() => schemeDataStore.getLineHeight(props.uniqueID)[props.element] || 1)
 
 watch(dataFontSize, (newFontSize) => {
   activeFontSize.value = newFontSize
+})
+watch(dataLineHeight, (newLineHeight) => {
+  activeLineHeight.value = newLineHeight
 })
 
 const openFontSizePopup = () => {
@@ -68,9 +77,15 @@ const updateFontSize = () => {
     schemeDataStore.setFontSize(props.uniqueID, props.element, activeFontSize.value)
   }
 }
+const updateLineHeight = () => {
+  if (activeLineHeight.value >= 0 && activeLineHeight.value <= 3) {
+    schemeDataStore.setLineHeight(props.uniqueID, props.element, activeLineHeight.value)
+  }
+}
 
 const handleFontSizeInput = () => {
   activeFontSize.value = dataFontSize.value
+  activeLineHeight.value = dataLineHeight.value
 }
 </script>
 
@@ -81,7 +96,7 @@ const handleFontSizeInput = () => {
 .scheme_contenteditable {
   margin: 0;
   padding: 0;
-  line-height: 100%;
+  line-height: 1;
   font-size: 10px;
   text-align: center;
   background: none;

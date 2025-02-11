@@ -12,7 +12,7 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
   const amountReadyScheme = ref(0)
   const amountExportScheme = ref(0)
   const fontSizesArray = reactive({})
-
+  const lineHeightArray = reactive({})
   const setAmountExportScheme = (value) => {
     amountExportScheme.value = value
   }
@@ -35,7 +35,9 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
   const fontSizeModToggle = (value) => {
     fontSizeMod.value = value
   }
-
+  const lineHeightModToggle = (value) => {
+    lineHeightMod.value = value
+  }
   const splitInputAndOutputGroups = (data) => {
     let itemsPerComponent
     if (listFormat.value === "A4") {
@@ -89,6 +91,16 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
   const getFontSize = (id) => {
     return fontSizesArray[id] || {}
   }
+
+  const setLineHeight = (id, key, value) => {
+    if (!lineHeightArray[id]) {
+      lineHeightArray[id] = {}
+    }
+    lineHeightArray[id][key] = value
+  }
+  const getLineHeight = (id) => {
+    return lineHeightArray[id] || {}
+  }
   return {
     tableData,
     schemeData,
@@ -108,7 +120,10 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     listFormat,
     setFontSize,
     getFontSize,
+    getLineHeight,
+    setLineHeight,
     fontSizesArray,
+    lineHeightArray,
     amountExportScheme,
     setAmountExportScheme,
     amountReadyScheme,

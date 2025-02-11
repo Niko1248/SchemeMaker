@@ -68,7 +68,12 @@ export default defineComponent({
     const scalableArea = ref(null) // Ссылка на область
     const pages__wrapper = ref(null) // Ссылка на содержимое
     const isLoading = ref(false)
-
+    // Метод для изменения стилей
+    const resetPositionStyles = () => {
+      if (pages__wrapper.value) {
+        pages__wrapper.value.style.transform = "translate(10px, 10px) scale(1)"
+      }
+    }
     // Функция для разделения входной и отходных групп, логика разделения и данные хранятся в сторе
     const groupedItems = computed(() => {
       if (!props.schemeDataChunk["Группы"]) {
@@ -172,7 +177,9 @@ export default defineComponent({
 
     expose({
       exportToPDF,
+      resetPositionStyles,
     })
+
     return {
       scale,
       positionX,
@@ -185,6 +192,7 @@ export default defineComponent({
       groupedItems,
       schemeDataStore,
       props,
+      resetPositionStyles,
     }
   },
 })

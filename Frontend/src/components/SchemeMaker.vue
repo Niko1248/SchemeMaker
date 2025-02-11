@@ -59,7 +59,7 @@
             v-for="(item, index) in schemeDataStore.schemeData"
             :key="`item-${index}`"
             :class="{ selected: selectedItem === item['Вводной щит'] }"
-            @click="selectItem(item['Вводной щит'])"
+            @click="selectItem(item['Вводной щит']), changeScheme(item['Вводной щит']), resetPosition()"
           >
             <input
               type="checkbox"
@@ -67,7 +67,7 @@
               :value="item['Вводной щит']"
               @change="toogleCheckbox(item['Вводной щит'])"
             />
-            <div class="input-label" @click.prevent="changeScheme(item['Вводной щит'])">{{ item["Вводной щит"] }}</div>
+            <div class="input-label">{{ item["Вводной щит"] }}</div>
           </div>
         </div>
       </div>
@@ -130,7 +130,10 @@ const selectItem = (item) => {
 const changeScheme = (name) => {
   checkDoc.value = name
 }
-
+// Функция сброса позиции страницы при перелистывании
+const resetPosition = () => {
+  activeRef[0].value.resetPositionStyles()
+}
 // Функция открытия / закрытия меню
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value
@@ -385,7 +388,7 @@ const uploadFile = async () => {
     margin-right: 10px;
   }
   .input-label {
-    cursor: url(../../cursor.png), auto;
+    cursor: url(../../public/cursor-pointer.png), auto;
     transition: 0.2s;
 
     &:hover {

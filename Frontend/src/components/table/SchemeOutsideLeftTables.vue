@@ -59,7 +59,9 @@
   display: flex;
   flex-direction: column;
 }
-
+.left-table-outside-the-frame__two--row-1 {
+  border-top: 1px solid #000;
+}
 .left-table-outside-the-frame__one--row-1,
 .left-table-outside-the-frame__one--row-2 {
   display: flex;
