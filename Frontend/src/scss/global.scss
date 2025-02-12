@@ -111,6 +111,7 @@ html {
     align-items: center;
   }
 
+
   .--lh {
     color: #fff;
     margin: 0px 3px 0px 6px;
@@ -578,5 +579,13 @@ template {
     width: auto !important;
     top: -163px !important;
     left: -11mm;
+  }
+}
+
+.--transformRotate90 {
+  .font-size__popup {
+    transform: rotate(90deg) !important;
+    top: 18mm;
+    right: -65px;
   }
 }

@@ -34,7 +34,7 @@
     <div class="node-el node-arrow">
       <img :src="schemeDataStore.listFormat === 'A4' ? arrow2 : arrowA3" />
     </div>
-    <CableInfo :data="itemData" />
+    <div class="--transformRotate90"><CableInfo :data="itemData" /></div>
 
     <!-- Фазы (линии + текст) -->
     <div class="phase-line__wrap">

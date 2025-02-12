@@ -1,17 +1,32 @@
 <template>
   <div class="text__wrap">
-    <TextEditable element="Производитель" :uniqueID="uniqueID" v-model:elementValue="props.textData['Производитель']">
+    <TextEditable
+      class="text__wrap-item"
+      element="Производитель"
+      :uniqueID="uniqueID"
+      v-model:elementValue="props.textData['Производитель']"
+    >
       {{ props.textData["Производитель"] }}
     </TextEditable>
-    <TextEditable element="Автомат" :uniqueID="uniqueID" v-model:elementValue="props.textData['Автомат']">
+    <TextEditable
+      class="text__wrap-item"
+      element="Автомат"
+      :uniqueID="uniqueID"
+      v-model:elementValue="props.textData['Автомат']"
+    >
       {{ props.textData["Автомат"] }}
     </TextEditable>
-    <div class="text__wrap-class-den">
-      <TextEditable element="Номинал" :uniqueID="uniqueID" v-model:elementValue="nominalInputValue">
+    <div class="text__wrap-class-den text__wrap-item">
+      <TextEditable
+        class="text__wrap-item"
+        element="Номинал"
+        :uniqueID="uniqueID"
+        v-model:elementValue="nominalInputValue"
+      >
         {{ nominalInputValue }}
       </TextEditable>
     </div>
-    <TextEditable element="Тип УЗО" :uniqueID="uniqueID" v-model:elementValue="uzolInputValue">
+    <TextEditable class="text__wrap-item" element="Тип УЗО" :uniqueID="uniqueID" v-model:elementValue="uzolInputValue">
       {{ uzolInputValue }}
     </TextEditable>
   </div>
@@ -67,6 +82,9 @@ const uzolInputValue = computed(() => {
   top: 0;
   display: flex;
   flex-direction: column;
+}
+.text__wrap-item {
+  height: 12px;
 }
 .text__wrap-class-den {
   display: flex;
