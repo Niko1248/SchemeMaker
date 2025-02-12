@@ -41,6 +41,10 @@ import { reactive, defineProps } from "vue"
 import TextEditable from "../UI/TextEditable.vue"
 
 const legendObj = reactive({
+  Освещение: new URL("../../assets/img/legend/svet.svg", import.meta.url).href,
+  Щит: new URL("../../assets/img/legend/shit.svg", import.meta.url).href,
+  Розетка: new URL("../../assets/img/legend/rozetka.svg", import.meta.url).href,
+  Электровывод: new URL("../../assets/img/legend/pig.svg", import.meta.url).href,
   1: new URL("../../assets/img/legend/svet.svg", import.meta.url).href,
   2: new URL("../../assets/img/legend/shit.svg", import.meta.url).href,
   3: new URL("../../assets/img/legend/rozetka.svg", import.meta.url).href,
