@@ -32,10 +32,7 @@ import { useSchemeDataStore } from "../../stores/SchemeData.js"
 const props = defineProps({
   element: { type: String, required: true },
   uniqueID: { type: String, required: true },
-  elementValue: { type: [String, Number], default: "" }, // Принимаем значение через v-model
 })
-
-const emit = defineEmits(["update:elementValue"]) // Для работы с v-model
 
 const schemeDataStore = useSchemeDataStore()
 const activeFontSize = ref()
