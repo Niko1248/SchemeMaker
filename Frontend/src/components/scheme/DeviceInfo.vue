@@ -68,6 +68,9 @@ const uzolInputValue = computed(() => {
   display: flex;
   flex-direction: column;
 }
+.text__wrap-item {
+  height: 12px;
+}
 .text__wrap-class-den {
   display: flex;
   justify-content: center;

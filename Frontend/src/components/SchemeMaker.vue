@@ -102,6 +102,7 @@
       <ExportButtons :selectedSchemes="selectedSchemes" :activeRef="activeRefs" v-model:childCheckDoc="checkDoc" />
     </div>
   </div>
+  <p class="--pc">Designed by Kolibrus 2025</p>
 </template>
 
 <script setup>
@@ -175,7 +176,7 @@ const uploadFile = async () => {
   success.value = false
 
   try {
-    const response = await axios.post("http://192.168.0.110:3000/upload", formData, {
+    const response = await axios.post("http://138.124.31.181:7777/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
     success.value = true
@@ -196,6 +197,15 @@ const uploadFile = async () => {
 }
 </script>
 <style lang="scss">
+.--pc {
+  position: absolute;
+  bottom: 5px;
+  font-size: 12px;
+  width: 166px;
+  left: calc(50% - 63px);
+  color: #000000;
+  font-family: WixMadeforDisplay-Regular;
+}
 .grid {
   display: flex;
   width: 100svw;
