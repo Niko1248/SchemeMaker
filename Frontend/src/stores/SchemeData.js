@@ -13,6 +13,18 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
   const amountExportScheme = ref(0)
   const fontSizesArray = reactive({})
   const lineHeightArray = reactive({})
+  const openPopupId = ref(null)
+
+  // Новый метод для открытия попапа
+  const setOpenPopupId = (id) => {
+    openPopupId.value = id
+  }
+
+  // Новый метод для закрытия попапа
+  const closePopup = () => {
+    openPopupId.value = null
+  }
+
   const setAmountExportScheme = (value) => {
     amountExportScheme.value = value
   }
@@ -128,5 +140,8 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     setAmountExportScheme,
     amountReadyScheme,
     checkPhase,
+    openPopupId,
+    setOpenPopupId,
+    closePopup,
   }
 })

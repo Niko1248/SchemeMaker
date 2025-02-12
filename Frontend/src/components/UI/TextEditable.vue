@@ -9,7 +9,7 @@
     >
       <slot></slot>
     </div>
-    <div class="font-size__popup" v-if="fontSizePopupVisible" @click.stop>
+    <div class="font-size__popup" v-if="isPopupOpen" @click.stop>
       <div class="popup--wrapp">
         <span
           >A
@@ -32,16 +32,24 @@ import { useSchemeDataStore } from "../../stores/SchemeData.js"
 const props = defineProps({
   element: { type: String, required: true },
   uniqueID: { type: String, required: true },
-  textData: { type: [String, Number], default: "" },
+  elementValue: { type: [String, Number], default: "" }, // Принимаем значение через v-model
 })
 
+const emit = defineEmits(["update:elementValue"]) // Для работы с v-model
+
 const schemeDataStore = useSchemeDataStore()
-const fontSizePopupVisible = ref(false)
 const activeFontSize = ref()
 const activeLineHeight = ref()
 
-const dataFontSize = computed(() => schemeDataStore.getFontSize(props.uniqueID)[props.element] || 10)
-const dataLineHeight = computed(() => schemeDataStore.getLineHeight(props.uniqueID)[props.element] || 1)
+// Генерация уникального идентификатора для текущего .scheme_contenteditable
+const contentEditableId = computed(() => `${props.uniqueID}-${props.element}`)
+
+// Получаем размер шрифта и межстрочный интервал для текущего элемента
+const dataFontSize = computed(() => schemeDataStore.getFontSize(contentEditableId.value)[props.element] || 10)
+const dataLineHeight = computed(() => schemeDataStore.getLineHeight(contentEditableId.value)[props.element] || 1.2)
+
+// Проверяем, открыт ли попап для текущего .scheme_contenteditable
+const isPopupOpen = computed(() => schemeDataStore.openPopupId === contentEditableId.value)
 
 watch(dataFontSize, (newFontSize) => {
   activeFontSize.value = newFontSize
@@ -51,15 +59,15 @@ watch(dataLineHeight, (newLineHeight) => {
 })
 
 const openFontSizePopup = () => {
-  fontSizePopupVisible.value = true
+  schemeDataStore.setOpenPopupId(contentEditableId.value) // Открываем попап для текущего элемента
 }
 
 const closeFontSizePopup = () => {
-  fontSizePopupVisible.value = false
+  schemeDataStore.closePopup() // Закрываем попап
 }
 
 const handleOutsideClick = (event) => {
-  if (!event.target.closest(".font-size__popup") && fontSizePopupVisible.value) {
+  if (!event.target.closest(".font-size__popup")) {
     closeFontSizePopup()
   }
 }
@@ -74,12 +82,13 @@ onUnmounted(() => {
 
 const updateFontSize = () => {
   if (activeFontSize.value >= 1 && activeFontSize.value <= 20) {
-    schemeDataStore.setFontSize(props.uniqueID, props.element, activeFontSize.value)
+    schemeDataStore.setFontSize(contentEditableId.value, props.element, activeFontSize.value)
   }
 }
+
 const updateLineHeight = () => {
   if (activeLineHeight.value >= 0 && activeLineHeight.value <= 3) {
-    schemeDataStore.setLineHeight(props.uniqueID, props.element, activeLineHeight.value)
+    schemeDataStore.setLineHeight(contentEditableId.value, props.element, activeLineHeight.value)
   }
 }
 

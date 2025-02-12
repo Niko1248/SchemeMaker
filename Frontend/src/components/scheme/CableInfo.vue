@@ -13,17 +13,16 @@
     <TextEditable
       v-if="checkInputCableSize"
       class="cable-size"
-      element="Сечение кабеля"
+      :element="`Сечение кабеля-${uniqueID}-size`"
       :uniqueID="uniqueID"
       v-model:elementValue="checkInputCableSize"
     >
       {{ checkInputCableSize }}
     </TextEditable>
-    <!-- Специально сделал element="Сечение кабеля" чтобы регулировать шрифт всей строки -->
     <TextEditable
       v-if="checkInputCableLength"
       class="cable-length"
-      element="Сечение кабеля"
+      :element="`Сечение кабеля-${uniqueID}-length`"
       :uniqueID="uniqueID"
       v-model:elementValue="checkInputCableLength"
     >
@@ -31,16 +30,18 @@
     </TextEditable>
   </div>
 </template>
+
 <script setup>
 import { computed } from "vue"
 import { useSchemeDataStore } from "../../stores/SchemeData"
-
 import TextEditable from "../UI/TextEditable.vue"
+
 const schemeDataStore = useSchemeDataStore()
 
 const props = defineProps({
   data: { type: Object },
 })
+
 const uniqueID = computed(() => {
   return props.data["Данные"]?.[0]?.["Вводной щит"] + "-" + props.data["Группа"]
 })
@@ -48,9 +49,11 @@ const uniqueID = computed(() => {
 const checkInputCableMarka = computed(() => {
   return props.data["Данные"].find((obj) => obj["Марка кабеля"])?.["Марка кабеля"] || ""
 })
+
 const checkInputCableSize = computed(() => {
   return props.data["Данные"].find((obj) => obj["Сечение кабеля"])?.["Сечение кабеля"] || ""
 })
+
 const checkInputCableLength = computed(() => {
   return props.data["Данные"].find((obj) => obj["Длина кабеля"])?.["Длина кабеля"] || ""
 })

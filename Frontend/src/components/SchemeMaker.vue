@@ -102,7 +102,6 @@
       <ExportButtons :selectedSchemes="selectedSchemes" :activeRef="activeRefs" v-model:childCheckDoc="checkDoc" />
     </div>
   </div>
-  <p class="--pc">Designed by Kolibrus 2025</p>
 </template>
 
 <script setup>
@@ -197,15 +196,6 @@ const uploadFile = async () => {
 }
 </script>
 <style lang="scss">
-.--pc {
-  position: absolute;
-  bottom: 5px;
-  font-size: 12px;
-  width: 166px;
-  left: calc(50% - 63px);
-  color: #000000;
-  font-family: WixMadeforDisplay-Regular;
-}
 .grid {
   display: flex;
   width: 100svw;
