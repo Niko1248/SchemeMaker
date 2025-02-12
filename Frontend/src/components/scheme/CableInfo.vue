@@ -5,28 +5,15 @@
     :style="{ bottom: schemeDataStore.listFormat === 'A3' ? '34mm' : '12mm' }"
     element="Название кабеля"
     :uniqueID="uniqueID"
-    v-model:elementValue="checkInputCableMarka"
   >
     {{ checkInputCableMarka }}
   </TextEditable>
   <div class="cable-pref" :style="{ bottom: schemeDataStore.listFormat === 'A3' ? '128px' : '45px' }">
-    <TextEditable
-      v-if="checkInputCableSize"
-      class="cable-size"
-      element="Сечение кабеля"
-      :uniqueID="uniqueID"
-      v-model:elementValue="checkInputCableSize"
-    >
+    <TextEditable v-if="checkInputCableSize" class="cable-size" element="Сечение кабеля" :uniqueID="uniqueID">
       {{ checkInputCableSize }}
     </TextEditable>
     <!-- Специально сделал element="Сечение кабеля" чтобы регулировать шрифт всей строки -->
-    <TextEditable
-      v-if="checkInputCableLength"
-      class="cable-length"
-      element="Сечение кабеля"
-      :uniqueID="uniqueID"
-      v-model:elementValue="checkInputCableLength"
-    >
+    <TextEditable v-if="checkInputCableLength" class="cable-length" element="Сечение кабеля" :uniqueID="uniqueID">
       {{ "L=" + checkInputCableLength + "м" }}
     </TextEditable>
   </div>

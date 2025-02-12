@@ -147,7 +147,7 @@ export default defineComponent({
           for (let i = 0; i < pageElements.length; i++) {
             const page = pageElements[i]
             const canvas = await html2canvas(page, {
-              scale: 3,
+              scale: 5,
               useCORS: true,
             })
 
@@ -155,7 +155,7 @@ export default defineComponent({
             const pageWidth = pdf.internal.pageSize.getWidth()
             const pageHeight = pdf.internal.pageSize.getHeight()
 
-            pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pageHeight, undefined, "FAST")
+            pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pageHeight, undefined, "SLOW")
 
             if (i !== pageElements.length - 1) {
               pdf.addPage()
