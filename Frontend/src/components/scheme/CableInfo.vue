@@ -5,7 +5,6 @@
     :style="{ bottom: schemeDataStore.listFormat === 'A3' ? '34mm' : '12mm' }"
     element="Название кабеля"
     :uniqueID="uniqueID"
-    v-model:elementValue="checkInputCableMarka"
   >
     {{ checkInputCableMarka }}
   </TextEditable>

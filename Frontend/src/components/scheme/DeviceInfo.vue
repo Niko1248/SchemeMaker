@@ -1,32 +1,17 @@
 <template>
   <div class="text__wrap">
-    <TextEditable
-      class="text__wrap-item"
-      element="Производитель"
-      :uniqueID="uniqueID"
-      v-model:elementValue="props.textData['Производитель']"
-    >
+    <TextEditable element="Производитель" :uniqueID="uniqueID">
       {{ props.textData["Производитель"] }}
     </TextEditable>
-    <TextEditable
-      class="text__wrap-item"
-      element="Автомат"
-      :uniqueID="uniqueID"
-      v-model:elementValue="props.textData['Автомат']"
-    >
+    <TextEditable element="Автомат" :uniqueID="uniqueID">
       {{ props.textData["Автомат"] }}
     </TextEditable>
-    <div class="text__wrap-class-den text__wrap-item">
-      <TextEditable
-        class="text__wrap-item"
-        element="Номинал"
-        :uniqueID="uniqueID"
-        v-model:elementValue="nominalInputValue"
-      >
+    <div class="text__wrap-class-den">
+      <TextEditable element="Номинал" :uniqueID="uniqueID">
         {{ nominalInputValue }}
       </TextEditable>
     </div>
-    <TextEditable class="text__wrap-item" element="Тип УЗО" :uniqueID="uniqueID" v-model:elementValue="uzolInputValue">
+    <TextEditable element="Тип УЗО" :uniqueID="uniqueID">
       {{ uzolInputValue }}
     </TextEditable>
   </div>

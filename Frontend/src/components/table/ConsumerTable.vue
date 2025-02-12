@@ -12,13 +12,23 @@
       <div class="item item9">Расчетный ток, А</div>
       <div class="item item10">Наименование потребителя</div>
     </div>
-    <div class="table__data" :class="`column${index + 1}`" v-for="(data, index) in props.pageData" :key="index">
+    <div
+      class="table__data"
+      :class="`column${index + 1}`"
+      v-for="(data, index) in props.pageData"
+      :key="data['Данные']?.[0]?.['Вводной щит'] + data['Группа']"
+    >
       <div class="item item1">
         <img :src="getLegend(data['Данные'])" alt="" />
       </div>
-      <div class="item item2" contenteditable="true">
+
+      <TextEditable
+        class="item item2"
+        element="Таблица потребителей"
+        :uniqueID="'Номер по плану-' + data['Данные']?.[0]?.['Вводной щит'] + data['Группа']"
+      >
         {{ findGroupInPlan(data["Данные"]) }}
-      </div>
+      </TextEditable>
       <div class="item item3" contenteditable="true">{{ findPower(data["Данные"]) }}</div>
       <div class="item item4" contenteditable="true">{{ findAmperage(data["Данные"]) }}</div>
       <div class="item item5" contenteditable="true">{{ findConsumerName(data["Данные"]) }}</div>
@@ -28,6 +38,7 @@
 
 <script setup>
 import { reactive, defineProps } from "vue"
+import TextEditable from "../UI/TextEditable.vue"
 
 const legendObj = reactive({
   1: new URL("../../assets/img/legend/svet.svg", import.meta.url).href,

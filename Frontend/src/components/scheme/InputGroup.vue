@@ -39,12 +39,7 @@
       <rect x="1" y="1" width="153" height="53" fill="none" stroke="black" stroke-width="1" stroke-dasharray="10 8" />
     </svg>
     <img src="../../assets/img/input-connection2.svg" alt="" />
-    <TextEditable
-      class="input-name scheme_contenteditable"
-      element="Наименование потребителя"
-      :uniqueID="uniqueID"
-      v-model:elementValue="checkInputName"
-    >
+    <TextEditable class="input-name scheme_contenteditable" element="Наименование потребителя" :uniqueID="uniqueID">
       {{ "от " + checkInputName["Наименование потребителя"] }}
     </TextEditable>
 

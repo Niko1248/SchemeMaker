@@ -1,9 +1,9 @@
 <template>
   <div class="right-inside-table">
     <div class="item" v-for="n in 100" :key="n" :class="`item${n}`">
-      <div v-if="editableFields[n]" contenteditable="true" class="contenteditable">
+      <TextEditable v-if="editableFields[n]" :element="editableFields[n]" uniqueID="Штамп" class="contenteditable">
         {{ schemeDataStore.tableData[editableFields[n]] }}
-      </div>
+      </TextEditable>
       <div v-if="n === 87">
         <p>Однолинейная схема</p>
         <p>{{ props.pageData?.[0]?.["Данные"]?.[0]?.["Вводной щит"] }}</p>
@@ -16,6 +16,7 @@
 <script setup>
 import { computed, defineProps } from "vue"
 import { useSchemeDataStore } from "../../stores/SchemeData.js"
+import TextEditable from "../UI/TextEditable.vue"
 
 const props = defineProps({
   listIndex: { type: Number },
