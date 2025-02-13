@@ -35,55 +35,48 @@ app.post("/upload", upload.single("file"), async (req, res) => {
 
     const workbook = new ExcelJS.Workbook()
     await workbook.xlsx.readFile(filePath)
-
     const sheet = workbook.getWorksheet("Схема")
     const data = []
     const columnHeaderTable = []
     const columnHeaderScheme = []
+
     sheet.eachRow((row, rowIndex) => {
       const rowData = {}
-      // Убираем название заголовков из экселя
-      if (rowIndex === 1 || rowIndex === 4) return
-      // Добавляем названия колонок в массивы
-      if (rowIndex === 2) {
-        row.eachCell((cell, colNumber) => {
-          columnHeaderTable.push(cell.value)
+      // Пропускаем 1 и 4 строку
+      if ([1, 4].includes(rowIndex)) return
+
+      // Добавляем заголовки таблиц
+      if ([2, 5].includes(rowIndex)) {
+        row.eachCell((cell) => {
+          ;(rowIndex === 2 ? columnHeaderTable : columnHeaderScheme).push(cell.value)
         })
         return
       }
+
+      // Добавляем значения штампа
       if (rowIndex === 3) {
         row.eachCell((cell, colNumber) => {
-          if (columnHeaderTable[colNumber - 1] === "Дата 1" || columnHeaderTable[colNumber - 1] === "Дата 2") {
+          const header = columnHeaderTable[colNumber - 1]
+          if (["Дата 1", "Дата 2"].includes(header)) {
             const date = new Date(cell.value.result)
             const month = String(date.getMonth() + 1).padStart(2, "0")
             const year = String(date.getFullYear()).slice(-2)
-            const convertDate = `${month}.${year}`
-            rowData[columnHeaderTable[colNumber - 1]] = convertDate
+            rowData[header] = `${month}.${year}`
           } else if (cell.value) {
-            rowData[columnHeaderTable[colNumber - 1]] = cell.value.result
+            rowData[header] = cell.value.result
           }
         })
         data.push(rowData)
         return
       }
-      if (rowIndex === 5) {
-        row.eachCell((cell, colNumber) => {
-          columnHeaderScheme.push(cell.value)
-        })
-        return
-      }
-      // Парсим значения ячеек в JSON который уйдет на фронт
 
+      // Добавляем значения устройств
       row.eachCell((cell, colNumber) => {
-        if (cell.value.result) {
-          rowData[columnHeaderScheme[colNumber - 1]] = cell.value.result
-        } else if (!cell.value.formula) {
-          rowData[columnHeaderScheme[colNumber - 1]] = cell.value
-        } else {
-          rowData[columnHeaderScheme[colNumber - 1]] = null
-        }
+        const value = cell.value.result ?? (cell.value.formula ? null : cell.value)
+        rowData[columnHeaderScheme[colNumber - 1]] = value
       })
-      if (rowData.Группа !== null && rowData.Группа !== undefined) {
+
+      if (rowData.Группа != null) {
         data.push(rowData)
       }
     })
@@ -97,20 +90,26 @@ app.post("/upload", upload.single("file"), async (req, res) => {
         }
         element.Группа = Number(element.Группа)
       }
+
       if (element.Фаза && element.Фаза !== null) {
-        element.Фаза = String(element.Фаза)
-        // Прнинудительно меняю . на , в "Фаза", т.к. при считывании экселя он воспринимает его как десятичное число и никак не правится
-        element.Фаза = element.Фаза.replace(".", ",")
+        const redactedPhase = new Set()
+
+        // Приводим значение element.Фаза к строке
+        String(element.Фаза)
+          .split("")
+          .forEach((item) => {
+            if (item === "1" || item === "2" || item === "3" || item.toUpperCase() === "N") {
+              redactedPhase.add(item)
+            }
+          })
+        element.Фаза = Array.from(redactedPhase)
       }
-      if (element.Номинал && element.Номинал !== null) {
-        element.Номинал = Number(element.Номинал)
-      }
-      if (element.PE && element.PE !== null) {
-        element.PE = Number(element.PE)
-      }
-      if (element["Ток утечки УЗО"] && element["Ток утечки УЗО"] !== null) {
-        element["Ток утечки УЗО"] = Number(element["Ток утечки УЗО"])
-      }
+
+      ;["Номинал", "PE", "Ток утечки УЗО"].forEach((key) => {
+        if (element[key] != null) {
+          element[key] = Number(element[key])
+        }
+      })
     }
     // Объединяю одинаковые группы
     const groupedItems = data.reduce((acc, item) => {

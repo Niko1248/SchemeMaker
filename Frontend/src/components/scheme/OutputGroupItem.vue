@@ -50,7 +50,6 @@
   </div>
 </template>
 <script setup>
-import { computed } from "vue"
 import { useSchemeDataStore } from "../../stores/SchemeData"
 import FirstObjectOutput from "./FirstObjectOutput.vue"
 import SecondObjectOutput from "./SecondObjectOutput.vue"
@@ -66,7 +65,6 @@ const props = defineProps({
 const swapPhase = (data) => {
   return String(
     data?.["Данные"]?.[0]?.["Фаза"]
-      .split(",") // Разбиваем строку на массив
       .map((el) => el.trim()) // Убираем пробелы
       .filter((el) => el !== "N") // Удаляем все элементы "N"
       .map((el) => {
@@ -78,16 +76,6 @@ const swapPhase = (data) => {
       })
   )
 }
-
-const checkInputCableMarka = computed(() => {
-  return props.itemData["Данные"].find((obj) => obj["Марка кабеля"])?.["Марка кабеля"] || ""
-})
-const checkInputCableSize = computed(() => {
-  return props.itemData["Данные"].find((obj) => obj["Сечение кабеля"])?.["Сечение кабеля"] || ""
-})
-const checkInputCableLength = computed(() => {
-  return props.itemData["Данные"].find((obj) => obj["Длина кабеля"])?.["Длина кабеля"] || ""
-})
 </script>
 <style lang="scss" scoped>
 .connection {

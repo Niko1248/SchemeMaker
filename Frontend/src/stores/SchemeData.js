@@ -83,14 +83,11 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
   }
   const checkPhase = (data) => {
     const phaseArr = data?.["Данные"]?.[0]?.["Фаза"]
-      .split(",") // Разбиваем строку в массив
-      .map((el) => el.trim()) // Убираем пробелы у каждого элемента
-
-    let arrLength = Math.min(phaseArr.length, 3) // Ограничиваем длину максимум 3.
-
+    const arrLength = phaseArr.length
     if (phaseArr.includes("N")) {
       arrLength -= 1 // Уменьшаем значение на 1, если есть "N".
     }
+
     return { data: phaseArr, phaseLength: arrLength }
   }
 
