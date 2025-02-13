@@ -1,17 +1,17 @@
 <template>
   <div class="text__wrap">
-    <TextEditable element="Производитель" :uniqueID="uniqueID">
+    <TextEditable class="text__wrap-item" element="Производитель" :uniqueID="uniqueID">
       {{ props.textData["Производитель"] }}
     </TextEditable>
-    <TextEditable element="Автомат" :uniqueID="uniqueID">
+    <TextEditable class="text__wrap-item" element="Автомат" :uniqueID="uniqueID">
       {{ props.textData["Автомат"] }}
     </TextEditable>
-    <div class="text__wrap-class-den">
-      <TextEditable element="Номинал" :uniqueID="uniqueID">
+    <div class="text__wrap-class-den text__wrap-item">
+      <TextEditable class="text__wrap-item" element="Номинал" :uniqueID="uniqueID">
         {{ nominalInputValue }}
       </TextEditable>
     </div>
-    <TextEditable element="Тип УЗО" :uniqueID="uniqueID">
+    <TextEditable class="text__wrap-item" element="Тип УЗО" :uniqueID="uniqueID">
       {{ uzolInputValue }}
     </TextEditable>
   </div>
@@ -69,7 +69,7 @@ const uzolInputValue = computed(() => {
   flex-direction: column;
 }
 .text__wrap-item {
-  height: 12px;
+  height: 11px;
 }
 .text__wrap-class-den {
   display: flex;

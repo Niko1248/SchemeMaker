@@ -78,7 +78,6 @@ const resolveContent = (key) => {
   width: 100%;
   height: 100%;
   font-size: 4mm;
-  overflow: hidden;
   white-space: nowrap;
   display: flex;
   justify-content: center;
@@ -113,31 +112,17 @@ const resolveContent = (key) => {
   display: none;
 }
 
-.item7 {
-  grid-row: 1/3;
-  grid-column: 7/11;
-  overflow: visible;
-  font-size: 7mm;
-  .contenteditable {
-    width: 120mm;
-    height: 10mm;
-  }
-}
-.item27 {
-  grid-row: 3/6;
-  grid-column: 7/11;
-  width: 100%;
-  font-size: 5mm;
-  overflow: visible;
-  .contenteditable {
-    width: 120mm;
-    height: 15mm;
-  }
-}
 .item41,
 .item51 {
   grid-column: 1/3;
   overflow: visible;
+  .scheme_contenteditable-wrapper {
+    .scheme_contenteditable {
+      width: 20mm !important;
+      height: 10mm !important;
+      padding: 0 5px !important;
+    }
+  }
 }
 .item46,
 .item56 {
@@ -149,24 +134,6 @@ const resolveContent = (key) => {
   overflow: visible;
 }
 
-.item57 {
-  grid-row: 6/9;
-  grid-column: 7;
-  overflow: visible;
-  .contenteditable {
-    width: 70mm;
-    height: 15mm;
-  }
-}
-.item68 {
-  grid-row: 7/9;
-  grid-column: 8;
-  overflow: visible;
-  .contenteditable {
-    width: 15mm;
-    height: 10mm;
-  }
-}
 .item69 {
   grid-row: 7/9;
   grid-column: 9;
@@ -179,18 +146,7 @@ const resolveContent = (key) => {
   grid-row: 9/11;
   grid-column: 7;
 }
-.item88 {
-  grid-row: 9/11;
-  grid-column: 8/11;
-  overflow: visible;
-  text-transform: uppercase;
-  font-weight: 700;
-  font-size: 5mm;
-  .contenteditable {
-    width: 70mm;
-    height: 15mm;
-  }
-}
+
 .item7,
 .item27,
 .item41,
