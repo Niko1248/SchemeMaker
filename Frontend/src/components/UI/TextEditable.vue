@@ -15,11 +15,11 @@
           >A
           <p>A</p></span
         >
-        <input type="number" min="1" max="20" v-model="activeFontSize" @change="updateFontSize" />
+        <input type="number" min="1" max="72" v-model="activeFontSize" @change="updateFontSize" />
       </div>
       <div class="popup--wrapp">
         <p class="--lh">↨</p>
-        <input type="number" step="0.1" min="0" max="3" v-model="activeLineHeight" @change="updateLineHeight" />
+        <input type="number" step="0.1" min="0" max="10" v-model="activeLineHeight" @change="updateLineHeight" />
       </div>
     </div>
   </div>
@@ -32,7 +32,7 @@ import { useSchemeDataStore } from "../../stores/SchemeData.js"
 const props = defineProps({
   element: { type: String, required: true },
   uniqueID: { type: String, required: true },
-  defaultFontSize: { type: Number, default: 10 },
+  defaultFontSize: { type: Number },
 })
 
 const schemeDataStore = useSchemeDataStore()

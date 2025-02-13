@@ -619,6 +619,7 @@ template {
         width: 120mm !important;
         height: 10mm !important;
         padding: 0 5px !important;
+        font-size: 7mm;
 
       }
     }
@@ -652,7 +653,7 @@ template {
   grid-row: 3/6;
   grid-column: 7/11;
   width: 100%;
-  font-size: 5mm;
+
   overflow: visible;
 
   .scheme_contenteditable-wrapper {
@@ -660,6 +661,7 @@ template {
       width: 120mm !important;
       height: 15mm !important;
       padding: 0 5px !important;
+      font-size: 7mm;
     }
   }
 }
@@ -678,7 +680,7 @@ template {
       width: 70mm !important;
       height: 15mm !important;
       padding: 0 5px !important;
-
+      font-size: 4mm;
     }
   }
 }
@@ -696,6 +698,7 @@ template {
       width: 15mm !important;
       height: 10mm !important;
       padding: 0 5px !important;
+      font-size: 14px;
 
     }
   }
