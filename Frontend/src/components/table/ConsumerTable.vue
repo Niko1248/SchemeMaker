@@ -26,12 +26,21 @@
         class="item item2"
         element="Таблица потребителей"
         :uniqueID="'Номер по плану-' + data['Данные']?.[0]?.['Вводной щит'] + data['Группа']"
+        :defaultFontSize="16"
       >
         {{ findGroupInPlan(data["Данные"]) }}
       </TextEditable>
       <div class="item item3" contenteditable="true">{{ findPower(data["Данные"]) }}</div>
       <div class="item item4" contenteditable="true">{{ findAmperage(data["Данные"]) }}</div>
-      <div class="item item5" contenteditable="true">{{ findConsumerName(data["Данные"]) }}</div>
+
+      <TextEditable
+        class="item item5"
+        element="Таблица потребителей"
+        :uniqueID="'Потребитель-' + data['Данные']?.[0]?.['Вводной щит'] + '-' + data['Группа']"
+        :defaultFontSize="10"
+      >
+        {{ findConsumerName(data["Данные"]) }}
+      </TextEditable>
     </div>
   </div>
 </template>

@@ -112,18 +112,6 @@ const resolveContent = (key) => {
   display: none;
 }
 
-.item41,
-.item51 {
-  grid-column: 1/3;
-  overflow: visible;
-  .scheme_contenteditable-wrapper {
-    .scheme_contenteditable {
-      width: 20mm !important;
-      height: 10mm !important;
-      padding: 0 5px !important;
-    }
-  }
-}
 .item46,
 .item56 {
   overflow: visible;
@@ -133,7 +121,11 @@ const resolveContent = (key) => {
   grid-column: 3/5;
   overflow: visible;
 }
-
+.item41,
+.item51 {
+  grid-column: 1/3;
+  overflow: visible;
+}
 .item69 {
   grid-row: 7/9;
   grid-column: 9;

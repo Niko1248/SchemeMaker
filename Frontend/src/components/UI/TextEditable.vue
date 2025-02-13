@@ -32,17 +32,20 @@ import { useSchemeDataStore } from "../../stores/SchemeData.js"
 const props = defineProps({
   element: { type: String, required: true },
   uniqueID: { type: String, required: true },
+  defaultFontSize: { type: Number, default: 10 },
 })
 
 const schemeDataStore = useSchemeDataStore()
-const activeFontSize = ref()
+const activeFontSize = ref(props.defaultFontSize)
 const activeLineHeight = ref()
 
 // Генерация уникального идентификатора для текущего .scheme_contenteditable
 const contentEditableId = computed(() => `${props.uniqueID}-${props.element}`)
 
 // Получаем размер шрифта и межстрочный интервал для текущего элемента
-const dataFontSize = computed(() => schemeDataStore.getFontSize(contentEditableId.value)[props.element] || 10)
+const dataFontSize = computed(
+  () => schemeDataStore.getFontSize(contentEditableId.value)[props.element] || props.defaultFontSize
+)
 const dataLineHeight = computed(() => schemeDataStore.getLineHeight(contentEditableId.value)[props.element] || 1.2)
 
 // Проверяем, открыт ли попап для текущего .scheme_contenteditable

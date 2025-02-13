@@ -172,8 +172,8 @@ const uploadFile = async () => {
   loading.value = true
   error.value = null
   success.value = false
-
-  try {
+  /* http://138.124.31.181:7777/upload
+   */ try {
     const response = await axios.post("http://localhost:3000/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
@@ -205,18 +205,26 @@ const uploadFile = async () => {
 
 .close-ico {
   position: absolute;
-  cursor: url(../../cursor.png), auto;
-  left: 5px;
-  top: calc(50% - 10px);
+  cursor: url(../../public/cursor-pointer.png), auto;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  flex-direction: column;
   transition: 0.3s;
   transform: scale(-1, 1);
+  border-radius: 10px;
+  padding-left: 3px;
+  padding-right: 3px;
   img {
     width: 14px;
     height: 14px;
   }
   &:hover {
-    filter: drop-shadow(0px 0px 5px #fff);
-    transition: 0.3s ease;
+    background: #00ffd928;
+    transition: 0.6s ease;
   }
 }
 .service__container {
@@ -300,7 +308,7 @@ const uploadFile = async () => {
 .upload-file__input {
   z-index: 999;
   visibility: hidden;
-  cursor: url(../../cursor.png), auto;
+  cursor: url(../../public/cursor-pointer.png), auto !important;
 }
 .upload-file__lable {
   cursor: url(../../cursor.png), auto;
@@ -336,7 +344,7 @@ const uploadFile = async () => {
 }
 .upload-file__button {
   box-sizing: border-box;
-  cursor: url(../../cursor.png), auto;
+  cursor: url(../../public/cursor-pointer.png), auto;
   margin-top: 10px;
   width: 100%;
   height: 1.85vw;
@@ -388,29 +396,29 @@ const uploadFile = async () => {
   padding-top: 4px;
   display: flex;
   border-radius: 5px;
-
   font-family: WixMadeforDisplay-Regular;
   color: #fff;
   padding-bottom: 4px;
   border-bottom: 1px dashed #17b07b;
+  cursor: url(../../public/cursor-pointer.png), auto;
+  transition: 0.2s;
   input {
     margin-right: 10px;
+    cursor: url(../../public/cursor-pointer.png), auto;
   }
   .input-label {
     cursor: url(../../public/cursor-pointer.png), auto;
     transition: 0.2s;
-
-    &:hover {
-      color: #b3d0dd;
-      transition: 0.2s;
-    }
+  }
+  &:hover {
+    color: #1c1c1c;
+    transition: 0.1s;
+    background-color: rgba(255, 255, 255, 0.064);
   }
 }
 .list__item.selected {
   color: rgb(0, 0, 0);
-
   background-color: rgba(255, 255, 255, 0.514);
-  cursor: url(/cursor.png), auto;
 }
 .format-wrapper {
   display: inline-block;
@@ -434,7 +442,8 @@ const uploadFile = async () => {
     border-radius: 5px 0px 0px 5px;
     border-right: none;
     user-select: none;
-    cursor: url(/cursor.png), auto;
+    cursor: url(../../public/cursor-pointer.png), auto;
+
     &:hover {
       background-color: rgba(255, 255, 255, 0.2470588235);
     }
@@ -449,6 +458,7 @@ const uploadFile = async () => {
   input {
     position: absolute;
     opacity: 0;
+    cursor: url(../../public/cursor-pointer.png), auto;
   }
 }
 </style>
