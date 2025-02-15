@@ -3,6 +3,7 @@
     <div
       contenteditable="true"
       class="scheme_contenteditable"
+      ref="editableDiv"
       :style="{ fontSize: dataFontSize + 'px', lineHeight: dataLineHeight }"
       @click="handleFontSizeInput"
       @click.stop="openFontSizePopup"
@@ -32,11 +33,11 @@ import { useSchemeDataStore } from "../../stores/SchemeData.js"
 const props = defineProps({
   element: { type: String, required: true },
   uniqueID: { type: String, required: true },
-  defaultFontSize: { type: Number },
 })
 
+const editableDiv = ref(null)
 const schemeDataStore = useSchemeDataStore()
-const activeFontSize = ref(props.defaultFontSize)
+const activeFontSize = ref(null)
 const activeLineHeight = ref()
 
 // Генерация уникального идентификатора для текущего .scheme_contenteditable
@@ -44,17 +45,15 @@ const contentEditableId = computed(() => `${props.uniqueID}-${props.element}`)
 
 // Получаем размер шрифта и межстрочный интервал для текущего элемента
 const dataFontSize = computed(
-  () => schemeDataStore.getFontSize(contentEditableId.value)[props.element] || props.defaultFontSize
+  () => schemeDataStore.getFontSize(contentEditableId.value)[props.element] || activeFontSize.value
 )
 const dataLineHeight = computed(() => schemeDataStore.getLineHeight(contentEditableId.value)[props.element] || 1.2)
 
 // Проверяем, открыт ли попап для текущего .scheme_contenteditable
 const isPopupOpen = computed(() => schemeDataStore.openPopupId === contentEditableId.value)
 
-watch(dataFontSize, (newFontSize) => {
+watch([dataFontSize, dataLineHeight], ([newFontSize, newLineHeight]) => {
   activeFontSize.value = newFontSize
-})
-watch(dataLineHeight, (newLineHeight) => {
   activeLineHeight.value = newLineHeight
 })
 
@@ -73,6 +72,10 @@ const handleOutsideClick = (event) => {
 }
 
 onMounted(() => {
+  const computedStyle = window.getComputedStyle(editableDiv.value)
+  const fontSizeWithPx = computedStyle.getPropertyValue("font-size")
+  activeFontSize.value = parseFloat(fontSizeWithPx) // Преобразуем в число
+
   document.addEventListener("click", handleOutsideClick)
 })
 
@@ -81,7 +84,7 @@ onUnmounted(() => {
 })
 
 const updateFontSize = () => {
-  if (activeFontSize.value >= 1 && activeFontSize.value <= 20) {
+  if (activeFontSize.value >= 1 && activeFontSize.value <= 72) {
     schemeDataStore.setFontSize(contentEditableId.value, props.element, activeFontSize.value)
   }
 }

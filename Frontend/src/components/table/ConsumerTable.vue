@@ -26,7 +26,6 @@
         class="item item2"
         element="Таблица потребителей"
         :uniqueID="'Номер по плану-' + data['Данные']?.[0]?.['Вводной щит'] + data['Группа']"
-        :defaultFontSize="16"
       >
         {{ findGroupInPlan(data["Данные"]) }}
       </TextEditable>
@@ -37,7 +36,6 @@
         class="item item5"
         element="Таблица потребителей"
         :uniqueID="'Потребитель-' + data['Данные']?.[0]?.['Вводной щит'] + '-' + data['Группа']"
-        :defaultFontSize="10"
       >
         {{ findConsumerName(data["Данные"]) }}
       </TextEditable>
