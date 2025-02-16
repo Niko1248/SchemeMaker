@@ -15,7 +15,7 @@
 
     <!-- Линии фазы -->
     <div
-      :style="{ left: schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1 ? '8px' : '0.5px' }"
+      :style="{ left: schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1 ? '8.5px' : '0.5px' }"
       class="phase-line__wrap"
     >
       <div
@@ -26,10 +26,15 @@
     </div>
 
     <div v-if="schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1">
-      <img class="connection" src="../../assets/img/thick/connection+PE.svg" alt="" />
+      <img style="top: 100%" class="connection" src="../../assets/img/thick/connection+PE.svg" alt="" />
     </div>
     <div v-else>
-      <img class="connection PE--transformX connection-1" src="../../assets/img/thick/connection.svg" alt="" />
+      <img
+        style="top: calc(100% - 4px)"
+        class="connection PE--transformX connection-1"
+        src="../../assets/img/thick/connection.svg"
+        alt=""
+      />
     </div>
   </div>
   <!-- Линия и ввод -->
@@ -165,8 +170,8 @@ const checkInputName = computed(() => {
 }
 .connection {
   position: absolute;
-  top: calc(100% - 4px);
 }
+
 .powerLine-info {
   font-size: 3mm;
 }

@@ -15,7 +15,20 @@
       </div>
       <p>N</p>
     </div>
-    <div v-if="schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1" class="PE">
+    <!--     <div v-if="schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1" class="PE">
+      <div class="PE-line">
+        <svg width="1000" height="20">
+          <line x1="0" y1="8" x2="2000" y2="8" stroke="black" stroke-width="0.5" stroke-dasharray="40, 10" />
+        </svg>
+        <p>PE</p>
+      </div>
+    </div> -->
+    <div
+      :style="{
+        visibility: schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1 ? 'visible' : 'hidden',
+      }"
+      class="PE"
+    >
       <div class="PE-line">
         <svg width="1000" height="20">
           <line x1="0" y1="8" x2="2000" y2="8" stroke="black" stroke-width="0.5" stroke-dasharray="40, 10" />
