@@ -1,10 +1,10 @@
 <template>
   <div class="input-Q">
     <div v-if="schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1" class="input-q-wrapp">
-      <img class="" src="../../assets/img/input+PE.svg" />
+      <img class="" src="../../assets/img/thick/input+PE.svg" />
     </div>
     <div v-else class="input-q-wrapp PE--transformX">
-      <img class="input-Q-img" src="../../assets/img/input.svg" />
+      <img class="input-Q-img" src="../../assets/img/thick/input.svg" />
     </div>
 
     <!-- Первый объект  -->
@@ -14,7 +14,10 @@
     <SecondObjectInput :data="schemeDataStore.inputDeviceData" />
 
     <!-- Линии фазы -->
-    <div class="phase-line__wrap">
+    <div
+      :style="{ left: schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1 ? '8px' : '0.5px' }"
+      class="phase-line__wrap"
+    >
       <div
         v-for="index in schemeDataStore.checkPhase(schemeDataStore.inputDeviceData).phaseLength"
         :key="index"
@@ -23,10 +26,10 @@
     </div>
 
     <div v-if="schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1">
-      <img class="connection" src="../../assets/img/connection+PE.svg" alt="" />
+      <img class="connection" src="../../assets/img/thick/connection+PE.svg" alt="" />
     </div>
     <div v-else>
-      <img class="connection PE--transformX connection-1" src="../../assets/img/connection.svg" alt="" />
+      <img class="connection PE--transformX connection-1" src="../../assets/img/thick/connection.svg" alt="" />
     </div>
   </div>
   <!-- Линия и ввод -->
@@ -38,7 +41,7 @@
     <svg width="155" height="55" style="border: 1px solid transparent; position: absolute; top: 0; left: 0">
       <rect x="1" y="1" width="153" height="53" fill="none" stroke="black" stroke-width="1" stroke-dasharray="10 8" />
     </svg>
-    <img src="../../assets/img/input-connection2.svg" alt="" />
+    <img src="../../assets/img/thick/input-connection2.svg" alt="" />
     <TextEditable class="input-name scheme_contenteditable" element="Наименование потребителя" :uniqueID="uniqueID">
       {{ "от " + checkInputName["Наименование потребителя"] }}
     </TextEditable>
@@ -128,7 +131,7 @@ const checkInputName = computed(() => {
 }
 .input-line {
   width: 100%;
-  border-top: 1px solid #000;
+  border-top: 2px solid #000;
 }
 .input-cable {
   position: absolute;
@@ -157,14 +160,12 @@ const checkInputName = computed(() => {
   transform: translateX(-8px);
 }
 .connection-1 {
-  width: 27px;
-  height: 27px;
   object-fit: cover;
   object-position: bottom;
 }
 .connection {
   position: absolute;
-  top: 100%;
+  top: calc(100% - 4px);
 }
 .powerLine-info {
   font-size: 3mm;

@@ -31,10 +31,11 @@ const schemeDataStore = useSchemeDataStore()
 </script>
 <style lang="scss" scoped>
 .L {
-  height: 1mm;
+  height: 6px;
   width: auto;
-  border: 0.5px solid #000;
+  border: 2px solid #000;
   position: relative;
+  box-sizing: border-box;
   p {
     font-size: 12px;
     position: absolute;

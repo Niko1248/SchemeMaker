@@ -1,22 +1,22 @@
 <template>
   <div>
     <div v-if="schemeDataStore.checkLinePE(itemData) !== -1" class="node-connection">
-      <img class="connection" src="../../assets/img/connection+PE.svg" alt="" />
+      <img class="connection" src="../../assets/img/thick/connection+PE-output.svg" alt="" />
     </div>
     <div v-else class="node-connection">
-      <img class="connection" src="../../assets/img/connection.svg" alt="" />
+      <img class="connection" src="../../assets/img/thick/connection-output.svg" alt="" />
     </div>
     <div class="node-el-connection-line">
       <img
         v-if="schemeDataStore.checkLinePE(itemData) !== -1"
         style="width: 8px; object-position: 0px 14px"
         class="connection-line-PE_node"
-        src="../../assets/img/connection-line+PE.svg"
+        src="../../assets/img/thick/connection-line+PE.svg"
       />
       <div class="node-el">
         <img
           style="width: 18px"
-          src="../../assets/img/connection-line.svg"
+          src="../../assets/img/thick/connection-line.svg"
           :style="{
             objectPosition: schemeDataStore.checkLinePE(itemData) !== -1 ? '0px 8px' : '0px 3px',
           }"
@@ -53,8 +53,8 @@
 import { useSchemeDataStore } from "../../stores/SchemeData"
 import FirstObjectOutput from "./FirstObjectOutput.vue"
 import SecondObjectOutput from "./SecondObjectOutput.vue"
-import arrow2 from "../../assets/img/arrow2.svg"
-import arrowA3 from "../../assets/img/arrowA3.svg"
+import arrow2 from "../../assets/img/thick/arrow2.svg"
+import arrowA3 from "../../assets/img/thick/arrowA3.svg"
 import CableInfo from "./CableInfo.vue"
 const schemeDataStore = useSchemeDataStore()
 
@@ -87,7 +87,6 @@ const swapPhase = (data) => {
   position: relative;
   height: 10px;
   img {
-    transform: rotate(180deg);
     position: absolute;
     top: -18px;
   }
@@ -158,7 +157,7 @@ const swapPhase = (data) => {
 .cable-pref {
   position: absolute;
   bottom: 45px;
-  left: -20px;
+  left: -25px;
   width: 75px;
   height: 15px;
   display: flex;

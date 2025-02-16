@@ -6,11 +6,11 @@
     </div>
     <img
       v-else
-      src="../../assets/img/connection-line.svg"
+      src="../../assets/img/thick/connection-line.svg"
       :style="{ marginLeft: schemeDataStore.checkLinePE(data) !== -1 ? '8px' : '0px' }"
     />
     <div v-if="schemeDataStore.checkLinePE(data) !== -1">
-      <img src="../../assets/img/connection-line+PE.svg" />
+      <img src="../../assets/img/thick/connection-line+PE.svg" />
     </div>
   </div>
 </template>
@@ -29,9 +29,9 @@ const deviceData = computed(() => schemeDataStore.firstObject(props.data))
 const deviceType = computed(() => (deviceData.value ? deviceData.value["Тип"] : null))
 
 const deviceImages = reactive({
-  QD: new URL("../../assets/img/QD.svg", import.meta.url).href,
-  QF: new URL("../../assets/img/QF-1.svg", import.meta.url).href,
-  QFD: new URL("../../assets/img/QFD.svg", import.meta.url).href,
+  QD: new URL("../../assets/img/thick/QD.svg", import.meta.url).href,
+  QF: new URL("../../assets/img/thick/QF-1.svg", import.meta.url).href,
+  QFD: new URL("../../assets/img/thick/QFD.svg", import.meta.url).href,
 })
 
 const deviceImage = computed(() => (deviceType.value ? deviceImages[deviceType.value] : ""))

@@ -6,7 +6,7 @@
       <!-- Проверяем наличие линии PE -->
       <img
         v-if="schemeDataStore.checkLinePE(data) !== -1"
-        src="../../assets/img/connection-line+PE.svg"
+        src="../../assets/img/thick/connection-line+PE.svg"
         style="transform: translateX(-8px)"
       />
       <DeviceInfo :textData="firstObject" />
@@ -14,12 +14,12 @@
 
     <!-- Если тип устройства не найден -->
     <template v-else>
-      <img src="../../assets/img/connection-line.svg" alt="" />
+      <img src="../../assets/img/thick/connection-line.svg" alt="" />
       <img
         v-if="schemeDataStore.checkLinePE(data) !== -1"
         class="connection-line-PE_node"
         style="width: 8px"
-        src="../../assets/img/connection-line+PE.svg"
+        src="../../assets/img/thick/connection-line+PE.svg"
       />
     </template>
   </div>
@@ -40,9 +40,9 @@ const firstObject = computed(() => schemeDataStore.firstObject(props.data))
 const deviceType = computed(() => (firstObject.value ? firstObject.value["Тип"] : null))
 
 const deviceImages = reactive({
-  QD: new URL("../../assets/img/QD.svg", import.meta.url).href,
-  QF: new URL("../../assets/img/QF-1.svg", import.meta.url).href,
-  QFD: new URL("../../assets/img/QFD.svg", import.meta.url).href,
+  QD: new URL("../../assets/img/thick/QD.svg", import.meta.url).href,
+  QF: new URL("../../assets/img/thick/QF-1.svg", import.meta.url).href,
+  QFD: new URL("../../assets/img/thick/QFD.svg", import.meta.url).href,
 })
 
 const deviceImage = computed(() => (deviceType.value ? deviceImages[deviceType.value] : ""))

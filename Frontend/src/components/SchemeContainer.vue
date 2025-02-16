@@ -151,11 +151,11 @@ export default defineComponent({
               useCORS: true,
             })
 
-            const imgData = canvas.toDataURL("image/png")
+            const imgData = canvas.toDataURL("image/jpeg", 1) // JPEG с качеством 80%
             const pageWidth = pdf.internal.pageSize.getWidth()
             const pageHeight = pdf.internal.pageSize.getHeight()
 
-            pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pageHeight, undefined, "SLOW")
+            pdf.addImage(imgData, "JPEG", 0, 0, pageWidth, pageHeight, undefined, "FAST")
 
             if (i !== pageElements.length - 1) {
               pdf.addPage()

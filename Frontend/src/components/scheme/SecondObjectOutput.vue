@@ -8,7 +8,7 @@
 
     <!-- Если типа устройства нет -->
     <template v-else>
-      <img src="../../assets/img/kura.svg" alt="" />
+      <img src="../../assets/img/thick/kura.svg" alt="" />
     </template>
 
     <!-- Проверка на наличие линии PE и соответствие различных условий -->
@@ -16,12 +16,12 @@
       <img
         v-if="deviceType === 'QF' || deviceType === undefined"
         class="connection-line-PE_Q"
-        src="../../assets/img/connection-line+PE-Q.svg"
+        src="../../assets/img/thick/connection-line+PE-Q.svg"
       />
       <img
         v-if="deviceType === 'QFD' || deviceType === 'QD'"
         class="connection-line-PE_Q"
-        src="../../assets/img/connection-line+PE-QFD.svg"
+        src="../../assets/img/thick/connection-line+PE-QFD.svg"
       />
     </template>
   </div>
@@ -42,9 +42,9 @@ const secondObject = computed(() => schemeDataStore.secondObject(props.data))
 const deviceType = computed(() => (secondObject.value ? secondObject.value["Тип"] : null))
 
 const deviceImages = reactive({
-  QD: new URL("../../assets/img/QD.svg", import.meta.url).href,
-  QF: new URL("../../assets/img/QF.svg", import.meta.url).href,
-  QFD: new URL("../../assets/img/QFD.svg", import.meta.url).href,
+  QD: new URL("../../assets/img/thick/QD.svg", import.meta.url).href,
+  QF: new URL("../../assets/img/thick/QF.svg", import.meta.url).href,
+  QFD: new URL("../../assets/img/thick/QFD.svg", import.meta.url).href,
 })
 
 const deviceImage = computed(() => (deviceType.value ? deviceImages[deviceType.value] : ""))
