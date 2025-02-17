@@ -25,6 +25,7 @@ app.get("/", (req, res) => {
 })
 
 app.post("/upload", upload.single("file"), async (req, res) => {
+  console.time()
   try {
     if (!req.file) {
       res.status(400).json({ error: "Файл не был загружен" })
@@ -80,73 +81,48 @@ app.post("/upload", upload.single("file"), async (req, res) => {
         data.push(rowData)
       }
     })
-
-    // Преобразую спорные типы, если в экселе будет забито неправильно
+    // Вытаскиваем нужные фазы
+    const validPhases = new Set(["1", "2", "3", "N"])
     for (const element of data) {
       if (element.Группа && element.Группа !== null) {
-        let group = String(element.Группа)
-        if (group.toLowerCase() === "ввод") {
-          element.Группа = -1
-        }
-        element.Группа = Number(element.Группа)
+        let group = String(element.Группа).trim()
+        element.Группа = group.toLowerCase() === "ввод" ? -1 : Number(group)
       }
 
-      if (element.Фаза && element.Фаза !== null) {
-        const redactedPhase = new Set()
-
-        // Приводим значение element.Фаза к строке
-        String(element.Фаза)
-          .split("")
-          .forEach((item) => {
-            if (item === "1" || item === "2" || item === "3" || item.toUpperCase() === "N") {
-              redactedPhase.add(item)
-            }
-          })
-        element.Фаза = Array.from(redactedPhase)
+      if (element.Фаза) {
+        element.Фаза = Array.from(
+          new Set([...String(element.Фаза)].filter((item) => validPhases.has(item.toUpperCase())))
+        )
       }
-
-      ;["Номинал", "PE", "Ток утечки УЗО"].forEach((key) => {
-        if (element[key] != null) {
-          element[key] = Number(element[key])
-        }
-      })
     }
     // Объединяю одинаковые группы
-    const groupedItems = data.reduce((acc, item) => {
-      // Определяем ключ для верхнего уровня группировки (по "Вводной щит")
-      let mainKey = item["Вводной щит"]
-      if (mainKey === undefined || mainKey === null) {
-        mainKey = "Таблица"
-      }
-
+    const groupedResult = data.reduce((acc, item) => {
+      // Определяем ключ для верхнего уровня группировки (по "Вводной щит" и Группа)
+      const mainKey = item["Вводной щит"] || "Таблица"
+      const groupKey = item["Группа"]
       // Если группы с таким "Вводной щит" еще нет, инициализируем пустой объект
       if (!acc[mainKey]) {
-        acc[mainKey] = {}
+        acc[mainKey] = { "Вводной щит": mainKey, Группы: {} }
       }
 
-      // Определяем ключ для вложенной группировки (по "Группа")
-      const groupKey = item["Группа"]
-      if (!acc[mainKey][groupKey]) {
-        acc[mainKey][groupKey] = [] // Инициализируем массив для вложенной группы
+      if (!acc[mainKey].Группы[groupKey]) {
+        acc[mainKey].Группы[groupKey] = { Группа: groupKey, Данные: [] }
       }
-
       // Добавляем элемент в соответствующую вложенную группу
-      acc[mainKey][groupKey].push(item)
+      acc[mainKey].Группы[groupKey].Данные.push(item)
 
       return acc
     }, {})
 
-    // Преобразуем объект с вложенной структурой в массив объектов (если требуется)
-    const result = Object.keys(groupedItems).map((mainKey) => ({
-      "Вводной щит": mainKey,
-      Группы: Object.keys(groupedItems[mainKey]).map((groupKey) => ({
-        Группа: groupKey,
-        Данные: groupedItems[mainKey][groupKey], // Массив данных для вложенной группы
-      })),
+    // Преобразуем объект в массив только в конце
+    const result = Object.values(groupedResult).map((group) => ({
+      ...group,
+      Группы: Object.values(group.Группы),
     }))
 
     // Возвращаем результат
     res.status(200).json({ message: "Файл обработан", result })
+    console.timeEnd()
   } catch (error) {
     console.log(error)
   }

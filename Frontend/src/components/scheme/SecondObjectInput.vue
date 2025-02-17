@@ -2,7 +2,7 @@
   <div class="node">
     <div v-if="deviceType" class="node">
       <img :src="deviceImage" />
-      <DeviceInfo :textData="deviceData" />
+      <DeviceInfo :textData="deviceData" class="second-device" />
     </div>
     <img
       v-else
@@ -38,4 +38,9 @@ const deviceImages = reactive({
 const deviceImage = computed(() => (deviceType.value ? deviceImages[deviceType.value] : ""))
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.second-device {
+  right: 32px;
+  top: -11px;
+}
+</style>

@@ -39,6 +39,7 @@ const deviceImage = computed(() => (deviceType.value ? deviceImages[deviceType.v
 
 <style lang="scss" scoped>
 .first-device {
-  right: 20px;
+  right: 30px;
+  top: -5px;
 }
 </style>

@@ -173,6 +173,7 @@ const uploadFile = async () => {
   error.value = null
   success.value = false
   /* http://138.124.31.181:7777/upload
+	http://62.176.10.62:7777/upload
    */ try {
     const response = await axios.post("http://62.176.10.62:7777/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
