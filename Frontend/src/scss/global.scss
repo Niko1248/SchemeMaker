@@ -573,7 +573,7 @@ template {
 
   .cable-pref {
     left: -68px !important;
-    bottom: 136px !important;
+    bottom: 133px !important;
   }
 
   .cable-name {
@@ -605,6 +605,13 @@ template {
   .scheme_contenteditable {
     display: flex;
     justify-content: center;
+    align-items: flex-start;
+  }
+}
+
+.consumer-table,
+.right-inside-table {
+  .scheme_contenteditable {
     align-items: center;
   }
 }

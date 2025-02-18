@@ -5,7 +5,7 @@
 </mask>
 <g mask="url(#mask0_410_62)">
 <path d="M13.5 0L22.5 26" stroke="black"/>
-<path d="M13 0.699951H37" stroke="black" stroke-width="2"/>
+<path d="M13 1H37" stroke="black" stroke-width="2"/>
 <path d="M13.3428 23.0001V-10" stroke="black" stroke-width="1.5"/>
 </g>
 </g>

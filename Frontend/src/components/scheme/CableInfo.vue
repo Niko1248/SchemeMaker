@@ -76,7 +76,7 @@ const checkInputCableLength = computed(() => {
 .cable-pref {
   position: absolute;
   bottom: 45px;
-  left: -20px;
+  left: -23px;
   width: 75px;
   height: 15px;
   display: flex;
@@ -88,6 +88,7 @@ const checkInputCableLength = computed(() => {
   width: 49%;
   position: unset;
   max-width: 10mm;
+  word-break: break-all;
 }
 .cable-length {
   width: 49%;

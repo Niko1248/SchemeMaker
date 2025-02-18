@@ -157,7 +157,7 @@ const swapPhase = (data) => {
 .cable-pref {
   position: absolute;
   bottom: 45px;
-  left: -25px;
+  left: -23px;
   width: 75px;
   height: 15px;
   display: flex;
@@ -170,6 +170,7 @@ const swapPhase = (data) => {
   width: 49%;
   position: unset;
   max-width: 10mm;
+  word-break: break-all;
 }
 .cable-length {
   width: 49%;

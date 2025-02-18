@@ -14,10 +14,7 @@
     <SecondObjectInput :data="schemeDataStore.inputDeviceData" />
 
     <!-- Линии фазы -->
-    <div
-      :style="{ left: schemeDataStore.checkLinePE(schemeDataStore.inputDeviceData) !== -1 ? '8.5px' : '0.5px' }"
-      class="phase-line__wrap"
-    >
+    <div class="phase-line__wrap">
       <div
         v-for="index in schemeDataStore.checkPhase(schemeDataStore.inputDeviceData).phaseLength"
         :key="index"
@@ -31,7 +28,7 @@
     <div v-else>
       <img
         style="top: calc(100% - 4px)"
-        class="connection PE--transformX connection-1"
+        class="connection connection-1"
         src="../../assets/img/thick/connection.svg"
         alt=""
       />
@@ -124,7 +121,7 @@ const checkInputName = computed(() => {
 .phase-line__wrap {
   position: absolute;
   top: 10px;
-  left: 8px;
+  left: 8.5px;
   display: flex;
   flex-direction: column;
 }
@@ -161,9 +158,7 @@ const checkInputName = computed(() => {
     top: 19px;
   }
 }
-.PE--transformX {
-  transform: translateX(-8px);
-}
+
 .connection-1 {
   object-fit: cover;
   object-position: bottom;
