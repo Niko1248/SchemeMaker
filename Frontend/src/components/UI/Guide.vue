@@ -1,9 +1,14 @@
 <template>
-  <div class="guide"></div>
+  <div class="guide">
+    <GuideContainer v-if="schemeDataStore.guidePopup" />
+  </div>
 </template>
 
-<script setup></script>
-
+<script setup>
+import GuideContainer from "../guide/GuideContainer.vue"
+import { useSchemeDataStore } from "../../stores/SchemeData.js"
+const schemeDataStore = useSchemeDataStore()
+</script>
 <style scoped>
 .guide {
   position: absolute;

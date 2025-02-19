@@ -1,0 +1,31 @@
+<template>
+  <div class="step step-1">
+    <h1>Scheme Maker - создание однолинейных схем за несколько минут.</h1>
+    <p>
+      Scheme Maker автоматически преобразует данные из Excel в однолинейную схему и готовый PDF-документ. Просто
+      загрузите таблицу — мы сделаем всё за вас!
+    </p>
+    <p>Для того, чтобы начать пользоваться Scheme Maker нужно знать несколько ключевых аспектов. Давайте начнем!</p>
+  </div>
+</template>
+
+<script setup></script>
+
+<style scoped>
+.step {
+  font-family: WixMadeforDisplay-Regular;
+  color: #fff;
+}
+.step-1 {
+  h1 {
+    font-size: 2.3vw;
+    margin-bottom: 3vw;
+  }
+  p {
+    font-size: 1.4vw;
+    max-width: 60vw;
+    display: block;
+    margin-bottom: 1.2vw;
+  }
+}
+</style>

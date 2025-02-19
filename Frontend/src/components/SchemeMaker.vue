@@ -8,7 +8,7 @@
       :ref="(el) => setActiveRef(el, index)"
     />
     <Logo />
-    <div v-if="!checkDoc" class="guide-button">
+    <div v-if="!checkDoc" class="guide-button" @click="toggleGuidePopup">
       <p>Как это работает?</p>
       <div class="guide-button--text">
         <p>пройти гайд →</p>
@@ -155,6 +155,10 @@ const fileInput = ref(null)
 const menuOpen = ref(true)
 const selectedItem = ref(null)
 
+// Функция для открытия попапа Гайд
+const toggleGuidePopup = () => {
+  schemeDataStore.toggleGuidePopup(!schemeDataStore.guidePopup)
+}
 // Функция для установки ссылок на дочерние компоненты
 const setActiveRef = (el, index) => {
   if (el) {

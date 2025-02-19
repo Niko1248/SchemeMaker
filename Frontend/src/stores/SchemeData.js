@@ -14,17 +14,20 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
   const fontSizesArray = reactive({})
   const lineHeightArray = reactive({})
   const openPopupId = ref(null)
-
+  const guidePopup = ref(false)
   // Новый метод для открытия попапа
   const setOpenPopupId = (id) => {
     openPopupId.value = id
   }
-
   // Новый метод для закрытия попапа
   const closePopup = () => {
     openPopupId.value = null
   }
-
+  //попап гайда
+  const toggleGuidePopup = (value) => {
+    guidePopup.value = value
+    console.log(guidePopup.value)
+  }
   const setAmountExportScheme = (value) => {
     amountExportScheme.value = value
   }
@@ -141,5 +144,7 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     openPopupId,
     setOpenPopupId,
     closePopup,
+    toggleGuidePopup,
+    guidePopup,
   }
 })
