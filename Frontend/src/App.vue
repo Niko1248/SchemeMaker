@@ -1,11 +1,14 @@
 <template>
   <SchemeMaker />
   <Preloader />
+  <Guide />
 </template>
 
 <script setup>
 import SchemeMaker from "./components/SchemeMaker.vue"
 import Preloader from "./components/UI/PreLoader.vue"
+import Guide from "./components/UI/Guide.vue"
+
 document.addEventListener(
   "wheel",
   (event) => {

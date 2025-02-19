@@ -131,4 +131,9 @@
     }
   }
 }
+.left-table-outside-the-frame__two--row-4 {
+  div {
+    height: 17px;
+  }
+}
 </style>

@@ -7,7 +7,7 @@
     <img
       v-else
       src="../../assets/img/thick/connection-line.svg"
-      :style="{ marginLeft: schemeDataStore.checkLinePE(data) !== -1 ? '8.5px' : '0px' }"
+      :style="{ marginLeft: schemeDataStore.checkLinePE(data) !== -1 ? '8px' : '0px' }"
     />
     <div v-if="schemeDataStore.checkLinePE(data) !== -1">
       <img src="../../assets/img/thick/connection-line+PE.svg" />
