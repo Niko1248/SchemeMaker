@@ -1,19 +1,39 @@
 <template>
   <div class="guide_container transition">
     <div class="close" @click="toggleGuidePopup">✖</div>
-    <step1 />
+    <template v-for="(step, index) in steps" :key="index">
+      <component v-if="schemeDataStore.currentStepGuide === index + 1" :is="step.component" />
+    </template>
     <div class="gitdes__btns">
-      <div class="btn--next">назад</div>
-      <div class="btn--down">далее</div>
+      <div class="btn--down" v-if="schemeDataStore.currentStepGuide !== 1" @click="schemeDataStore.backStepGuide">
+        Назад
+      </div>
+      <div class="btn--next" v-if="schemeDataStore.currentStepGuide !== 6" @click="schemeDataStore.nextStepGuide">
+        Далее
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { useSchemeDataStore } from "../../stores/SchemeData.js"
-import step1 from "../guide/Step_1.vue"
+import Step1 from "./Step_1.vue"
+import Step2 from "./Step_2.vue"
+import Step3 from "./Step_3.vue"
+import Step4 from "./Step_4.vue"
+import Step5 from "./Step_5.vue"
+import Step6 from "./Step_6.vue"
 
 const schemeDataStore = useSchemeDataStore()
+
+const steps = [
+  { component: Step1 },
+  { component: Step2 },
+  { component: Step3 },
+  { component: Step4 },
+  { component: Step5 },
+  { component: Step6 },
+]
 
 // Функция для открытия попапа Гайд
 const toggleGuidePopup = () => {

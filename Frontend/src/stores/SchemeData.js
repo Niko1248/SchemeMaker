@@ -1,13 +1,11 @@
 import { defineStore } from "pinia"
-import { reactive, ref } from "vue"
+import { reactive, ref, computed } from "vue"
 export const useSchemeDataStore = defineStore("schemeData", () => {
   const tableData = reactive({})
   const schemeData = reactive([])
   const inputDeviceData = reactive({})
   const outputDevicesData = reactive([])
   const totalPages = ref(0)
-  const inputPhase = ref(undefined)
-  const fontSizeMod = ref(false)
   const listFormat = ref("A3")
   const amountReadyScheme = ref(0)
   const amountExportScheme = ref(0)
@@ -15,44 +13,75 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
   const lineHeightArray = reactive({})
   const openPopupId = ref(null)
   const guidePopup = ref(false)
-  // Новый метод для открытия попапа
-  const setOpenPopupId = (id) => {
-    openPopupId.value = id
+  const currentStepGuide = ref(1)
+
+  // Методы для управления попапами
+  const setOpenPopupId = (id) => (openPopupId.value = id)
+  const closePopup = () => (openPopupId.value = null)
+  const toggleGuidePopup = (value) => (guidePopup.value = value)
+
+  // Методы для управления шагами гайда
+  const nextStepGuide = () => {
+    currentStepGuide.value++
   }
-  // Новый метод для закрытия попапа
-  const closePopup = () => {
-    openPopupId.value = null
-  }
-  //попап гайда
-  const toggleGuidePopup = (value) => {
-    guidePopup.value = value
-    console.log(guidePopup.value)
-  }
-  const setAmountExportScheme = (value) => {
-    amountExportScheme.value = value
+  const backStepGuide = () => {
+    currentStepGuide.value--
   }
 
+  //Методы для управления стилями
+  const setFontSize = (id, key, value) => {
+    if (!fontSizesArray[id]) {
+      fontSizesArray[id] = {}
+    }
+    fontSizesArray[id][key] = value
+  }
+  const getFontSize = (id) => {
+    return fontSizesArray[id] || {}
+  }
+  const setLineHeight = (id, key, value) => {
+    if (!lineHeightArray[id]) {
+      lineHeightArray[id] = {}
+    }
+    lineHeightArray[id][key] = value
+  }
+  const getLineHeight = (id) => {
+    return lineHeightArray[id] || {}
+  }
+
+  // Методы для работы с данными
+  const firstObject = (data) => data["Данные"][0] || []
+  const secondObject = (data) => data["Данные"][1] || []
+
+  // Метод для проверки линии PE
+  const checkLinePE = (data) => {
+    const isLinePE = data["Данные"].findIndex((obj) => obj?.["PE"])
+
+    return isLinePE
+  }
+
+  // Метод для определения фазы устройства
+  const checkPhase = (data) => {
+    const phaseArr = data?.["Данные"]?.[0]?.["Фаза"]
+    const arrLength = phaseArr.length
+    if (phaseArr.includes("N")) {
+      arrLength -= 1 // Уменьшаем значение на 1, если есть "N".
+    }
+
+    return { data: phaseArr, phaseLength: arrLength }
+  }
+
+  const filteredSchemeData = computed(() => (checkDoc) => {
+    if (!checkDoc) return []
+    return schemeData.filter((doc) => doc?.["Вводной щит"] === checkDoc)
+  })
+
+  // Метод для разделения штампа и данных устройств
   const splitTableAndSchemeData = (excelData, indexTable) => {
     Object.assign(tableData, excelData[indexTable]["Группы"][0]["Данные"][0])
     schemeData.splice(0, schemeData.length, ...excelData.filter((_, index) => index !== indexTable))
   }
 
-  const filteredSchemeData = (checkDoc) => {
-    if (!checkDoc) return []
-    const checkScheme = schemeData.filter((doc) => doc?.["Вводной щит"] == checkDoc)
-    return checkScheme
-  }
-
-  const setTotalPages = (value) => {
-    totalPages.value = value
-  }
-
-  const fontSizeModToggle = (value) => {
-    fontSizeMod.value = value
-  }
-  const lineHeightModToggle = (value) => {
-    lineHeightMod.value = value
-  }
+  // метод для разделения входной и выходной групп
   const splitInputAndOutputGroups = (data) => {
     let itemsPerComponent
     if (listFormat.value === "A4") {
@@ -77,43 +106,14 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     return groups
   }
 
-  const firstObject = (data) => data["Данные"][0] || []
-  const secondObject = (data) => data["Данные"][1] || []
-
-  const checkLinePE = (data) => {
-    const isLinePE = data["Данные"].findIndex((obj) => obj?.["PE"])
-
-    return isLinePE
-  }
-  const checkPhase = (data) => {
-    const phaseArr = data?.["Данные"]?.[0]?.["Фаза"]
-    const arrLength = phaseArr.length
-    if (phaseArr.includes("N")) {
-      arrLength -= 1 // Уменьшаем значение на 1, если есть "N".
-    }
-
-    return { data: phaseArr, phaseLength: arrLength }
+  const setTotalPages = (value) => {
+    totalPages.value = value
   }
 
-  const setFontSize = (id, key, value) => {
-    if (!fontSizesArray[id]) {
-      fontSizesArray[id] = {}
-    }
-    fontSizesArray[id][key] = value
-  }
-  const getFontSize = (id) => {
-    return fontSizesArray[id] || {}
+  const setAmountExportScheme = (value) => {
+    amountExportScheme.value = value
   }
 
-  const setLineHeight = (id, key, value) => {
-    if (!lineHeightArray[id]) {
-      lineHeightArray[id] = {}
-    }
-    lineHeightArray[id][key] = value
-  }
-  const getLineHeight = (id) => {
-    return lineHeightArray[id] || {}
-  }
   return {
     tableData,
     schemeData,
@@ -127,9 +127,6 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     checkLinePE,
     setTotalPages,
     totalPages,
-    inputPhase,
-    fontSizeMod,
-    fontSizeModToggle,
     listFormat,
     setFontSize,
     getFontSize,
@@ -146,5 +143,8 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     closePopup,
     toggleGuidePopup,
     guidePopup,
+    currentStepGuide,
+    nextStepGuide,
+    backStepGuide,
   }
 })

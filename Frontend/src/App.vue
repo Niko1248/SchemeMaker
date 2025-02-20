@@ -1,13 +1,16 @@
 <template>
   <SchemeMaker />
   <Preloader />
-  <Guide />
+  <Guide v-if="schemeDataStore.guidePopup" />
 </template>
 
 <script setup>
 import SchemeMaker from "./components/SchemeMaker.vue"
 import Preloader from "./components/UI/PreLoader.vue"
-import Guide from "./components/UI/Guide.vue"
+import Guide from "./components/guide/Guide.vue"
+
+import { useSchemeDataStore } from "./stores/SchemeData.js"
+const schemeDataStore = useSchemeDataStore()
 
 document.addEventListener(
   "wheel",
