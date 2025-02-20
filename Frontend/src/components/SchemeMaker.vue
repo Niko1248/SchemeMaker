@@ -1,19 +1,16 @@
 <template>
   <div class="grid" :style="{ alignItems: checkDoc ? 'flex-start' : 'center' }">
-    <!-- Используем массив ref для хранения ссылок на дочерние компоненты -->
+    <!-- Схемы -->
     <SchemeContainer
       v-for="(doc, index) in schemeDataStore.filteredSchemeData(checkDoc)"
       :key="'Щит' + index"
       :schemeDataChunk="doc"
       :ref="(el) => setActiveRef(el, index)"
     />
+    <!-- Логотип -->
     <Logo />
-    <div v-if="!checkDoc" class="guide-button" @click="toggleGuidePopup">
-      <p>Как это работает?</p>
-      <div class="guide-button--text">
-        <p>пройти гайд →</p>
-      </div>
-    </div>
+    <!-- Кнопка гайда -->
+    <GuidePopupButton v-if="!checkDoc" />
 
     <div
       :class="checkDoc ? 'service__container--success' : 'service__container'"
@@ -78,65 +75,20 @@
           </div>
         </div>
       </div>
-      <div v-if="checkDoc" class="format">
-        <p class="format-title">Формат схемы</p>
-        <div class="format-wrapper">
-          <div class="format__item item-1">
-            <label
-              :style="{
-                backgroundColor: schemeDataStore.listFormat === 'A3' ? 'rgba(255, 255, 255, 0.5137254902)' : '',
-                color: schemeDataStore.listFormat === 'A3' ? '#000' : '',
-              }"
-            >
-              <input type="radio" v-model="schemeDataStore.listFormat" value="A3" checked />
-              A3
-            </label>
-          </div>
-          <div class="format__item item-2">
-            <label
-              :style="{
-                backgroundColor: schemeDataStore.listFormat === 'A4' ? 'rgba(255, 255, 255, 0.5137254902)' : '',
-                color: schemeDataStore.listFormat === 'A4' ? '#000' : '',
-              }"
-            >
-              <input type="radio" v-model="schemeDataStore.listFormat" value="A4" />
-              A4
-            </label>
-          </div>
-        </div>
-      </div>
+      <SchemeFormatForm v-if="checkDoc" />
+
       <ExportButtons :selectedSchemes="selectedSchemes" :activeRef="activeRefs" v-model:childCheckDoc="checkDoc" />
     </div>
-    <div v-if="!checkDoc" class="standard-file">
-      <a href="">
-        <div
-          style="
-            display: inline-block;
-            border: 2px solid white;
-            border-radius: 10px;
-            padding: 3px 5px;
-            background-color: transparent;
-          "
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M12 2V16M12 16L8 12M12 16L16 12"
-              stroke="white"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path d="M20 20H4V18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </div>
-      </a>
-      <p>скачать эталон</p>
-    </div>
+
+    <StandartFileDownloadButton v-if="!checkDoc" />
   </div>
 </template>
 
 <script setup>
 import SchemeContainer from "./SchemeContainer.vue"
+import GuidePopupButton from "./UI/GuidePopupButton.vue"
+import SchemeFormatForm from "./UI/SchemeFormatForm.vue"
+import StandartFileDownloadButton from "./UI/StandartFileDownloadButton.vue"
 import ExportButtons from "./UI/ExportButtons.vue"
 import Logo from "./UI/Logo.vue"
 import { ref } from "vue"
@@ -155,10 +107,6 @@ const fileInput = ref(null)
 const menuOpen = ref(true)
 const selectedItem = ref(null)
 
-// Функция для открытия попапа Гайд
-const toggleGuidePopup = () => {
-  schemeDataStore.toggleGuidePopup(!schemeDataStore.guidePopup)
-}
 // Функция для установки ссылок на дочерние компоненты
 const setActiveRef = (el, index) => {
   if (el) {
@@ -453,144 +401,5 @@ const uploadFile = async () => {
 .list__item.selected {
   color: rgb(0, 0, 0);
   background-color: rgba(255, 255, 255, 0.514);
-}
-.format-wrapper {
-  display: inline-block;
-  font-family: WixMadeforDisplay-Regular;
-  width: 100%;
-}
-.format__item {
-  display: inline-block;
-  box-sizing: border-box;
-  width: 50%;
-  position: relative;
-
-  label {
-    box-sizing: border-box;
-    width: 100%;
-    text-align: center;
-    transition: 0.3s ease;
-    display: inline-block;
-    line-height: 26px;
-    border: 1px solid rgb(0, 255, 47);
-    border-radius: 5px 0px 0px 5px;
-    border-right: none;
-    user-select: none;
-    cursor: url(../../public/cursor-pointer.png), auto;
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.2470588235);
-    }
-  }
-  &:nth-child(2) {
-    label {
-      border-radius: 0px 5px 5px 0px;
-      border-left: none;
-      border-right: 1px solid rgb(0, 255, 47);
-    }
-  }
-  input {
-    position: absolute;
-    opacity: 0;
-    cursor: url(../../public/cursor-pointer.png), auto;
-  }
-}
-
-.guide-button {
-  position: absolute;
-  font-family: WixMadeforDisplay-Regular;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  font-size: 1vw;
-  padding: 0 15px;
-  height: 60px;
-  left: 20vw;
-  border-radius: 15px;
-  background: rgba(0, 0, 0, 0.537254902);
-  overflow: hidden;
-  transition: 0.4s;
-  flex-direction: column;
-  cursor: url(../../public/cursor-pointer.png), auto;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
-  p {
-    transform: translateY(7px);
-  }
-  .guide-button--text {
-    visibility: hidden;
-    opacity: 0;
-    transition: 0.1s;
-  }
-  &:hover {
-    background: rgba(255, 255, 255, 0.2470588235);
-    transition: 0.2s;
-  }
-  &:hover p {
-    transform: translateY(0px);
-    transition: 0.5s;
-  }
-  &:hover .guide-button--text {
-    visibility: visible;
-    transition: 0.6s ease-in-out;
-    opacity: 1;
-  }
-}
-.standard-file {
-  position: absolute;
-  font-size: 1.1vw;
-  font-family: WixMadeforDisplay-Regular;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  color: #fff;
-  height: 60px;
-  width: 60px;
-  left: 67vw;
-  border-radius: 15px;
-  background: rgba(0, 0, 0, 0.537254902);
-  overflow: hidden;
-  transition: 0.4s;
-  cursor: url(../../public/cursor-pointer.png), auto;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
-  &:hover {
-    width: 190px;
-    transition: 0.2 ease-in-out;
-    background: rgba(255, 255, 255, 0.2470588235);
-  }
-  a {
-    cursor: url(../../public/cursor-pointer.png), auto;
-
-    transform: translateX(10px);
-  }
-  p {
-    visibility: hidden;
-    margin-left: 20px;
-    opacity: 0;
-  }
-  &:hover p {
-    animation: standard 1s ease forwards;
-  }
-  &:hover path,
-  &:hover div {
-    stroke: black;
-    border: 2px solid rgb(0, 0, 0) !important;
-    transition: 0.4s ease;
-    box-shadow: 0px 0px 10px #000;
-  }
-  @keyframes standard {
-    0% {
-      visibility: hidden;
-      opacity: 0;
-    }
-    20% {
-      visibility: hidden;
-      opacity: 0;
-    }
-    100% {
-      visibility: visible;
-      opacity: 1;
-    }
-  }
 }
 </style>
