@@ -1,6 +1,6 @@
 <template>
-  <div class="standard-file">
-    <a href="">
+  <div class="standard-file" :class="schemeDataStore.currentStepGuide == 2 ? 'standard-file--active' : 'standard-file'">
+    <a href="http://62.176.10.62/Рабочий.xlsx">
       <div
         style="
           display: inline-block;
@@ -25,7 +25,10 @@
     <p>Cкачать эталон</p>
   </div>
 </template>
-<script setup></script>
+<script setup>
+import { useSchemeDataStore } from "../../stores/SchemeData.js"
+const schemeDataStore = useSchemeDataStore()
+</script>
 <style lang="scss" scoped>
 .standard-file {
   position: absolute;
@@ -37,9 +40,10 @@
   color: #fff;
   height: 60px;
   width: 60px;
-  left: 67vw;
+  bottom: 10svh;
+  left: 1vw;
   border-radius: 15px;
-  background: rgba(0, 0, 0, 0.537254902);
+  background: rgb(41 51 50 / 54%);
   overflow: hidden;
   transition: 0.4s;
   cursor: url(../../public/cursor-pointer.png), auto;
@@ -48,11 +52,11 @@
     width: 190px;
     transition: 0.2 ease-in-out;
     background: rgba(255, 255, 255, 0.2470588235);
+    box-sizing: 0px 0px 0px #00000000 !important;
   }
   a {
     cursor: url(../../public/cursor-pointer.png), auto;
-
-    transform: translateX(10px);
+    transform: translateX(11px);
   }
   p {
     visibility: hidden;
@@ -74,7 +78,7 @@
       visibility: hidden;
       opacity: 0;
     }
-    20% {
+    25% {
       visibility: hidden;
       opacity: 0;
     }
@@ -82,6 +86,26 @@
       visibility: visible;
       opacity: 1;
     }
+  }
+}
+.standard-file--active {
+  animation: standard-file--active 3s ease-in-out forwards;
+  @keyframes standard-file--active {
+    15% {
+      box-shadow: 0px 0px 50px #ffffff00;
+    }
+    50% {
+      box-shadow: 0px 0px 50px #fff;
+    }
+    75% {
+      box-shadow: 0px 0px 50px #ffffff00;
+    }
+    100% {
+      box-shadow: 0px 0px 50px #fff;
+    }
+  }
+  &:hover {
+    box-shadow: 0px 0px 0px #00000000 !important;
   }
 }
 </style>

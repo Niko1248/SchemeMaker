@@ -26,9 +26,10 @@ const toggleGuidePopup = () => {
   font-size: 1vw;
   padding: 0 15px;
   height: 60px;
-  left: 20vw;
+  left: 1vw;
+  bottom: 20svh;
   border-radius: 15px;
-  background: rgba(0, 0, 0, 0.537254902);
+  background: rgb(41 51 50 / 54%);
   overflow: hidden;
   transition: 0.4s;
   flex-direction: column;

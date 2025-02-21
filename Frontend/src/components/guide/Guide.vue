@@ -4,11 +4,11 @@
     <template v-for="(step, index) in steps" :key="index">
       <component v-if="schemeDataStore.currentStepGuide === index + 1" :is="step.component" />
     </template>
-    <div class="gitdes__btns">
-      <div class="btn--down" v-if="schemeDataStore.currentStepGuide !== 1" @click="schemeDataStore.backStepGuide">
+    <div class="guides__btns">
+      <div class="btn-guide" v-if="schemeDataStore.currentStepGuide !== 1" @click="schemeDataStore.backStepGuide">
         Назад
       </div>
-      <div class="btn--next" v-if="schemeDataStore.currentStepGuide !== 6" @click="schemeDataStore.nextStepGuide">
+      <div class="btn-guide" v-if="schemeDataStore.currentStepGuide !== 6" @click="schemeDataStore.nextStepGuide">
         Далее
       </div>
     </div>
@@ -44,17 +44,17 @@ const toggleGuidePopup = () => {
 <style scoped>
 .guide_container {
   box-sizing: border-box;
-  width: 70vw;
+  width: 65vw;
   height: 80svh;
   background: #74b0b055;
   border-radius: 15px;
   box-shadow: 0px 40px 50px #0000007a;
   z-index: 100;
   position: absolute;
-  left: 15vw;
-  top: 10svh;
+  left: 17.5vw;
+  bottom: 10svh;
   backdrop-filter: blur(35px);
-  padding: 3vw 4vw;
+  padding: 4vw;
 }
 
 .close {
@@ -84,10 +84,10 @@ const toggleGuidePopup = () => {
     transform: scale(1);
   }
 }
-.gitdes__btns {
+.guides__btns {
   position: absolute;
   width: calc(100% - 6vw);
-  bottom: 1vw;
+  bottom: 2vw;
   right: 3vw;
   display: flex;
   justify-content: space-between;
@@ -98,7 +98,7 @@ const toggleGuidePopup = () => {
     border-radius: 10px;
     margin-left: 1vw;
     color: #fff;
-    padding: 0.2vw 0 0.5vw 0;
+    padding: 0.4vw 0 0.8vw 0;
     width: 7vw;
     display: flex;
     justify-content: center;

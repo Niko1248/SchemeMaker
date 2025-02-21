@@ -726,3 +726,40 @@ template {
     }
   }
 }
+
+.step {
+  font-family: WixMadeforDisplay-Regular;
+  color: #fff;
+
+  h1 {
+    font-size: 2.3vw;
+    margin-bottom: 3vw;
+  }
+
+  p {
+    font-size: 1.4vw;
+    max-width: 60vw;
+    display: block;
+    margin-bottom: 1.2vw;
+  }
+}
+
+.step-1,
+.step-2,
+.step-3,
+.step-4,
+.step-5,
+.step-6 {
+  opacity: 0;
+  animation: step 1s ease-out forwards;
+}
+
+@keyframes step {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
