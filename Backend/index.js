@@ -4,49 +4,63 @@ import path from "path"
 import { fileURLToPath } from "url"
 import multer from "multer"
 import ExcelJS from "exceljs"
+import fs from "fs" // Для работы с файловой системой
 
 const app = express()
-const port = 7777
+const port = 7777 // Используем порт 80 для HTTP
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+// Настройка Multer для загрузки файлов
 const upload = multer({
   dest: "uploads/",
-  limits: { fileSize: 20 * 1024 * 1024 },
+  limits: { fileSize: 20 * 1024 * 1024 }, // Ограничение на размер файла (20 МБ)
 })
 
+// Middleware
 app.use(express.json())
 app.use(cors())
 app.use(express.static(path.join(__dirname, "dist"), { maxAge: "365d" }))
 
+// Роут для главной страницы
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"))
 })
 
+// Роут для загрузки и обработки файла
 app.post("/upload", upload.single("file"), async (req, res) => {
-  console.time()
+  console.time("File processing time")
   try {
+    // Проверка наличия файла
     if (!req.file) {
-      res.status(400).json({ error: "Файл не был загружен" })
-      return
+      return res.status(400).json({ error: "Файл не был загружен" })
     }
 
     const filePath = path.resolve(req.file.path)
 
+    // Чтение Excel-файла
     const workbook = new ExcelJS.Workbook()
     await workbook.xlsx.readFile(filePath)
     const sheet = workbook.getWorksheet("Схема")
+    if (!sheet) {
+      // Удаляем временный файл, если лист не найден
+      fs.unlinkSync(filePath)
+      return res.status(400).json({ error: "Лист 'Схема' не найден в файле" })
+    }
+
     const data = []
     const columnHeaderTable = []
     const columnHeaderScheme = []
 
+    // Обработка строк Excel-файла
     sheet.eachRow((row, rowIndex) => {
       const rowData = {}
-      // Пропускаем 1 и 4 строку
+
+      // Пропускаем строки 1 и 4
       if ([1, 4].includes(rowIndex)) return
 
-      // Добавляем заголовки таблиц
+      // Обработка заголовков таблиц
       if ([2, 5].includes(rowIndex)) {
         row.eachCell((cell) => {
           ;(rowIndex === 2 ? columnHeaderTable : columnHeaderScheme).push(cell.value)
@@ -54,7 +68,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
         return
       }
 
-      // Добавляем значения штампа
+      // Обработка строки штампа (строка 3)
       if (rowIndex === 3) {
         row.eachCell((cell, colNumber) => {
           const header = columnHeaderTable[colNumber - 1]
@@ -71,7 +85,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
         return
       }
 
-      // Добавляем значения устройств
+      // Обработка строк устройств
       row.eachCell((cell, colNumber) => {
         const value = cell.value.result ?? (cell.value.formula ? null : cell.value)
         rowData[columnHeaderScheme[colNumber - 1]] = value
@@ -81,7 +95,8 @@ app.post("/upload", upload.single("file"), async (req, res) => {
         data.push(rowData)
       }
     })
-    // Вытаскиваем нужные фазы
+
+    // Обработка фаз
     const validPhases = new Set(["1", "2", "3", "N"])
     for (const element of data) {
       if (element.Группа && element.Группа !== null) {
@@ -95,12 +110,12 @@ app.post("/upload", upload.single("file"), async (req, res) => {
         )
       }
     }
-    // Объединяю одинаковые группы
+
+    // Группировка данных
     const groupedResult = data.reduce((acc, item) => {
-      // Определяем ключ для верхнего уровня группировки (по "Вводной щит" и Группа)
       const mainKey = item["Вводной щит"] || "Таблица"
       const groupKey = item["Группа"]
-      // Если группы с таким "Вводной щит" еще нет, инициализируем пустой объект
+
       if (!acc[mainKey]) {
         acc[mainKey] = { "Вводной щит": mainKey, Группы: {} }
       }
@@ -108,26 +123,35 @@ app.post("/upload", upload.single("file"), async (req, res) => {
       if (!acc[mainKey].Группы[groupKey]) {
         acc[mainKey].Группы[groupKey] = { Группа: groupKey, Данные: [] }
       }
-      // Добавляем элемент в соответствующую вложенную группу
-      acc[mainKey].Группы[groupKey].Данные.push(item)
 
+      acc[mainKey].Группы[groupKey].Данные.push(item)
       return acc
     }, {})
 
-    // Преобразуем объект в массив только в конце
+    // Преобразование объекта в массив
     const result = Object.values(groupedResult).map((group) => ({
       ...group,
       Группы: Object.values(group.Группы),
     }))
 
-    // Возвращаем результат
+    // Удаляем временный файл после обработки
+    fs.unlinkSync(filePath)
+
+    // Отправка результата
     res.status(200).json({ message: "Файл обработан", result })
-    console.timeEnd()
+    console.timeEnd("File processing time")
   } catch (error) {
-    console.log(error)
+    console.error("Ошибка при обработке файла:", error)
+    res.status(500).json({ error: "Ошибка при обработке файла" })
+
+    // Удаляем временный файл в случае ошибки
+    if (req.file) {
+      fs.unlinkSync(req.file.path)
+    }
   }
 })
 
+// Запуск HTTP-сервера
 app.listen(port, () => {
-  console.log(`Сервер запущен, порт:${port}`)
+  console.log(`Сервер запущен на http://schememaker.ru:${port}`)
 })

@@ -156,6 +156,7 @@ const uploadFile = async () => {
   error.value = null
   success.value = false
   try {
+    /*     const response = await axios.post("https://schememaker.ru/upload", formData, {*/
     const response = await axios.post("http://localhost:7777/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })

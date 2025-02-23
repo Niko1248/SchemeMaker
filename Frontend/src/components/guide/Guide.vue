@@ -4,7 +4,10 @@
     <template v-for="(step, index) in steps" :key="index">
       <component v-if="schemeDataStore.currentStepGuide === index + 1" :is="step.component" />
     </template>
-    <div class="guides__btns">
+    <div
+      class="guides__btns"
+      :style="{ justifyContent: schemeDataStore.currentStepGuide !== 1 ? 'space-between' : 'flex-end' }"
+    >
       <div class="btn-guide" v-if="schemeDataStore.currentStepGuide !== 1" @click="schemeDataStore.backStepGuide">
         Назад
       </div>
@@ -54,7 +57,7 @@ const toggleGuidePopup = () => {
   left: 17.5vw;
   bottom: 10svh;
   backdrop-filter: blur(35px);
-  padding: 4vw;
+  padding: 4vw 2vw;
 }
 
 .close {
@@ -86,9 +89,9 @@ const toggleGuidePopup = () => {
 }
 .guides__btns {
   position: absolute;
-  width: calc(100% - 6vw);
-  bottom: 2vw;
-  right: 3vw;
+  width: calc(100% - 4vw);
+  bottom: 1.5vw;
+  right: 2vw;
   display: flex;
   justify-content: space-between;
   font-family: WixMadeforDisplay-Regular;
@@ -96,9 +99,8 @@ const toggleGuidePopup = () => {
   div {
     background: #072422a4;
     border-radius: 10px;
-    margin-left: 1vw;
     color: #fff;
-    padding: 0.4vw 0 0.8vw 0;
+    padding: 0.3vw 0 0.7vw 0;
     width: 7vw;
     display: flex;
     justify-content: center;
