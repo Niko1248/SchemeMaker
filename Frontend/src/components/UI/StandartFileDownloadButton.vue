@@ -1,6 +1,6 @@
 <template>
   <div class="standard-file" :class="schemeDataStore.currentStepGuide == 2 ? 'standard-file--active' : 'standard-file'">
-    <a href="http://62.176.10.62/Рабочий.xlsx">
+    <a href="https://schememaker.ru/Рабочий.xlsx">
       <div
         style="
           display: inline-block;
@@ -32,14 +32,14 @@ const schemeDataStore = useSchemeDataStore()
 <style lang="scss" scoped>
 .standard-file {
   position: absolute;
-  font-size: 1.1vw;
+  font-size: 1vw;
   font-family: WixMadeforDisplay-Regular;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   color: #fff;
-  height: 60px;
-  width: 60px;
+  height: 7svh;
+  width: 7svh;
   bottom: 10svh;
   left: 1vw;
   border-radius: 15px;
@@ -56,12 +56,13 @@ const schemeDataStore = useSchemeDataStore()
   }
   a {
     cursor: url(../../public/cursor-pointer.png), auto;
-    transform: translateX(11px);
+    transform: translateX(calc(3.5svh - 19px));
   }
   p {
     visibility: hidden;
-    margin-left: 20px;
+    margin-left: 1vw;
     opacity: 0;
+    text-align: center;
   }
   &:hover p {
     animation: standard 1s ease forwards;
