@@ -168,7 +168,7 @@ const uploadFile = async () => {
     schemeDataStore.splitTableAndSchemeData(excelData, indexTable)
     checkDoc.value = schemeDataStore.schemeData[0]["Вводной щит"] || null
   } catch (err) {
-    error.value = "Ошибка загрузки файла"
+    error.value = err.response.data.error
     success.value = false
     console.error(err)
   } finally {
