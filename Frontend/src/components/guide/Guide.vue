@@ -109,7 +109,7 @@ const toggleGuidePopup = () => {
     line-height: 120%;
     transition: 0.3s ease;
 
-    cursor: url(../../public/cursor-pointer.png), auto;
+    cursor: url(/cursor-pointer.png), auto;
     &:hover {
       transition: 0.2s ease;
       background: #091112bb;

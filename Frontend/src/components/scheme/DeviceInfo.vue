@@ -1,19 +1,36 @@
 <template>
   <div class="text__wrap">
-    <TextEditable class="text__wrap-item" element="Производитель" :uniqueID="uniqueID">
-      {{ props.textData["Производитель"] }}
-    </TextEditable>
-    <TextEditable class="text__wrap-item" element="Автомат" :uniqueID="uniqueID">
-      {{ props.textData["Автомат"] }}
-    </TextEditable>
+    <TextEditable
+      class="text__wrap-item"
+      element="Производитель"
+      :uniqueID="uniqueID"
+      v-model="props.textData['Производитель']"
+    />
+    <TextEditable class="text__wrap-item" element="Автомат" :uniqueID="uniqueID" v-model="props.textData['Автомат']" />
     <div class="text__wrap-class-den text__wrap-item">
-      <TextEditable class="text__wrap-item" element="Номинал" :uniqueID="uniqueID">
-        {{ nominalInputValue }}
-      </TextEditable>
+      <TextEditable
+        class="text__wrap-item"
+        element="Номинал"
+        :uniqueID="uniqueID"
+        v-model="props.textData['Номинал']"
+      />
+      <TextEditable class="text__wrap-item" element="Класс" :uniqueID="uniqueID" v-model="props.textData['Класс']" />
     </div>
-    <TextEditable class="text__wrap-item" element="Тип УЗО" :uniqueID="uniqueID">
-      {{ uzolInputValue }}
-    </TextEditable>
+    <div class="text__wrap-class-den text__wrap-item">
+      <TextEditable
+        class="text__wrap-item"
+        element="Тип УЗО"
+        :uniqueID="uniqueID"
+        v-model="props.textData['Тип УЗО']"
+      />
+      <TextEditable
+        class="text__wrap-item"
+        element="Ток утечки УЗО"
+        :uniqueID="uniqueID"
+        v-model="props.textData['Ток утечки УЗО']"
+        :formatter="formatUZOCurrent"
+      />
+    </div>
   </div>
 </template>
 <script setup>
@@ -38,25 +55,26 @@ const uniqueID = computed(() => {
   )
 })
 
-// Методы
-const nominalInputValue = computed(() => {
-  const classValue = props.textData["Класс"] || ""
-  const nominalValue = props.textData["Номинал"]
-  let result = classValue
-  if (nominalValue) {
-    result += `${nominalValue}`
+// Форматирование значения для "Ток утечки УЗО"
+const formatUZOCurrent = (value) => {
+  if (value === undefined || value === null || value === "") {
+    return "" // Возвращаем пустую строку, если значение отсутствует
   }
-  return result.trim()
-})
-const uzolInputValue = computed(() => {
-  const classValue = props.textData["Тип УЗО"] || ""
-  const nominalValue = props.textData["Ток утечки УЗО"]
-  let result = classValue
-  if (nominalValue) {
-    result += `${nominalValue}мА`
+
+  // Проверяем, содержит ли значение "мА"
+  const hasMA = value.includes("м") && value.includes("А")
+
+  // Если "мА" уже есть, возвращаем значение как есть
+  if (hasMA) {
+    return value
   }
-  return result.trim()
-})
+
+  // Удаляем "м" и "А", если они есть в значении
+  const cleanedValue = value.replace(/м|А/g, "").trim()
+
+  // Добавляем "мА" только если значение не пустое
+  return cleanedValue ? `${cleanedValue}мА` : ""
+}
 </script>
 
 <style lang="scss" scoped>

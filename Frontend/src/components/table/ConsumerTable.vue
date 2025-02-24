@@ -22,32 +22,54 @@
         <img :src="getLegend(data['Данные'])" alt="" />
       </div>
 
+      <!-- Номер по плану -->
       <TextEditable
         class="item item2"
         element="Таблица потребителей"
         :uniqueID="'Номер по плану-' + data['Данные']?.[0]?.['Вводной щит'] + data['Группа']"
+        v-model="editableData[index].groupInPlan"
       >
-        {{ findGroupInPlan(data["Данные"]) }}
+        {{ editableData[index].groupInPlan }}
       </TextEditable>
-      <div class="item item3" contenteditable="true">{{ findPower(data["Данные"]) }}</div>
-      <div class="item item4" contenteditable="true">{{ findAmperage(data["Данные"]) }}</div>
 
+      <!-- Установленная мощность -->
+      <TextEditable
+        class="item item3"
+        element="Таблица потребителей"
+        :uniqueID="'Мощность-' + data['Данные']?.[0]?.['Вводной щит'] + data['Группа']"
+        v-model="editableData[index].power"
+      >
+        {{ editableData[index].power }}
+      </TextEditable>
+
+      <!-- Расчетный ток -->
+      <TextEditable
+        class="item item4"
+        element="Таблица потребителей"
+        :uniqueID="'Ток-' + data['Данные']?.[0]?.['Вводной щит'] + data['Группа']"
+        v-model="editableData[index].amperage"
+      >
+        {{ editableData[index].amperage }}
+      </TextEditable>
+
+      <!-- Наименование потребителя -->
       <TextEditable
         class="item item5"
         element="Таблица потребителей"
         :uniqueID="'Потребитель-' + data['Данные']?.[0]?.['Вводной щит'] + '-' + data['Группа']"
+        v-model="editableData[index].consumerName"
       >
-        {{ findConsumerName(data["Данные"]) }}
+        {{ editableData[index].consumerName }}
       </TextEditable>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, defineProps } from "vue"
+import { ref, watch, defineProps } from "vue"
 import TextEditable from "../UI/TextEditable.vue"
 
-const legendObj = reactive({
+const legendObj = {
   Освещение: new URL("../../assets/img/legend/svet.svg", import.meta.url).href,
   Щит: new URL("../../assets/img/legend/shit.svg", import.meta.url).href,
   Розетка: new URL("../../assets/img/legend/rozetka.svg", import.meta.url).href,
@@ -56,25 +78,62 @@ const legendObj = reactive({
   2: new URL("../../assets/img/legend/shit.svg", import.meta.url).href,
   3: new URL("../../assets/img/legend/rozetka.svg", import.meta.url).href,
   4: new URL("../../assets/img/legend/pig.svg", import.meta.url).href,
-})
+}
 
 const props = defineProps({
   pageData: { type: Array, required: true },
 })
 
+// Реактивные данные для редактирования
+const editableData = ref([])
+
+// Инициализация редактируемых данных
+const initializeEditableData = () => {
+  editableData.value = props.pageData.map((data) => ({
+    groupInPlan: findPropertyValue(data["Данные"], "Номер по плану") || "",
+    power: findPropertyValue(data["Данные"], "Установленная мощность") || "",
+    amperage: findPropertyValue(data["Данные"], "Расчетный ток") || "",
+    consumerName: findPropertyValue(data["Данные"], "Наименование потребителя") || "",
+  }))
+}
+
+// Поиск значения свойства в данных
 const findPropertyValue = (data, property) => {
   const foundElement = data.find((el) => el[property])
   return foundElement ? foundElement[property] : null
 }
 
-const findGroupInPlan = (data) => findPropertyValue(data, "Номер по плану")
-const findAmperage = (data) => findPropertyValue(data, "Расчетный ток")
-const findPower = (data) => findPropertyValue(data, "Установленная мощность")
-const findConsumerName = (data) => findPropertyValue(data, "Наименование потребителя")
+// Получение изображения для легенды
 const getLegend = (data) => {
   const foundElement = data.find((el) => el["Условное обозначение"])
   return foundElement ? legendObj[foundElement["Условное обозначение"]] : null
 }
+
+// Инициализация данных при монтировании
+watch(
+  () => props.pageData,
+  (newData) => {
+    initializeEditableData()
+  },
+  { immediate: true, deep: true }
+)
+
+// Обновление исходных данных при изменении редактируемых данных
+watch(
+  editableData,
+  (newEditableData) => {
+    newEditableData.forEach((editableItem, index) => {
+      const data = props.pageData[index]["Данные"]
+      data.forEach((obj) => {
+        if (obj["Номер по плану"]) obj["Номер по плану"] = editableItem.groupInPlan
+        if (obj["Установленная мощность"]) obj["Установленная мощность"] = editableItem.power
+        if (obj["Расчетный ток"]) obj["Расчетный ток"] = editableItem.amperage
+        if (obj["Наименование потребителя"]) obj["Наименование потребителя"] = editableItem.consumerName
+      })
+    })
+  },
+  { deep: true }
+)
 </script>
 
 <style lang="scss" scoped>

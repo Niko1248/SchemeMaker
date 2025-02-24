@@ -46,7 +46,7 @@ const schemeDataStore = useSchemeDataStore()
   background: rgb(41 51 50 / 54%);
   overflow: hidden;
   transition: 0.4s;
-  cursor: url(../../public/cursor-pointer.png), auto;
+  cursor: url(/cursor-pointer.png), auto;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
   &:hover {
     width: 190px;
@@ -55,7 +55,7 @@ const schemeDataStore = useSchemeDataStore()
     box-sizing: 0px 0px 0px #00000000 !important;
   }
   a {
-    cursor: url(../../public/cursor-pointer.png), auto;
+    cursor: url(/cursor-pointer.png), auto;
     transform: translateX(calc(3.5svh - 19px));
   }
   p {

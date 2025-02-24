@@ -33,7 +33,7 @@ const toggleGuidePopup = () => {
   overflow: hidden;
   transition: 0.4s;
   flex-direction: column;
-  cursor: url(../../public/cursor-pointer.png), auto;
+  cursor: url(/cursor-pointer.png), auto;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
   p {
     transform: translateY(7px);

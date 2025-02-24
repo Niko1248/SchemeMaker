@@ -75,7 +75,7 @@ const saveToZIP = async () => {
 <style lang="scss" scoped>
 .export-button {
   box-sizing: border-box;
-  cursor: url(../../../public/cursor-pointer.png), auto;
+  cursor: url(..//cursor-pointer.png), auto;
   width: 100%;
   height: auto;
   border: none;

@@ -188,7 +188,7 @@ const uploadFile = async () => {
 
 .close-ico {
   position: absolute;
-  cursor: url(../../public/cursor-pointer.png), auto;
+  cursor: url(/cursor-pointer.png), auto;
   top: 0;
   left: 0;
   height: 100%;
@@ -291,7 +291,7 @@ const uploadFile = async () => {
 .upload-file__input {
   z-index: 999;
   visibility: hidden;
-  cursor: url(../../public/cursor-pointer.png), auto !important;
+  cursor: url(/cursor-pointer.png), auto !important;
 }
 .upload-file__lable {
   cursor: url(../../cursor.png), auto;
@@ -327,7 +327,7 @@ const uploadFile = async () => {
 }
 .upload-file__button {
   box-sizing: border-box;
-  cursor: url(../../public/cursor-pointer.png), auto;
+  cursor: url(/cursor-pointer.png), auto;
   margin-top: 10px;
   width: 100%;
   height: 1.85vw;
@@ -383,14 +383,14 @@ const uploadFile = async () => {
   color: #fff;
   padding-bottom: 4px;
   border-bottom: 1px dashed #17b07b;
-  cursor: url(../../public/cursor-pointer.png), auto;
+  cursor: url(/cursor-pointer.png), auto;
   transition: 0.2s;
   input {
     margin-right: 10px;
-    cursor: url(../../public/cursor-pointer.png), auto;
+    cursor: url(/cursor-pointer.png), auto;
   }
   .input-label {
-    cursor: url(../../public/cursor-pointer.png), auto;
+    cursor: url(/cursor-pointer.png), auto;
     transition: 0.2s;
   }
   &:hover {

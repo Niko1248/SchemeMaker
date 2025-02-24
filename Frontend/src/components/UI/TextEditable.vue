@@ -7,6 +7,7 @@
       :style="{ fontSize: dataFontSize + 'px', lineHeight: dataLineHeight }"
       @click="handleFontSizeInput"
       @click.stop="openFontSizePopup"
+      @input="handleInput"
     >
       <slot></slot>
     </div>
@@ -33,30 +34,18 @@ import { useSchemeDataStore } from "../../stores/SchemeData.js"
 const props = defineProps({
   element: { type: String, required: true },
   uniqueID: { type: String, required: true },
+  modelValue: { type: String },
+  formatter: { type: Function, default: (value) => value || "" },
 })
 
 const editableDiv = ref(null)
 const schemeDataStore = useSchemeDataStore()
 const activeFontSize = ref(null)
 const activeLineHeight = ref()
+const emit = defineEmits(["update:modelValue"]) // Определяем событие для обновления значения
 
-// Генерация уникального идентификатора для текущего .scheme_contenteditable
-const contentEditableId = computed(() => `${props.uniqueID}-${props.element}`)
-
-// Получаем размер шрифта и межстрочный интервал для текущего элемента
-const dataFontSize = computed(
-  () => schemeDataStore.getFontSize(contentEditableId.value)[props.element] || activeFontSize.value
-)
-const dataLineHeight = computed(() => schemeDataStore.getLineHeight(contentEditableId.value)[props.element] || 1.2)
-
-// Проверяем, открыт ли попап для текущего .scheme_contenteditable
-const isPopupOpen = computed(() => schemeDataStore.openPopupId === contentEditableId.value)
-
-watch([dataFontSize, dataLineHeight], ([newFontSize, newLineHeight]) => {
-  activeFontSize.value = newFontSize
-  activeLineHeight.value = newLineHeight
-})
-
+// Font-size , line-height попап
+// Управление состоянием попапа
 const openFontSizePopup = () => {
   schemeDataStore.setOpenPopupId(contentEditableId.value) // Открываем попап для текущего элемента
 }
@@ -66,22 +55,28 @@ const closeFontSizePopup = () => {
 }
 
 const handleOutsideClick = (event) => {
+  // Закрываем попап при нажатии вне его
   if (!event.target.closest(".font-size__popup")) {
     closeFontSizePopup()
   }
 }
 
-onMounted(() => {
-  const computedStyle = window.getComputedStyle(editableDiv.value)
-  const fontSizeWithPx = computedStyle.getPropertyValue("font-size")
-  activeFontSize.value = parseFloat(fontSizeWithPx) // Преобразуем в число
+// Генерация уникального идентификатора для текущего .scheme_contenteditable
+const contentEditableId = computed(() => `${props.uniqueID}-${props.element}`)
+// Проверяем, открыт ли попап для текущего .scheme_contenteditable
+const isPopupOpen = computed(() => schemeDataStore.openPopupId === contentEditableId.value)
 
-  document.addEventListener("click", handleOutsideClick)
-})
+//Работа с даннымми попапа
+// Получаем размер шрифта и межстрочный интервал для текущего элемента
+const dataFontSize = computed(
+  () => schemeDataStore.getFontSize(contentEditableId.value)[props.element] || activeFontSize.value
+)
+const dataLineHeight = computed(() => schemeDataStore.getLineHeight(contentEditableId.value)[props.element] || 1.2)
 
-onUnmounted(() => {
-  document.removeEventListener("click", handleOutsideClick)
-})
+const handleFontSizeInput = () => {
+  activeFontSize.value = dataFontSize.value
+  activeLineHeight.value = dataLineHeight.value
+}
 
 const updateFontSize = () => {
   if (activeFontSize.value >= 1 && activeFontSize.value <= 72) {
@@ -95,10 +90,46 @@ const updateLineHeight = () => {
   }
 }
 
-const handleFontSizeInput = () => {
-  activeFontSize.value = dataFontSize.value
-  activeLineHeight.value = dataLineHeight.value
+// Работа с переаднными данными
+const handleInput = (event) => {
+  const newValue = event.target.innerText
+  emit("update:modelValue", newValue) // Вызываем событие для обновления значения
 }
+
+// Отслеживание изменений dataFontSize и dataLineHeight
+watch([dataFontSize, dataLineHeight], ([newFontSize, newLineHeight]) => {
+  activeFontSize.value = newFontSize
+  activeLineHeight.value = newLineHeight
+})
+
+// Отслеживание изменений modelValue
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    if (editableDiv.value) {
+      const formattedValue = props.formatter(newValue) // Форматируем значение
+      if (editableDiv.value.innerText !== formattedValue) {
+        editableDiv.value.innerText = formattedValue
+      }
+    }
+  },
+  { immediate: true }
+)
+
+onMounted(() => {
+  if (editableDiv.value) {
+    editableDiv.value.innerText = props.formatter(props.modelValue) // Форматируем начальное значение
+  }
+  const computedStyle = window.getComputedStyle(editableDiv.value)
+  const fontSizeWithPx = computedStyle.getPropertyValue("font-size")
+  activeFontSize.value = parseFloat(fontSizeWithPx) // Преобразуем в число
+
+  document.addEventListener("click", handleOutsideClick)
+})
+
+onUnmounted(() => {
+  document.removeEventListener("click", handleOutsideClick)
+})
 </script>
 
 <style scoped>

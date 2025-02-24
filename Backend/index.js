@@ -1,6 +1,7 @@
 import express from "express"
 import cors from "cors"
 import path from "path"
+import fs from "fs"
 import { fileURLToPath } from "url"
 import multer from "multer"
 import parseExcelFile from "./parseExcelFile.js"
@@ -38,16 +39,16 @@ app.post("/upload", upload.single("file"), async (req, res) => {
 
     const filePath = path.resolve(req.file.path)
     const result = await parseExcelFile(filePath)
-
-    // Удаляем временный файл после обработки
     fs.unlinkSync(filePath)
-
     // Отправка результата
     res.status(200).json({ message: "Файл обработан", result })
     console.timeEnd("File processing time")
   } catch (error) {
     res.status(500).json({ error: error.message })
     console.log(error)
+    if (req.file) {
+      fs.unlinkSync(req.file.path)
+    }
   }
 })
 

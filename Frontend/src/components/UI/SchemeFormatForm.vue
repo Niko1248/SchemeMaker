@@ -66,7 +66,7 @@ const schemeDataStore = useSchemeDataStore()
     border-radius: 5px 0px 0px 5px;
     border-right: none;
     user-select: none;
-    cursor: url(../../public/cursor-pointer.png), auto;
+    cursor: url(/cursor-pointer.png), auto;
 
     &:hover {
       background-color: rgba(255, 255, 255, 0.2470588235);
@@ -82,7 +82,7 @@ const schemeDataStore = useSchemeDataStore()
   input {
     position: absolute;
     opacity: 0;
-    cursor: url(../../public/cursor-pointer.png), auto;
+    cursor: url(/cursor-pointer.png), auto;
   }
 }
 </style>
