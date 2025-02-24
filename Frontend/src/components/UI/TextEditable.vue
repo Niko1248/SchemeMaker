@@ -11,7 +11,7 @@
     >
       <slot></slot>
     </div>
-    <div class="font-size__popup" v-if="isPopupOpen" @click.stop>
+    <div class="font-size__popup" v-if="isPopupOpen">
       <div class="popup--wrapp">
         <span
           >A

@@ -44,8 +44,13 @@
       <rect x="1" y="1" width="153" height="53" fill="none" stroke="black" stroke-width="1" stroke-dasharray="10 8" />
     </svg>
     <img src="../../assets/img/thick/input-connection2.svg" alt="" />
-    <TextEditable class="input-name scheme_contenteditable" element="Наименование потребителя" :uniqueID="uniqueID">
-      {{ "от " + checkInputName["Наименование потребителя"] }}
+    <TextEditable
+      class="input-name scheme_contenteditable"
+      element="Наименование потребителя"
+      :uniqueID="uniqueID"
+      :formatter="formatConsumerName"
+      v-model="consumerName"
+    >
     </TextEditable>
 
     <div class="input-phase">
@@ -58,7 +63,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue"
+import { computed, ref, watch } from "vue"
 import { useSchemeDataStore } from "../../stores/SchemeData"
 import FirstObjectInput from "./FirstObjectInput.vue"
 import SecondObjectInput from "./SecondObjectInput.vue"
@@ -73,9 +78,48 @@ const uniqueID = computed(() => {
     schemeDataStore.inputDeviceData["Группа"]
   )
 })
-const checkInputName = computed(() => {
-  return schemeDataStore.inputDeviceData?.["Данные"].find((obj) => obj["Наименование потребителя"])
+// Реактивная переменная для наименования потребителя
+const consumerName = ref("")
+
+// Инициализация значения при монтировании
+watch(
+  () => schemeDataStore.inputDeviceData,
+  (newData) => {
+    consumerName.value =
+      newData["Данные"].find((obj) => obj["Наименование потребителя"])?.["Наименование потребителя"] || ""
+  },
+  { immediate: true, deep: true }
+)
+
+// Обновление данных при изменении consumerName
+watch(consumerName, (newName) => {
+  const updatedData = schemeDataStore.inputDeviceData["Данные"].map((obj) => {
+    if (obj["Наименование потребителя"]) {
+      obj["Наименование потребителя"] = newName
+    }
+    return obj
+  })
 })
+
+const formatConsumerName = (value) => {
+  if (value === undefined || value === null || value === "") {
+    return "" // Возвращаем пустую строку, если значение отсутствует
+  }
+
+  // Проверяем, содержит ли значение "мА"
+  const hasOt = value.includes("о") && value.includes("т")
+
+  // Если "мА" уже есть, возвращаем значение как есть
+  if (hasOt) {
+    return value
+  }
+
+  // Удаляем "м" и "А", если они есть в значении
+  const cleanedValue = value.replace(/о|т/g, "").trim()
+
+  // Добавляем "мА" только если значение не пустое
+  return cleanedValue ? `от ${cleanedValue}` : ""
+}
 </script>
 <style lang="scss" scoped>
 .scheme_contenteditable {
