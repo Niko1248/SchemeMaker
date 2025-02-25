@@ -21,11 +21,11 @@ const currentAnimationData = ref(Preloader)
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100svh;
+  height: 100vh;
   z-index: 999;
   background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(57, 113, 110, 1) 100%);
   animation: exit 1s ease-in forwards;
-  animation-delay: 0s;
+  animation-delay: 4.5s;
   overflow: hidden;
 }
 @keyframes exit {

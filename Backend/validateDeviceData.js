@@ -30,7 +30,7 @@ export default function validateDeviceData(data) {
     }
     // Проверяю фазу на undefined и пустой массив, после того как его отфильтровал на валидные значения
     if (!element.Фаза || element.Фаза.length === 0) {
-      throw new Error(`В колонке "Фаза" строка №${element.Строка} значение не введено, либо введено неверно`)
+      throw new Error(`В колонке "Фаза" строка №${element.Строка} значение не введено, либо значение неверное`)
     }
   }
 

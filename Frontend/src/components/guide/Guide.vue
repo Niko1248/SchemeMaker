@@ -48,14 +48,14 @@ const toggleGuidePopup = () => {
 .guide_container {
   box-sizing: border-box;
   width: 65vw;
-  height: 80svh;
+  height: 80vh;
   background: #74b0b055;
   border-radius: 15px;
   box-shadow: 0px 40px 50px #0000007a;
   z-index: 100;
   position: absolute;
   left: 17.5vw;
-  bottom: 10svh;
+  bottom: 10vh;
   backdrop-filter: blur(35px);
   padding: 4vw 2vw;
 }

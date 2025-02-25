@@ -23,7 +23,7 @@
 <style scoped>
 .screenshot_wrapper {
   overflow: hidden;
-  max-height: 60svh;
+  max-height: 60vh;
   border-radius: 10px;
   background-color: #fff;
 }
@@ -52,14 +52,14 @@
   }
 }
 .guide-selection {
-  width: 60svh;
-  height: 10svh;
+  width: 60vh;
+  height: 10vh;
   box-shadow: 0px 10px 90px #000;
   position: absolute;
   border-radius: 10px;
   background-color: #ffffff;
-  top: 30svh;
-  left: calc(50% - 30svh);
+  top: 30vh;
+  left: calc(50% - 30vh);
   padding: 1vw;
   opacity: 0;
   h3 {
@@ -74,9 +74,9 @@
   }
 }
 .selection-title {
-  height: 2.5svh;
+  height: 2.5vh;
   position: absolute;
-  top: 16svh;
+  top: 16vh;
   width: calc(100% - 4vw);
   box-shadow: 0px 5px 50px #000;
   border: 3px solid #00000060;
@@ -119,10 +119,10 @@
   }
 }
 .selection-penel {
-  height: 26.5svh;
+  height: 26.5vh;
   position: absolute;
-  top: 13.5svh;
-  width: 6.5svh;
+  top: 13.5vh;
+  width: 6.5vh;
   box-shadow: 10px 0px 20px #0000009e;
   border: 2px solid #000000a2;
   box-sizing: border-box;
@@ -131,10 +131,10 @@
   animation: selection-penel-1 8s ease;
   animation-delay: 19s;
   div:nth-child(1) {
-    height: 24svh;
+    height: 24vh;
     position: absolute;
-    top: 26svh;
-    width: 6.5svh;
+    top: 26vh;
+    width: 6.5vh;
     box-shadow: 10px 0px 20px #0000009e;
     border: 2px solid #000000b2;
     box-sizing: border-box;
@@ -145,10 +145,10 @@
     animation-delay: 20s;
   }
   div:nth-child(2) {
-    height: 5svh;
+    height: 5vh;
     position: absolute;
-    top: 50svh;
-    width: 6.5svh;
+    top: 50vh;
+    width: 6.5vh;
     box-shadow: 10px 0px 20px #0000009e;
     border: 2px solid #000000b2;
     box-sizing: border-box;
@@ -204,7 +204,7 @@
 }
 .selection-penel--text-wrapeer {
   animation: selection-penel--text-wrapeer 9s ease-in-out;
-  height: 5svh;
+  height: 5vh;
   animation-delay: 17s;
   left: 10vw;
 }

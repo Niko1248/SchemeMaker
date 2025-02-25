@@ -38,9 +38,9 @@ const schemeDataStore = useSchemeDataStore()
   justify-content: flex-start;
   align-items: center;
   color: #fff;
-  height: 7svh;
-  width: 7svh;
-  bottom: 10svh;
+  height: 7vh;
+  width: 7vh;
+  bottom: 10vh;
   left: 1vw;
   border-radius: 15px;
   background: rgb(41 51 50 / 54%);
@@ -56,7 +56,7 @@ const schemeDataStore = useSchemeDataStore()
   }
   a {
     cursor: url(/cursor-pointer.png), auto;
-    transform: translateX(calc(3.5svh - 19px));
+    transform: translateX(calc(3.5vh - 19px));
   }
   p {
     visibility: hidden;

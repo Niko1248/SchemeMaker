@@ -98,6 +98,10 @@ const formatUZOCurrent = (value) => {
     border: none;
     box-sizing: border-box;
   }
+  .text__wrap-item {
+    min-width: 2mm;
+    word-break: break-all;
+  }
 }
 .text__wrap-uzo {
   display: flex;

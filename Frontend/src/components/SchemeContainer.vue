@@ -62,7 +62,7 @@ export default defineComponent({
   setup(props, { expose }) {
     const schemeDataStore = useSchemeDataStore()
     const scale = ref(1) // Начальный масштаб для элемента
-    const positionX = ref(0) // Позиция по оси X
+    const positionX = ref(150) // Позиция по оси X
     const positionY = ref(0) // Позиция по оси Y
 
     const scalableArea = ref(null) // Ссылка на область
@@ -238,7 +238,7 @@ export default defineComponent({
 }
 .scheme__container {
   width: 80vw;
-  height: 100svh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;

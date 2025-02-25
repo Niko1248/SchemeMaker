@@ -51,8 +51,19 @@
           <button class="upload-file__button" type="submit" :disabled="!fileName">
             <p>{{ loading ? "Идет загрузка" : "Загрузить" }}</p>
             <p class="upload-file__loading" v-if="loading"></p>
-            <p v-if="error">{{ error }}</p>
           </button>
+          <div
+            class="error_popup"
+            v-if="error"
+            :style="{
+              left: checkDoc ? '-125%' : '0',
+              top: checkDoc ? '0' : '140%',
+            }"
+          >
+            <div @click="closeErrorPopup">✖</div>
+            <h3>Ошибка:</h3>
+            <p>{{ error }}</p>
+          </div>
         </form>
       </div>
 
@@ -107,6 +118,9 @@ const fileInput = ref(null)
 const menuOpen = ref(true)
 const selectedItem = ref(null)
 
+const closeErrorPopup = () => {
+  error.value = null
+}
 // Функция для установки ссылок на дочерние компоненты
 const setActiveRef = (el, index) => {
   if (el) {
@@ -156,8 +170,8 @@ const uploadFile = async () => {
   error.value = null
   success.value = false
   try {
-    /*     const response = await axios.post("https://schememaker.ru/upload", formData, {*/
-    const response = await axios.post("http://localhost:7777/upload", formData, {
+    const response = await axios.post("https://schememaker.ru/upload", formData, {
+      /* const response = await axios.post("http://localhost:7777/upload", formData, { */
       headers: { "Content-Type": "multipart/form-data" },
     })
     success.value = true
@@ -180,9 +194,9 @@ const uploadFile = async () => {
 <style lang="scss">
 .grid {
   display: flex;
-  width: 100svw;
+  width: 100vw;
   overflow: hidden;
-  height: 100svh;
+  height: 100vh;
   justify-content: space-between;
 }
 
@@ -364,14 +378,14 @@ const uploadFile = async () => {
 }
 .wrapp-list {
   overflow: hidden;
-  max-height: 40svh;
+  max-height: 40vh;
 }
 .list {
   height: fit-content;
   max-height: 60%;
   margin: 10px 0px;
   overflow-y: scroll;
-  max-height: 38svh;
+  max-height: 38vh;
   margin-bottom: 20px;
 }
 
