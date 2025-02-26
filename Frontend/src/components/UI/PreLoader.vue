@@ -1,6 +1,13 @@
 <template>
-  <div class="preloader">
-    <Vue3Lottie :animationData="currentAnimationData" :loop="false" :height="1080" :width="1920" :autoPlay="true" />
+  <div v-if="showPreloader" class="preloader">
+    <Vue3Lottie
+      :animationData="currentAnimationData"
+      :loop="false"
+      :height="1080"
+      :width="1920"
+      :autoPlay="true"
+      @onComplete="hidePreloader"
+    />
   </div>
 </template>
 
@@ -10,6 +17,13 @@ import { Vue3Lottie } from "vue3-lottie"
 import Preloader from "../../assets/animation/Preloader.json"
 
 const currentAnimationData = ref(Preloader)
+const showPreloader = ref(true)
+
+const hidePreloader = () => {
+  setTimeout(() => {
+    showPreloader.value = false
+  }, 2000)
+}
 </script>
 
 <style lang="scss">
@@ -28,20 +42,14 @@ const currentAnimationData = ref(Preloader)
   animation-delay: 4.5s;
   overflow: hidden;
 }
+
 @keyframes exit {
   0% {
     opacity: 1;
   }
-  99% {
-    opacity: 0;
-  }
   100% {
     opacity: 0;
-    display: none;
+    z-index: -1;
   }
-}
-.lottie-animation-container {
-  width: 97vw !important;
-  height: 46vw !important;
 }
 </style>
