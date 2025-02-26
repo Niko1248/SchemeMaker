@@ -1,6 +1,6 @@
 <template>
   <div class="standard-file" :class="schemeDataStore.currentStepGuide == 2 ? 'standard-file--active' : 'standard-file'">
-    <a href="https://schememaker.ru/Рабочий.xlsx">
+    <a href="https://schememaker.ru/Шаблон.xlsx">
       <div
         style="
           display: inline-block;
@@ -22,7 +22,7 @@
         </svg>
       </div>
     </a>
-    <p>Cкачать эталон</p>
+    <p>Cкачать шаблон</p>
   </div>
 </template>
 <script setup>
