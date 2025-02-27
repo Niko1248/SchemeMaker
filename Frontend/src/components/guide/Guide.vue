@@ -11,7 +11,7 @@
       <div class="btn-guide" v-if="schemeDataStore.currentStepGuide !== 1" @click="schemeDataStore.backStepGuide">
         Назад
       </div>
-      <div class="btn-guide" v-if="schemeDataStore.currentStepGuide !== 6" @click="schemeDataStore.nextStepGuide">
+      <div class="btn-guide" v-if="schemeDataStore.currentStepGuide !== 3" @click="schemeDataStore.nextStepGuide">
         Далее
       </div>
     </div>
@@ -23,20 +23,10 @@ import { useSchemeDataStore } from "../../stores/SchemeData.js"
 import Step1 from "./Step_1.vue"
 import Step2 from "./Step_2.vue"
 import Step3 from "./Step_3.vue"
-import Step4 from "./Step_4.vue"
-import Step5 from "./Step_5.vue"
-import Step6 from "./Step_6.vue"
 
 const schemeDataStore = useSchemeDataStore()
 
-const steps = [
-  { component: Step1 },
-  { component: Step2 },
-  { component: Step3 },
-  { component: Step4 },
-  { component: Step5 },
-  { component: Step6 },
-]
+const steps = [{ component: Step1 }, { component: Step2 }, { component: Step3 }]
 
 // Функция для открытия попапа Гайд
 const toggleGuidePopup = () => {

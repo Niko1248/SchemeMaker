@@ -92,6 +92,9 @@
     </div>
 
     <StandartFileDownloadButton v-if="!checkDoc" />
+    <a v-if="!checkDoc" class="telegramm" href="https://t.me/schememaker"
+      ><img src="../assets/img/telegram.png" alt="telegramm"
+    /></a>
   </div>
 </template>
 
@@ -170,7 +173,7 @@ const uploadFile = async () => {
   error.value = null
   success.value = false
   try {
-    const response = await axios.post("http://localhost:7777/upload", formData, {
+    const response = await axios.post("https://schememaker.ru/upload", formData, {
       /* const response = await axios.post("http://localhost:7777/upload", formData, { */
       headers: { "Content-Type": "multipart/form-data" },
     })
@@ -416,5 +419,17 @@ const uploadFile = async () => {
 .list__item.selected {
   color: rgb(0, 0, 0);
   background-color: rgba(255, 255, 255, 0.514);
+}
+.telegramm {
+  position: absolute;
+  bottom: 1.5vw;
+  left: 1vw;
+  transition: 0.3s ease;
+  img {
+    width: 1.8vw;
+  }
+  &:hover {
+    opacity: 0.5;
+  }
 }
 </style>

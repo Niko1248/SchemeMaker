@@ -1,6 +1,6 @@
 <template>
   <div class="standard-file" :class="schemeDataStore.currentStepGuide == 2 ? 'standard-file--active' : 'standard-file'">
-    <a href="https://schememaker.ru/Шаблон.xlsx">
+    <a href="https://schememaker.ru/Шаблон.xlsm">
       <div
         style="
           display: inline-block;
