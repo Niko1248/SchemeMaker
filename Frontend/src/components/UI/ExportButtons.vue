@@ -9,19 +9,18 @@
       "
       @click="exportToPDF('Select')"
     >
-      Экспортировать элементов:{{ props.selectedSchemes.length }}
+      Экспортировать элементов: {{ props.selectedSchemes.length }}
     </button>
-    <button class="export-button" @click="exportToPDF('All')" v-if="schemeDataStore.schemeData.length !== 0">
-      Экспортировать всё
-    </button>
+    <button class="export-button" @click="exportToPDF('All')">Экспортировать всё</button>
   </div>
+  <CalculatePriceForm :selectedSchemesLength="props.selectedSchemes.length" />
 </template>
 <script setup>
 import JSZip from "jszip"
-import { saveAs } from "file-saver"
-import { reactive, nextTick } from "vue"
-import { useSchemeDataStore } from "../../stores/SchemeData"
 
+import { reactive, nextTick, ref } from "vue"
+import { useSchemeDataStore } from "../../stores/SchemeData"
+import CalculatePriceForm from "./CalculatePriceForm.vue"
 const props = defineProps({
   selectedSchemes: Array,
   childCheckDoc: String,
@@ -57,6 +56,7 @@ const exportToPDF = async (type) => {
     }
   }
   saveToZIP()
+  schemeDataStore.setExportSchemeReady(true)
 }
 
 const saveToZIP = async () => {
@@ -66,7 +66,7 @@ const saveToZIP = async () => {
   })
   try {
     const zipBlob = await zip.generateAsync({ type: "blob" })
-    saveAs(zipBlob, "Schemes.zip")
+    schemeDataStore.createExportZip(zipBlob)
   } catch (err) {
     console.error("Ошибка создания ZIP:", err)
   }

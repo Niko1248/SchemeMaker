@@ -5,7 +5,7 @@ import fs from "fs"
 import { fileURLToPath } from "url"
 import multer from "multer"
 import parseExcelFile from "./parseExcelFile.js"
-
+import { v4 as uuidv4 } from "uuid"
 const app = express()
 const port = 7777 // Используем порт 80 для HTTP
 
@@ -26,6 +26,36 @@ app.use(express.static(path.join(__dirname, "dist"), { maxAge: "365d" }))
 // Роут для главной страницы
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"))
+})
+
+import { YooCheckout } from "@a2seven/yoo-checkout" // или const { YooCheckout } = require('@a2seven/yoo-checkout');
+
+const checkout = new YooCheckout({ shopId: "1042810", secretKey: "test_ybV4rMzFK8unzasRPj32JEJD-G2tkMtmDPyY02dqwEc" })
+
+app.get("/getToken", (req, res) => {
+  const idempotenceKey = uuidv4()
+  const createPayload = {
+    amount: {
+      value: "2.00",
+      currency: "RUB",
+    },
+    confirmation: {
+      type: "embedded",
+    },
+    capture: true,
+  }
+
+  ;(async () => {
+    try {
+      const payment = await checkout.createPayment(createPayload, idempotenceKey)
+      console.log(payment.confirmation.confirmation_token)
+      if (payment) {
+        return res.json(payment.confirmation.confirmation_token)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  })()
 })
 
 // Роут для загрузки и обработки файла

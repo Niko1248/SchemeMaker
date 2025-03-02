@@ -87,8 +87,12 @@
         </div>
       </div>
       <SchemeFormatForm v-if="checkDoc" />
-
-      <ExportButtons :selectedSchemes="selectedSchemes" :activeRef="activeRefs" v-model:childCheckDoc="checkDoc" />
+      <ExportButtons
+        v-if="schemeDataStore.schemeData.length !== 0"
+        :selectedSchemes="selectedSchemes"
+        :activeRef="activeRefs"
+        v-model:childCheckDoc="checkDoc"
+      />
     </div>
 
     <StandartFileDownloadButton v-if="!checkDoc" />
@@ -105,6 +109,7 @@ import SchemeFormatForm from "./UI/SchemeFormatForm.vue"
 import StandartFileDownloadButton from "./UI/StandartFileDownloadButton.vue"
 import ExportButtons from "./UI/ExportButtons.vue"
 import Logo from "./UI/Logo.vue"
+import PayForm from "./UI/PayForm.vue"
 import { ref } from "vue"
 import { useSchemeDataStore } from "../stores/SchemeData.js"
 import axios from "axios"
@@ -173,7 +178,7 @@ const uploadFile = async () => {
   error.value = null
   success.value = false
   try {
-    const response = await axios.post("https://schememaker.ru/upload", formData, {
+    const response = await axios.post("http://localhost:7777/upload", formData, {
       /* const response = await axios.post("http://localhost:7777/upload", formData, { */
       headers: { "Content-Type": "multipart/form-data" },
     })

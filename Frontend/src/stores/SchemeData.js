@@ -14,6 +14,10 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
   const openPopupId = ref(null)
   const guidePopup = ref(false)
   const currentStepGuide = ref(1)
+  const amountSelectedSchemes = ref(Number)
+  const totalPrice = ref(Number)
+  const exportSchemeReady = ref(false)
+  const exportZip = ref()
 
   // Методы для управления попапами
   const setOpenPopupId = (id) => (openPopupId.value = id)
@@ -110,6 +114,19 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     amountExportScheme.value = value
   }
 
+  const setTotalPrice = (value) => {
+    totalPrice.value = value
+  }
+
+  const setAmountSelectedSchemes = (value) => {
+    amountSelectedSchemes.value = value
+  }
+  const setExportSchemeReady = (value) => {
+    exportSchemeReady.value = value
+  }
+  const createExportZip = (value) => {
+    exportZip.value = value
+  }
   return {
     tableData,
     schemeData,
@@ -142,5 +159,13 @@ export const useSchemeDataStore = defineStore("schemeData", () => {
     currentStepGuide,
     nextStepGuide,
     backStepGuide,
+    totalPrice,
+    setTotalPrice,
+    amountSelectedSchemes,
+    setAmountSelectedSchemes,
+    exportSchemeReady,
+    setExportSchemeReady,
+    createExportZip,
+    exportZip,
   }
 })

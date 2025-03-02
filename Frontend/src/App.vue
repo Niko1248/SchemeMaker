@@ -2,13 +2,14 @@
   <SchemeMaker />
   <Preloader />
   <Guide v-if="schemeDataStore.guidePopup" />
+  <PayForm v-if="schemeDataStore.exportSchemeReady" />
 </template>
 
 <script setup>
 import SchemeMaker from "./components/SchemeMaker.vue"
+import PayForm from "./components/UI/PayForm.vue"
 import Preloader from "./components/UI/PreLoader.vue"
 import Guide from "./components/guide/Guide.vue"
-
 import { useSchemeDataStore } from "./stores/SchemeData.js"
 const schemeDataStore = useSchemeDataStore()
 
